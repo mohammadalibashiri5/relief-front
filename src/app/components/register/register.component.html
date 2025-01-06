@@ -1,0 +1,57 @@
+<div class="container text-center mt-5">
+  <form (ngSubmit)="addUser()" [formGroup]="registerForm">
+    <div class="row align-items-start">
+      <div class="col col-md-6">
+        <div class="form-floating mb-3">
+          <input type="text" formControlName="name" class="form-control" id="firstname" placeholder="John">
+          <label for="firstname">First Name</label>
+        </div>
+      </div>
+      <div class="col col-md-6">
+        <div class="form-floating">
+          <input type="text" class="form-control" formControlName="familyName" id="lastname" placeholder="Smith">
+          <label for="lastname">Last Name</label>
+        </div>
+      </div>
+    </div>
+    <div class="row align-items-start">
+      <div class="col col-sm-6">
+        <div class="form-floating mb-3">
+          <input type="email" class="form-control" id="email" formControlName="email" placeholder="Email address">
+          <label for="email">Email address</label>
+        </div>
+      </div>
+      <div class="col col-sm-6">
+        <div class="form-floating">
+          <input type="password" class="form-control" id="password" formControlName="password" placeholder="Password">
+          <i class="bi bi-eye-slash" id="togglePassword"></i>
+          <label for="password">Password</label>
+        </div>
+      </div>
+    </div>
+    <div class="row align-items-start">
+      <div class="col">
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" id="username" formControlName="username" placeholder="Username">
+          <label for="username">Username</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-floating">
+          <input type="date" class="form-control" id="dateofbirth" formControlName="dateOfBirth"
+                 placeholder="date of birth">
+          <label for="dateofbirth">Date Of Birth</label>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="row justify-content-between">
+    <div class="col-3">
+      <p>Already have an account? <a href="/login">Log in</a>
+    </div>
+    <div class="col-1 ">
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+  </div>
+</div>
+
