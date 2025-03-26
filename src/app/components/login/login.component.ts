@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {IUser} from '../../models/user.model';
+import {IUser} from '../../models/RequestModel/userModel';
 import {LoginService} from '../../services/login.service';
 import {Router} from '@angular/router';
 
@@ -13,6 +13,8 @@ import {Router} from '@angular/router';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  passwordFieldType: string = 'password'; // Initial type for the password field
+  passwordIconClass: string = 'bi bi-eye-slash'; // Initial icon class
   loginForm: FormGroup;
   user!: IUser;
 
@@ -41,11 +43,16 @@ export class LoginComponent {
       },
       complete: () => {
 
-        this.router.navigate(['/']).then(r => alert('Welcome ' + email));
+        this.router.navigate(['/checkin']).then(r => alert('Welcome ' + email));
       }
 
     })
 
+  }
+
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+    this.passwordIconClass = this.passwordIconClass === 'bi bi-eye-slash' ? 'bi bi-eye' : 'bi bi-eye-slash';
   }
 
 }

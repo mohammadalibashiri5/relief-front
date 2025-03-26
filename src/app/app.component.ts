@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {FooterComponent} from './components/footer/footer.component';
+import {IUser} from './models/RequestModel/userModel';
+
 
 @Component({
   selector: 'app-root',
@@ -10,5 +12,15 @@ import {FooterComponent} from './components/footer/footer.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-
+  @Input() user: IUser;
+  constructor() {
+    this.user =  {
+      name:"",
+      familyName:"",
+      username:"",
+      email:"",
+      password:"",
+      dateOfBirth: new Date
+    }
+  }
 }

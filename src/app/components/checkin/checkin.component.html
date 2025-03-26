@@ -1,0 +1,6 @@
+<div class="container">
+  <button *ngIf="checkin.status === 'missed' || checkin.status == ''" (click)="performCheckin()" class="btn btn-lg btn-primary text-center">Check in <i class="bi bi-calendar-check-fill"></i></button>
+</div>
+<h2> Check in Date : {{ checkin.date }}</h2>
+<h2> Check in Status : {{ checkin.status }}</h2>
+<h2> Check in Streak : {{ checkin.streak }}</h2>
