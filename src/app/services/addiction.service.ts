@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AddictionRequest} from '../models/RequestModel/addictionRequest';
 import {Observable} from 'rxjs';
@@ -18,6 +18,13 @@ export class AddictionService {
       'Authorization': `Bearer ${token}`,
     });
     return this.http.post(`${this.url}/add-addiction`, addiction, {headers: headers})
+  }
+  getAddiction(): Observable<any> {
+    const token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+    return this.http.get(`${this.url}/addictions`, {headers: headers})
   }
 
 }

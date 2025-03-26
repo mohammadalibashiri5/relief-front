@@ -1,5 +1,11 @@
+import {StreakLevel} from '../enum/StreakLevel';
+
 export interface CheckInResponse{
-  date: string,
-  status: string,
-  streak: number
+  userName: string,
+  addictionName: string,
+  startDate: Date,
+  currentStreak:number,
+  longestStreak:number,
+  lastCheckinDat:Date,
+  level:StreakLevel
 }

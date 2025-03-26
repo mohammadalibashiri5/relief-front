@@ -1,6 +1,11 @@
-<div class="container">
-  <button *ngIf="checkin.status === 'missed' || checkin.status == ''" (click)="performCheckin()" class="btn btn-lg btn-primary text-center">Check in <i class="bi bi-calendar-check-fill"></i></button>
+<div class="check-in-container">
+  <h2>Daily Check-In</h2>
+  <label>
+    <input type="radio" [(ngModel)]="isClean" [value]="true"> I stayed clean
+  </label>
+  <label>
+    <input type="radio" [(ngModel)]="isClean" [value]="false"> I relapsed
+  </label>
+  <button (click)="submitCheckIn()">Check In</button>
+  <p *ngIf="message">{{ message }}</p>
 </div>
-<h2> Check in Date : {{ checkin.date }}</h2>
-<h2> Check in Status : {{ checkin.status }}</h2>
-<h2> Check in Streak : {{ checkin.streak }}</h2>

@@ -32,6 +32,12 @@
       </div>
     </div>
 
+
+
+
+
+
+
     <!-- Year of Addiction Field -->
     <div class="mb-3">
       <label for="yearOfAddiction" class="form-label">Year of Addiction</label>
@@ -45,3 +51,7 @@
   </form>
 </div>
 
+<button>See my addictions</button>
+<ul *ngFor="let adds of addictionsResponse">
+  <li>{{adds.name}}</li>
+</ul>

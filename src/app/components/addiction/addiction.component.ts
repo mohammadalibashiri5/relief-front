@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AddictionService} from '../../services/addiction.service';
 import {Router} from '@angular/router';
 import {AddictionRequest} from '../../models/RequestModel/addictionRequest';
 import {SeverityLevel} from '../../models/enum/SeverityLevel';
 import {NgForOf, NgIf} from '@angular/common';
+import {AddictionResponse} from '../../models/ResponseModel/addictionResponse';
 
 @Component({
   selector: 'app-addiction',
@@ -16,7 +17,7 @@ import {NgForOf, NgIf} from '@angular/common';
   templateUrl: './addiction.component.html',
   styleUrl: './addiction.component.css'
 })
-export class AddictionComponent {
+export class AddictionComponent implements OnInit {
   addictionForm!: FormGroup;
   severityLevels = Object.values(SeverityLevel); // Extract enum values
 
@@ -31,6 +32,7 @@ export class AddictionComponent {
   }
 
   addictions: AddictionRequest[] = [];
+  addictionsResponse: AddictionResponse[] = [];
 
   createAddiction() {
     let addiction: AddictionRequest = {
@@ -54,6 +56,23 @@ export class AddictionComponent {
         }
       }
     )
+  }
+
+  getAddictions() {
+    this.addictionService.getAddiction().subscribe(
+      {
+        next: allAddictions => {
+          this.addictionsResponse = allAddictions;
+        },
+        error: err => {
+          console.log(err);
+        }
+      }
+    )
+  }
+
+  ngOnInit(): void {
+    this.getAddictions();
   }
 
 }
