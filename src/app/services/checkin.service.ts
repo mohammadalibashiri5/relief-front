@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {AddictionRequest} from '../models/RequestModel/addictionRequest';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {CheckInResponse} from '../models/ResponseModel/CheckInResponse';
 
@@ -10,15 +9,15 @@ import {CheckInResponse} from '../models/ResponseModel/CheckInResponse';
 })
 export class CheckinService {
 
+  private apiUrl = 'http://localhost:8080/api/checkin'; // Adjust based on your backend endpoint
+
   constructor(private http: HttpClient) {}
 
-  private readonly url = "http://localhost:8080";
-
-  performCheckin(checkin:CheckInResponse): Observable<any> {
-    const token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
+  performCheckin(username: string, addictionName: string, isClean: boolean): Observable<CheckInResponse> {
+    return this.http.post<CheckInResponse>(`${this.apiUrl}/register`, {
+      username,
+      addictionName,
+      isClean
     });
-    return this.http.post(`${this.url}/api/checkin`,checkin, {headers: headers})
   }
 }

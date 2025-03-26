@@ -1,52 +1,33 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {CheckinService} from '../../services/checkin.service';
-import {CheckInResponse} from '../../models/ResponseModel/CheckInResponse';
 import {NgIf} from '@angular/common';
-import {Checkin} from '../../models/checkin';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-checkin',
   imports: [
-    NgIf
+    NgIf,
+    FormsModule
   ],
   templateUrl: './checkin.component.html',
   styleUrl: './checkin.component.css',
 })
-export class CheckinComponent implements OnInit {
+export class CheckinComponent {
 
-  checkin: Checkin;
+  username = 'testUser'; // Replace with actual username (could be from authentication)
+  addictionName = 'Smoking'; // Replace with user-selected addiction
+  isClean = true;
+  message = '';
 
-  constructor(private checkinService: CheckinService) {
-    this.checkin = new Checkin();
-  }
+  constructor(private checkInService: CheckinService) {}
 
-  ngOnInit(): void {
-    const storedCheckin = sessionStorage.getItem("latestCheckin");
-
-    if (storedCheckin) {
-      this.checkin = JSON.parse(storedCheckin);
-      if (this.checkin.date === new Date().toISOString().split('T')[0]) {
-        return; // No need to re-fetch
-      }
-    }
-
-    this.performCheckin();
-  }
-
-
-  performCheckin() {
-    this.checkinService.performCheckin(this.checkin).subscribe({
-      next: (r) => {
-        if (r) {
-          this.checkin = r; // Ensure r is valid before assignment
-          sessionStorage.setItem("latestCheckin", JSON.stringify(r));
-        } else {
-          alert('Empty response from server');
-        }
+  submitCheckIn() {
+    this.checkInService.performCheckin(this.username, this.addictionName, this.isClean).subscribe({
+      next: (response) => {
+        this.message = `Check-in successful! Current Streak: ${response.currentStreak}, Level: ${response.level}`;
       },
       error: (err) => {
-        alert('Error performing checkin');
-        console.log(err);
+        this.message = err.error?.message || 'Check-in failed!';
       }
     });
   }
