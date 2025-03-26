@@ -3,14 +3,19 @@
     <div class="row">
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input type="email" class="form-control"formControlName="email" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <input type="email" class="form-control" formControlName="email" id="exampleInputEmail1" aria-describedby="emailHelp">
         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
       </div>
     </div>
     <div class="row">
-      <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" formControlName="password" id="exampleInputPassword1">
+      <div class="mb-3 position-relative">
+        <label for="password">Password</label>
+        <div class="input-group">
+          <input [type]="passwordFieldType" class="form-control" id="password" formControlName="password" placeholder="Password">
+          <span class="input-group-text">
+        <i [class]="passwordIconClass" (click)="togglePasswordVisibility()" style="cursor: pointer;"></i>
+      </span>
+        </div>
       </div>
     </div>
     <div class="row">

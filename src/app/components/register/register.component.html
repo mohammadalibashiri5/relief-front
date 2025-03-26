@@ -1,57 +1,83 @@
 <div class="container text-center mt-5">
   <form (ngSubmit)="addUser()" [formGroup]="registerForm">
     <div class="row align-items-start">
-      <div class="col col-md-6">
+      <div class="col-md-6">
         <div class="form-floating mb-3">
           <input type="text" formControlName="name" class="form-control" id="firstname" placeholder="John">
           <label for="firstname">First Name</label>
+          <div *ngIf="name.hasError('required') && (name.dirty || name.touched)">
+            <p style="color: red">Your name must not be empty</p>
+          </div>
         </div>
       </div>
-      <div class="col col-md-6">
+      <div class="col-md-6">
         <div class="form-floating">
           <input type="text" class="form-control" formControlName="familyName" id="lastname" placeholder="Smith">
           <label for="lastname">Last Name</label>
+          <div *ngIf="familyName.hasError('required') && (familyName.dirty || familyName.touched)">
+            <p style="color: red">Your family name must not be empty</p>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="row align-items-start">
-      <div class="col col-sm-6">
+      <div class="col-md-6">
         <div class="form-floating mb-3">
           <input type="email" class="form-control" id="email" formControlName="email" placeholder="Email address">
           <label for="email">Email address</label>
+          <div *ngIf="email.invalid && (email.dirty || email.touched)">
+            <p style="color: red">Invalid email address</p>
+          </div>
         </div>
       </div>
-      <div class="col col-sm-6">
-        <div class="form-floating">
-          <input type="password" class="form-control" id="password" formControlName="password" placeholder="Password">
-          <i class="bi bi-eye-slash" id="togglePassword"></i>
+      <div class="col-md-6">
+        <div class="form-floating position-relative">
+          <input [type]="passwordFieldType" class="form-control" id="password" formControlName="password" placeholder="Password">
           <label for="password">Password</label>
+          <i
+            class="position-absolute top-50 end-0 translate-middle-y me-3"
+            [class]="passwordIconClass"
+            (click)="togglePasswordVisibility()"
+            style="cursor: pointer;"
+            *ngIf="password.dirty"
+          >
+          </i>
+          <div *ngIf="password.hasError('required') && (password.dirty || password.touched)">
+            <p style="color: red">Your password must not be empty</p>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="row align-items-start">
-      <div class="col">
+      <div class="col-md-6">
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="username" formControlName="username" placeholder="Username">
           <label for="username">Username</label>
+          <div *ngIf="username.hasError('required') && (username.dirty || username.touched)">
+            <p style="color: red">Your username must not be empty</p>
+          </div>
         </div>
       </div>
-      <div class="col">
+      <div class="col-md-6">
         <div class="form-floating">
-          <input type="date" class="form-control" id="dateofbirth" formControlName="dateOfBirth"
-                 placeholder="date of birth">
-          <label for="dateofbirth">Date Of Birth</label>
+          <input type="date" class="form-control" id="birthdate" formControlName="dateOfBirth">
+          <label for="birthdate">Birth Date</label>
+          <div *ngIf="dateOfBirth.hasError('required') && (dateOfBirth.dirty || dateOfBirth.touched)">
+            <p style="color: red">Your birth date must not be empty</p>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-between mt-4">
+      <div class="col-6 text-start">
+        <p>Already have an account? <a href="/login">Log in</a></p>
+      </div>
+      <div class="col-6 text-end">
+        <button class="btn btn-primary" [disabled]="registerForm.invalid" type="submit">Submit</button>
       </div>
     </div>
   </form>
-  <div class="row justify-content-between">
-    <div class="col-3">
-      <p>Already have an account? <a href="/login">Log in</a>
-    </div>
-    <div class="col-1 ">
-      <button class="btn btn-primary" type="submit">Submit</button>
-    </div>
-  </div>
 </div>
-

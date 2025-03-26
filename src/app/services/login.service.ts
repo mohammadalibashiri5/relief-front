@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {IUser} from '../models/user.model';
-import {AuthenticationResponse} from '../models/authenticationResponse';
+import {IUser} from '../models/RequestModel/userModel';
+import {AuthenticationResponse} from '../models/ResponseModel/authenticationResponse';
+import {IUserResponse} from '../models/ResponseModel/userResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -20,16 +21,19 @@ export class LoginService {
     return this.http.post<AuthenticationResponse>(`${this.url}/auth/login`, {email: email, password: password});
   }
 
-  isNotLoggedIn(): boolean {
-    return !sessionStorage.getItem('token');
-  }
 
 
-  getUser(): Observable<IUser> {
+
+  getUser(): Observable<IUserResponse> {
     let token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + token,
     })
-    return this.http.get<IUser>(`${this.url}/api/users/getUser`, {headers: headers})
+    return this.http.get<IUserResponse>(`${this.url}/api/users/getUser`, {headers: headers})
+  }
+
+  isLoggedIn():boolean {
+    return sessionStorage.getItem('token') != null;
+
   }
 }

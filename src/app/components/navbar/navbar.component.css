@@ -2,12 +2,12 @@
   height: 4rem;
   border-radius: 50%;
 }
+.profile {
+  font-size: 2.5rem;
+}
 .nav-color {
 background-color: rgb(176, 196, 217);
 }
 .reg {
   color: rgb(184, 108, 84);
-}
-.log {
-  color: rgb(135, 80, 143)
 }

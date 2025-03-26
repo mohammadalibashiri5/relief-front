@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HomeComponent} from '../home/home.component';
 import {FooterComponent} from '../footer/footer.component';
 import {NgForOf, NgIf} from '@angular/common';
 import {RegisterService} from '../../services/register.service';
 import {LoginService} from '../../services/login.service';
+import {UserService} from '../../services/user.service';
+import {IUser} from '../../models/RequestModel/userModel';
 
 @Component({
   selector: 'app-navbar',
@@ -15,14 +17,22 @@ import {LoginService} from '../../services/login.service';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit {
-  username: string = 'Guest'; // Default username
+  @Input() user: IUser;
 
-  constructor(private userService: LoginService) {}
+  constructor(private userService: UserService) {
+    this.user =  {
+      name:"",
+      familyName:"",
+      username:"",
+      email:"",
+      password:"",
+      dateOfBirth: new Date
+    }
+
+  }
 
   ngOnInit(): void {
-    this.userService.getUser().subscribe((data) => {
-      this.username = data.name;
-    });
+
   }
   isNotLoggedIn(): boolean {
     return !sessionStorage.getItem('token');
