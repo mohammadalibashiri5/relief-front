@@ -1,11 +1,32 @@
-<div class="check-in-container">
+<div class="container">
   <h2>Daily Check-In</h2>
-  <label>
-    <input type="radio" [(ngModel)]="isClean" [value]="true"> I stayed clean
-  </label>
-  <label>
-    <input type="radio" [(ngModel)]="isClean" [value]="false"> I relapsed
-  </label>
-  <button (click)="submitCheckIn()">Check In</button>
-  <p *ngIf="message">{{ message }}</p>
+
+  <form [formGroup]="checkinForm" (ngSubmit)="registerCheckIn()">
+
+    <!-- Show the connected username -->
+
+    <!-- Dropdown for Addiction Selection -->
+    <label for="addiction">Select Your Addiction:</label>
+    <select class="form-select" formControlName="addiction" id="addiction">
+      <option value="">Choose Your Addiction</option>
+      <option *ngFor="let addiction of addictions" [value]="addiction.name">
+        {{ addiction.name }}
+      </option>
+    </select>
+
+    <!-- Radio Buttons for Yes/No -->
+    <div class="form-check">
+      <input class="form-check-input" type="radio" id="yes" [value]="true" formControlName="checkinStatus">
+      <label class="form-check-label" for="yes">Yes</label>
+    </div>
+
+    <div class="form-check">
+      <input class="form-check-input" type="radio" id="no" [value]="false" formControlName="checkinStatus">
+      <label class="form-check-label" for="no">No</label>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+  </form>
 </div>
