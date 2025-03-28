@@ -2,11 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {IUserResponse} from '../../models/ResponseModel/userResponse';
 import {LoginService} from '../../services/login.service';
 import {Router} from '@angular/router';
-import {NgForOf} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
+    NgIf,
     NgForOf
   ],
   templateUrl: './dashboard.component.html',
@@ -14,26 +16,22 @@ import {NgForOf} from '@angular/common';
 })
 export class DashboardComponent implements OnInit{
   user!: IUserResponse;
-
-  constructor(private login:LoginService, private router:Router) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
-    this.loadUser();
-  }
-
-
-   loadUser() {
-    this.login.getUser().subscribe({
-      next:value => {
-        this.user = value;
-      },
-      error:err => {
-        if (err) {
-          this.router.navigate(['login']).then(() => sessionStorage.clear());
+    // Subscribe to the user observable to get the latest user data
+    this.userService.getUser().subscribe({
+      next: (user) => {
+        if (user) {
+          this.user = user;
+          console.log("USER in dashboard", user);
         }
-        alert("Oops, one error is found " );
+        else return;
+      },
+      error: (err) => {
+        console.error("Error fetching user data", err);
       }
-    })
+    });
   }
 
   logout() {
