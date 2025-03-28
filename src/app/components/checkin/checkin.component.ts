@@ -62,7 +62,6 @@ export class CheckinComponent implements OnInit {
 
     this.checkInService.performCheckin(formData.addiction, formData.checkinStatus).subscribe({
       next: (response) => {
-        console.log(response);
       },
       error: (err) => {
         console.log(err);
