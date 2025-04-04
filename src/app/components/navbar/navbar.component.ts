@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit {
   links: { name: string; url: string }[] = [
     { name: 'Home', url: '/' },
     { name: 'Addictions', url: '/my-addictions' },
-    { name: 'Experiences', url: '/experiences' },
+    { name: 'Motivation', url: '/motivation' },
     { name: 'Checkin', url: '/checkin' },
   ];
 

@@ -8,7 +8,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 })
 export class ModalComponent {
 
-  @Output() close = new EventEmitter<void>();
+  @Output() close:EventEmitter<void> = new EventEmitter<void>();
 
   closeModal(): void {
     this.close.emit();

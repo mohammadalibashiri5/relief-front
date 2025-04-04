@@ -24,13 +24,14 @@ export class UserDetailComponent implements OnInit {
   loadUser() {
     this.loginService.getUser().subscribe({
       next: (value) => {
-        console.log("🚀 User fetched from API:", value); // Debugging line
         this.user = value;
         this.userService.setUser(value); // ✅ Store in BehaviorSubject
       },
       error: (err) => {
-        console.error("❌ Error fetching user", err);
-        this.router.navigate(['login']).then(() => sessionStorage.clear());
+        if (err.status === 403) {
+          alert("You'd better trying log in");
+          this.router.navigate(['login']).then(() => sessionStorage.clear());
+        }
       }
     });
   }

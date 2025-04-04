@@ -1,20 +1,4 @@
-<div class="modal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Hello {{user?.name}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="No"></button>
-      </div>
-      <div class="modal-body">
-        <p>Could you retain yourself of your addictions</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-        <button type="button" class="btn btn-primary">Sure</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <div class="container mt-4">
   <!-- Header -->
@@ -24,20 +8,20 @@
   </div>
 
   <!-- user? Profile Section -->
-  <div class="card mb-4">
+  <div class="card mb-4" >
     <div class="card-body">
       <div class="row">
         <div class="col-md-4 text-center">
-          <h5 class="card-title">{{ user?.name }} {{ user?.familyName }}</h5>
-          <p class="text-muted">{{ user?.email }}</p>
+          <h5 class="card-title">{{ user.name }} {{ user.familyName }}</h5>
+          <p class="text-muted">{{ user.email }}</p>
         </div>
         <div class="col-md-8">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>username:</strong> {{ user?.username }}</li>
-            <li class="list-group-item"><strong>Date of Birth:</strong> {{ user?.dateOfBirth }}</li>
-            <li class="list-group-item"><strong>Total Addictions Tracked:</strong> {{ user?.addictions?.length }}</li>
+            <li class="list-group-item"><strong>username:</strong> {{ user.username }}</li>
+            <li class="list-group-item"><strong>Date of Birth:</strong> {{ user.dateOfBirth }}</li>
+            <li class="list-group-item"><strong>Total Addictions Tracked:</strong> {{ user.addictions.length }}</li>
           </ul>
-          <ul *ngFor="let addiction of user?.addictions" class="list-group-item"><strong>My Addictions</strong>
+          <ul *ngFor="let addiction of user.addictions" class="list-group-item"><strong>My Addictions</strong>
           <li class="list-group-item">{{addiction.name}}</li>
           <li class="list-group-item">{{addiction.description}}</li>
           <li class="list-group-item">{{addiction.severityLevel}}</li>

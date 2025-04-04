@@ -29,4 +29,8 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 
   </form>
+  <div *ngIf="checkInStatus">
+    <p>{{checkInStatus.addictionName}} check in add</p>
+    <p>{{checkInStatus.startDate.getDate().toLocaleString()}} check in add</p>
+  </div>
 </div>
