@@ -5,15 +5,17 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {LoginService} from '../../services/login.service';
 import {IUserResponse} from '../../models/ResponseModel/userResponse';
 import {AddictionService} from '../../services/addiction.service';
+import {CheckInResponse} from '../../models/ResponseModel/CheckInResponse';
+import {StreakLevel} from '../../models/enum/StreakLevel';
 
 
 @Component({
   selector: 'app-checkin',
   imports: [
-    NgIf,
     FormsModule,
     ReactiveFormsModule,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './checkin.component.html',
   styleUrl: './checkin.component.css',
@@ -26,6 +28,7 @@ export class CheckinComponent implements OnInit {
   addictionName = ''; // Replace with user-selected addiction
   isClean = true;
   message = '';
+  checkInStatus:CheckInResponse;
 
   constructor(private checkInService: CheckinService,
               private loginService: LoginService,
@@ -46,11 +49,15 @@ export class CheckinComponent implements OnInit {
     this.addictionService.getAddiction().subscribe({
       next: value => this.addictions = value
     });
-  }
-
-
-  submitCheckIn() {
-
+    this.checkInStatus = new class implements CheckInResponse {
+      addictionName="";
+      currentStreak=0;
+      lastCheckinDat= new Date;
+      level: StreakLevel= StreakLevel.NONE ;
+      longestStreak: number = 0;
+      startDate: Date = new Date() ;
+      userName: string = "";
+    }
   }
 
   registerCheckIn() {
@@ -62,6 +69,8 @@ export class CheckinComponent implements OnInit {
 
     this.checkInService.performCheckin(formData.addiction, formData.checkinStatus).subscribe({
       next: (response) => {
+        this.checkInStatus = response;
+        console.log(this.checkInStatus);
       },
       error: (err) => {
         console.log(err);

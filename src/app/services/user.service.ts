@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, EMPTY, Observable} from 'rxjs';
 import {IUserResponse} from '../models/ResponseModel/userResponse';
 import {LoginService} from './login.service';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +12,8 @@ export class UserService {
 
   private userSubject: BehaviorSubject<IUserResponse | null> = new BehaviorSubject<IUserResponse | null>(null);
 
-  constructor(private loginService: LoginService) {
-    this.fetchUser(); // 🔥 Fetch user immediately on service initialization
+  constructor(private loginService: LoginService, private router: Router) {
+    this.fetchUser();
   }
   fetchUser(): void {
     this.loginService.getUser().subscribe({
@@ -19,6 +21,11 @@ export class UserService {
         this.userSubject.next(user);
       },
       error: (err) => {
+        if (err.status === 403) {
+          this.router.navigate(['/login']).then(() => {
+            alert("Authentication failed");
+          });
+        }
       }
     });
   }

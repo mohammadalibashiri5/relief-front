@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {IUserResponse} from '../../models/ResponseModel/userResponse';
-import {LoginService} from '../../services/login.service';
 import {Router} from '@angular/router';
 import {NgForOf, NgIf} from '@angular/common';
 import {UserService} from '../../services/user.service';
@@ -8,8 +7,8 @@ import {UserService} from '../../services/user.service';
 @Component({
   selector: 'app-dashboard',
   imports: [
-    NgIf,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
