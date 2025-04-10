@@ -70,6 +70,17 @@ export class AddictionComponent implements OnInit {
       }
     )
   }
+  deleteAddiction(name: string) {
+    this.addictionService.deleteAddiction(name).subscribe({
+      next: () => {
+        this.addictionsResponse = this.addictionsResponse.filter(addiction => addiction.name !== name);
+        alert("addiction deleted successfully!")
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
+  }
 
   ngOnInit(): void {
     this.getAddictions();

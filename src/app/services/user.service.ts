@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, EMPTY, Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {IUserResponse} from '../models/ResponseModel/userResponse';
 import {LoginService} from './login.service';
-import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 
 @Injectable({
@@ -13,7 +12,7 @@ export class UserService {
   private userSubject: BehaviorSubject<IUserResponse | null> = new BehaviorSubject<IUserResponse | null>(null);
 
   constructor(private loginService: LoginService, private router: Router) {
-    this.fetchUser();
+    //this.fetchUser();
   }
   fetchUser(): void {
     this.loginService.getUser().subscribe({

@@ -26,5 +26,12 @@ export class AddictionService {
     });
     return this.http.get(`${this.url}/addictions`, {headers: headers})
   }
+  deleteAddiction(name: string): Observable<any> {
+    const token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+    });
+    return this.http.delete(`${this.url}/delete/${name}`, {headers: headers})
+  }
 
 }
