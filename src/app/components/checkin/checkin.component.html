@@ -1,5 +1,5 @@
 <div class="container">
-  <h2>Daily Check-In</h2>
+  <h2 class="text-center mt-2">Daily Check-In</h2>
 
   <form [formGroup]="checkinForm" (ngSubmit)="registerCheckIn()">
 
@@ -31,6 +31,6 @@
   </form>
   <div *ngIf="checkInStatus">
     <p>{{checkInStatus.addictionName}} check in add</p>
-    <p>{{checkInStatus.startDate.getDate().toLocaleString()}} check in add</p>
+    <p>{{checkInStatus.startDate | date }} check Started</p>
   </div>
 </div>

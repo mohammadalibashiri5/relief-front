@@ -11,7 +11,7 @@
       <div class="mb-3 position-relative">
         <label for="password">Password</label>
         <div class="input-group">
-          <input [type]="passwordFieldType" class="form-control" id="password" formControlName="password" placeholder="Password">
+          <input [type]="passwordFieldType" class="form-control" id="password" autocomplete="current-password" formControlName="password" placeholder="Password">
           <span class="input-group-text">
         <i [class]="passwordIconClass" (click)="togglePasswordVisibility()" style="cursor: pointer;"></i>
       </span>

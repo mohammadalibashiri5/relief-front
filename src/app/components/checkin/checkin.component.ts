@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CheckinService} from '../../services/checkin.service';
-import {NgForOf, NgIf} from '@angular/common';
+import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {LoginService} from '../../services/login.service';
 import {IUserResponse} from '../../models/ResponseModel/userResponse';
@@ -15,7 +15,8 @@ import {StreakLevel} from '../../models/enum/StreakLevel';
     FormsModule,
     ReactiveFormsModule,
     NgForOf,
-    NgIf
+    NgIf,
+    DatePipe
   ],
   templateUrl: './checkin.component.html',
   styleUrl: './checkin.component.css',
@@ -24,8 +25,8 @@ export class CheckinComponent implements OnInit {
   checkinForm!: FormGroup;
   user!:IUserResponse;
   addictions!:any;
-  username = ''; // Replace with actual username (could be from authentication)
-  addictionName = ''; // Replace with user-selected addiction
+  username = '';
+  addictionName = '';
   isClean = true;
   message = '';
   checkInStatus:CheckInResponse;
