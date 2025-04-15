@@ -6,20 +6,22 @@ import {NgForOf, NgIf} from '@angular/common';
 import {AddictionResponse} from '../../models/ResponseModel/addictionResponse';
 import {Subject, takeUntil} from 'rxjs';
 import {ToastrService} from 'ngx-toastr';
+import {RouterLink} from '@angular/router';
+import {AddictionRequest} from '../../models/RequestModel/addictionRequest';
 
 @Component({
   selector: 'app-addiction',
   imports: [
     ReactiveFormsModule,
     NgIf,
-    NgForOf
+    NgForOf,
+    RouterLink
   ],
   templateUrl: './addiction.component.html',
   styleUrl: './addiction.component.css'
 })
 export class AddictionComponent implements OnInit {
 
-  showModal: boolean = false;
   severityLevels = Object.values(SeverityLevel);
   addictionForm!: FormGroup;
   addictions: AddictionResponse[] = [];
@@ -48,12 +50,10 @@ export class AddictionComponent implements OnInit {
   }
 
   private initializeAddictions(): void {
-    // First load the initial data
     this.addictionService.fetchAddictions().pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: () => {
-        // After fetch is successful, subscribe to the addictions
         this.addictionService.getAddictions()
           .pipe(takeUntil(this.destroy$))
           .subscribe((addictions) => {
@@ -73,7 +73,7 @@ export class AddictionComponent implements OnInit {
       return;
     }
 
-    const addiction = this.addictionForm.value;
+    const addiction:AddictionRequest = this.addictionForm.value;
     this.addictionService.addAddiction(addiction).subscribe({
       next: () => {
         this.toastr.success('Addiction created successfully');

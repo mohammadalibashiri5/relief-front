@@ -12,15 +12,5 @@ import {IUser} from './models/RequestModel/userModel';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  @Input() user: IUser;
-  constructor() {
-    this.user =  {
-      name:"",
-      familyName:"",
-      username:"",
-      email:"",
-      password:"",
-      dateOfBirth: new Date
-    }
-  }
+  constructor() { }
 }
