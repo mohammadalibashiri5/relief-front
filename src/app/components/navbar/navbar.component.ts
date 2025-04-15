@@ -1,11 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {HomeComponent} from '../home/home.component';
-import {FooterComponent} from '../footer/footer.component';
+import {Component} from '@angular/core';
 import {NgForOf, NgIf} from '@angular/common';
-import {RegisterService} from '../../services/register.service';
-import {LoginService} from '../../services/login.service';
 import {UserService} from '../../services/user.service';
-import {IUser} from '../../models/RequestModel/userModel';
 
 @Component({
   selector: 'app-navbar',
@@ -16,24 +11,13 @@ import {IUser} from '../../models/RequestModel/userModel';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent implements OnInit {
-  @Input() user: IUser;
+export class NavbarComponent  {
 
   constructor(private userService: UserService) {
-    this.user =  {
-      name:"",
-      familyName:"",
-      username:"",
-      email:"",
-      password:"",
-      dateOfBirth: new Date
-    }
 
   }
 
-  ngOnInit(): void {
 
-  }
   isNotLoggedIn(): boolean {
     return !sessionStorage.getItem('token');
   }
