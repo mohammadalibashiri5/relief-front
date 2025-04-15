@@ -1,16 +1,24 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-modal',
-  imports: [],
+  imports: [
+    NgIf
+  ],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css'
 })
 export class ModalComponent {
 
-  @Output() close:EventEmitter<void> = new EventEmitter<void>();
+  @Input() isOpen:boolean = false;
+  @Input() title:string = '';
+  @Input() showCloseButton:boolean = true;
+  @Output() closed:EventEmitter<void> = new EventEmitter<void>();
 
-  closeModal(): void {
-    this.close.emit();
+  close() {
+    this.isOpen = false;
+    this.closed.emit();
   }
+
 }

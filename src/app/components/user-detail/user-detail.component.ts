@@ -25,7 +25,7 @@ export class UserDetailComponent implements OnInit {
     this.loginService.getUser().subscribe({
       next: (value) => {
         this.user = value;
-        this.userService.setUser(value); // ✅ Store in BehaviorSubject
+        this.userService.setUser(value);
       },
       error: (err) => {
         if (err.status === 403) {

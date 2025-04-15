@@ -7,6 +7,7 @@ import {IUserResponse} from '../../models/ResponseModel/userResponse';
 import {AddictionService} from '../../services/addiction.service';
 import {CheckInResponse} from '../../models/ResponseModel/CheckInResponse';
 import {StreakLevel} from '../../models/enum/StreakLevel';
+import {AddictionResponse} from '../../models/ResponseModel/addictionResponse';
 
 
 @Component({
@@ -16,7 +17,6 @@ import {StreakLevel} from '../../models/enum/StreakLevel';
     ReactiveFormsModule,
     NgForOf,
     NgIf,
-    DatePipe
   ],
   templateUrl: './checkin.component.html',
   styleUrl: './checkin.component.css',
@@ -38,7 +38,6 @@ export class CheckinComponent implements OnInit {
     this.loginService.getUser().subscribe({
       next: data => {
         this.username = data.username;
-        console.log(this.user);
       }
       });
 
@@ -47,7 +46,7 @@ export class CheckinComponent implements OnInit {
       checkinStatus: ['', Validators.required]
     });
 
-    this.addictionService.getAddiction().subscribe({
+    this.addictionService.getAddictions().subscribe({
       next: value => this.addictions = value
     });
     this.checkInStatus = new class implements CheckInResponse {

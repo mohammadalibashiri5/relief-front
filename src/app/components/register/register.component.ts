@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { IUser } from '../../models/RequestModel/userModel';
 import {NgIf} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ToastrService} from 'ngx-toastr';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class RegisterComponent {
     private userService: RegisterService,
     private readonly fb: FormBuilder,
     private readonly router: Router,
-    private _snackBar: MatSnackBar // Inject MatSnackBar here
+    private toastr:ToastrService
   ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
@@ -65,7 +66,7 @@ export class RegisterComponent {
     return this.registerForm.controls['familyName'];
   }
 
-  get username() {
+  public get username() {
     return this.registerForm.controls['username'];
   }
 
@@ -79,14 +80,6 @@ export class RegisterComponent {
     this.passwordIconClass = this.passwordIconClass === 'bi bi-eye-slash' ? 'bi bi-eye' : 'bi bi-eye-slash';
   }
 
-  // Show SnackBar (Toast)
-  showSnackBar(message: string, action: string = 'Close') {
-    this._snackBar.open(message, action, {
-      duration: 30000, // Duration in ms
-      horizontalPosition: 'right', // Horizontal position (right or left)
-      verticalPosition: 'bottom', // Vertical position (top or bottom)
-    });
-  }
 
   addUser() {
     const user: IUser = {
@@ -103,14 +96,14 @@ export class RegisterComponent {
       },
       error: (err) => {
         if (err.status === 409 || err.status === 400) {
-          this.showSnackBar('Email already exists!');
+          this.toastr.error('Email already exists!');
         } else {
-          this.showSnackBar('Something went wrong. Please try again.');
+          this.toastr.error('Something went wrong. Please try again.');
         }
       },
       complete: () => {
-        this.router.navigate(['/']).then(() => {
-          this.showSnackBar(`${user.name} ', Your account has been registered successfully!'`);
+        this.router.navigate(['/login']).then(() => {
+          this.toastr.success('Registration successful! Please log in.');
         });
       },
     });

@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AddictionService} from '../../services/addiction.service';
-import {Router} from '@angular/router';
-import {AddictionRequest} from '../../models/RequestModel/addictionRequest';
 import {SeverityLevel} from '../../models/enum/SeverityLevel';
 import {NgForOf, NgIf} from '@angular/common';
 import {AddictionResponse} from '../../models/ResponseModel/addictionResponse';
+import {Subject, takeUntil} from 'rxjs';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-addiction',
@@ -18,11 +18,18 @@ import {AddictionResponse} from '../../models/ResponseModel/addictionResponse';
   styleUrl: './addiction.component.css'
 })
 export class AddictionComponent implements OnInit {
+
+  showModal: boolean = false;
+  severityLevels = Object.values(SeverityLevel);
   addictionForm!: FormGroup;
-  severityLevels = Object.values(SeverityLevel); // Extract enum values
+  addictions: AddictionResponse[] = [];
+  private destroy$ = new Subject<void>();
 
-
-  constructor(private formBuilder: FormBuilder, private addictionService: AddictionService, private router: Router) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private addictionService: AddictionService,
+    private toastr: ToastrService // Recommended for user feedback
+  ) {
     this.addictionForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -31,59 +38,69 @@ export class AddictionComponent implements OnInit {
     });
   }
 
-  addictions: AddictionRequest[] = [];
-  addictionsResponse: AddictionResponse[] = [];
+  ngOnInit(): void {
+    this.initializeAddictions();
+  }
 
-  createAddiction() {
-    let addiction: AddictionRequest = {
-      name: this.addictionForm.value!.name,
-      description: this.addictionForm.value!.description,
-      severityLevel: this.addictionForm.value!.severityLevel,
-      yearOfAddiction: this.addictionForm.value!.yearOfAddiction,
-    };
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
-    this.addictionService.addAddiction(addiction).subscribe({
-        next: addiction => {
-          this.addictions.push(addiction);
-        },
-        error: err => {
-          console.log(err);
-        },
-        complete: () => {
-          this.router.navigate(['/dashboard']).then(() => {
-            alert("addiction added successfully!")
+  private initializeAddictions(): void {
+    // First load the initial data
+    this.addictionService.fetchAddictions().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: () => {
+        // After fetch is successful, subscribe to the addictions
+        this.addictionService.getAddictions()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((addictions) => {
+            this.addictions = addictions;
           });
-        }
+      },
+      error: (err) => {
+        this.toastr.error('Failed to load addictions');
+        console.error(err);
       }
-    )
+    });
   }
 
-  getAddictions() {
-    this.addictionService.getAddiction().subscribe(
-      {
-        next: allAddictions => {
-          this.addictionsResponse = allAddictions;
-        },
-        error: err => {
-          console.log(err);
-        }
+  createAddiction(): void {
+    if (this.addictionForm.invalid) {
+      this.toastr.warning('Please fill all required fields');
+      return;
+    }
+
+    const addiction = this.addictionForm.value;
+    this.addictionService.addAddiction(addiction).subscribe({
+      next: () => {
+        this.toastr.success('Addiction created successfully');
+        this.addictionForm.reset();
+        const closeButton = document.querySelector('.btn-close') as HTMLElement // Better to use a proper modal service
+        closeButton?.click();
+      },
+      error: (err) => {
+        this.toastr.error('Failed to create addiction');
+        console.error(err);
       }
-    )
+    });
   }
-  deleteAddiction(name: string) {
+
+  deleteAddiction(name: string): void {
+    if (!confirm('Are you sure you want to delete this addiction?')) {
+      return;
+    }
+
     this.addictionService.deleteAddiction(name).subscribe({
       next: () => {
-        this.addictionsResponse = this.addictionsResponse.filter(addiction => addiction.name !== name);
-        alert("addiction deleted successfully!")
+        this.toastr.success('Addiction deleted successfully');
       },
-      error: err => {
-        console.log(err);
+      error: (err) => {
+        this.toastr.error('Failed to delete addiction');
+        console.error(err);
       }
-    })
+    });
   }
-
-  ngOnInit(): void {
-    this.getAddictions();
-  }
-
 }
