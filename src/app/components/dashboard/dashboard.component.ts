@@ -1,42 +1,46 @@
 import {Component, OnInit} from '@angular/core';
 import {IUserResponse} from '../../models/ResponseModel/userResponse';
 import {Router} from '@angular/router';
-import {NgForOf, NgIf} from '@angular/common';
+import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {UserService} from '../../services/user.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
     NgForOf,
-    NgIf
+    NgIf,
+    DatePipe
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit{
-  user!: IUserResponse;
-  constructor(private userService: UserService, private router: Router) { }
+export class DashboardComponent implements OnInit {
+  user: IUserResponse | null = null;
+
+  constructor(private userService: UserService, private router: Router, private toastr: ToastrService) {
+  }
 
   ngOnInit(): void {
-    // Subscribe to the user observable to get the latest user data
+    this.userService.fetchUser().subscribe();
     this.userService.getUser().subscribe({
       next: (user) => {
         if (user) {
           this.user = user;
-          console.log("USER in dashboard", user);
         }
-        else return;
       },
       error: (err) => {
-        console.error("Error fetching user data", err);
+        if (err.status === 403) {
+          this.router.navigate(['/login']).then(() => {
+            this.toastr.warning('You are not authorized to view this page.');
+          });
+        }
       }
     });
   }
 
   logout() {
-    if (sessionStorage.getItem("token")) {
-      this.router.navigate(['login']).then(() => sessionStorage.clear());
-    }
+    this.userService.logout();
   }
 
 }

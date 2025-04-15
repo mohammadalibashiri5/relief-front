@@ -1,7 +1,14 @@
-<div class="modal-overlay" (click)="closeModal()">
+<div class="modal-overlay" *ngIf="isOpen" (click)="close()">
   <div class="modal-content" (click)="$event.stopPropagation()">
-    <h2>Modal Title</h2>
-    <p>This is the content of the modal. It can include text, images, forms, or any other Angular component.</p>
-    <button (click)="closeModal()">Close</button>
+    <div class="modal-header">
+      <h6>{{ title }}</h6>
+      <button *ngIf="showCloseButton" class="close-btn" (click)="close()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <ng-content></ng-content>
+    </div>
+    <div class="modal-footer">
+      <ng-content select="[footer]"></ng-content>
+    </div>
   </div>
 </div>
