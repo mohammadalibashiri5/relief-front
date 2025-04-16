@@ -29,6 +29,9 @@ export class AddictionComponent implements OnInit {
   addictions: AddictionResponse[] = [];
   private destroy$ = new Subject<void>();
   showModal: boolean = false;
+  isEditMode: boolean = false;
+  modalTitle: string = 'Add New Addiction';
+  currentAddictionId: number | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -69,6 +72,34 @@ export class AddictionComponent implements OnInit {
       }
     });
   }
+  openAddModal(): void {
+    this.isEditMode = false;
+    this.modalTitle = 'Add New Addiction';
+    this.addictionForm.reset();
+    this.showModal = true;
+  }
+
+  openEditModal(addiction: AddictionResponse): void {
+    this.isEditMode = true;
+    this.modalTitle = 'Edit Addiction';
+    this.currentAddictionId = addiction.id;
+
+    this.addictionForm.patchValue({
+      name: addiction.name,
+      description: addiction.description,
+      severityLevel: addiction.severityLevel,
+      yearOfAddiction: addiction.yearOfAddiction
+    });
+
+    this.showModal = true;
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+    this.addictionForm.reset();
+    this.currentAddictionId = null;
+  }
+
 
   createAddiction(): void {
     if (this.addictionForm.invalid) {
@@ -92,6 +123,26 @@ export class AddictionComponent implements OnInit {
     });
   }
 
+  updateAddiction(): void {
+    if (this.addictionForm.invalid || !this.currentAddictionId) {
+      this.toastr.warning('Please fill all required fields');
+      return;
+    }
+
+    const addiction: AddictionRequest = this.addictionForm.value;
+    this.addictionService.updateAddiction(this.currentAddictionId, addiction).subscribe({
+      next: () => {
+        this.toastr.success('Addiction updated successfully');
+        this.closeModal();
+        this.initializeAddictions();
+      },
+      error: (err) => {
+        this.toastr.error('Failed to update addiction');
+        console.error(err);
+      }
+    });
+  }
+
   deleteAddiction(name: string): void {
     if (!confirm('Are you sure you want to delete this addiction?')) {
       return;
@@ -107,6 +158,4 @@ export class AddictionComponent implements OnInit {
       }
     });
   }
-
-  protected readonly close = close;
 }
