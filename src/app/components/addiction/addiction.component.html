@@ -1,7 +1,7 @@
 <div class="container my-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold">🧠 Addiction Center</h2>
-    <button class="btn btn-light-blue" data-bs-toggle="modal" data-bs-target="#addAddictionModal">
+    <button class="btn btn-light-blue" (click)="showModal = true">
       + Add New Addiction
     </button>
   </div>
@@ -36,70 +36,64 @@
   </div>
 </div>
 
-<div class="modal fade" id="addAddictionModal" tabindex="-1" aria-labelledby="addAddictionModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content rounded-4">
-      <div class="modal-header bg-light-blue text-white">
-        <h6 class="modal-title text-black" id="addAddictionModalLabel">Add New Addiction</h6>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Modal for Adding New Addiction -->
+<app-modal
+  [isOpen]="showModal"
+  [title]="'Add New Addiction'"
+  [showCloseButton]="true"
+  (closed)="showModal = false"
+>
+  <div class="modal-body">
+    <form (ngSubmit)="createAddiction()" [formGroup]="addictionForm">
+      <!-- Name Field -->
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input formControlName="name" type="text" class="form-control" id="name" placeholder="Enter addiction name">
+        <div *ngIf="addictionForm.get('name')?.invalid && addictionForm.get('name')?.touched" class="text-danger">
+          Name is required
+        </div>
       </div>
-      <div class="modal-body p-4">
-        <form (ngSubmit)="createAddiction()" [formGroup]="addictionForm">
-          <!-- Name Field -->
-          <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input formControlName="name" type="text" class="form-control" id="name" placeholder="Enter addiction name" required>
-          </div>
 
-          <!-- Description Field -->
-          <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea
-              formControlName="description"
-              class="form-control"
-              id="description"
-              rows="3"
-              placeholder="Enter addiction description"
-              required
-            ></textarea>
-          </div>
-
-          <!-- Severity Level Field -->
-          <div class="mb-3">
-            <label for="severity" class="form-label">Severity Level</label>
-            <select class="form-select" id="severity" formControlName="severityLevel">
-              <option value="" disabled>Select severity level</option>
-              <option *ngFor="let level of severityLevels" [value]="level">{{ level }}</option>
-            </select>
-            <div *ngIf="addictionForm.get('severity')?.touched && addictionForm.get('severity')?.invalid" class="text-danger">
-              Severity level is required.
-            </div>
-          </div>
-          <!-- Year of Addiction Field -->
-          <div class="mb-3">
-            <label for="yearOfAddiction" class="form-label">Year of Addiction</label>
-            <input formControlName="yearOfAddiction" min="0" type="number" class="form-control" id="yearOfAddiction" placeholder="Enter year of addiction" required>
-          </div>
-
-          <!-- Submit Button -->
-          <div class="text-center">
-            <button type="submit" class="btn btn-primary">Register Addiction</button>
-          </div>
-        </form>
+      <!-- Description Field -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          formControlName="description"
+          class="form-control"
+          id="description"
+          rows="3"
+          placeholder="Enter addiction description"
+        ></textarea>
+        <div *ngIf="addictionForm.get('description')?.invalid && addictionForm.get('description')?.touched" class="text-danger">
+          Description is required
+        </div>
       </div>
-    </div>
+
+      <!-- Severity Level Field -->
+      <div class="mb-3">
+        <label for="severity" class="form-label">Severity Level</label>
+        <select class="form-select" id="severity" formControlName="severityLevel">
+          <option value="" disabled>Select severity level</option>
+          <option *ngFor="let level of severityLevels" [value]="level">{{ level }}</option>
+        </select>
+        <div *ngIf="addictionForm.get('severityLevel')?.invalid && addictionForm.get('severityLevel')?.touched" class="text-danger">
+          Severity level is required.
+        </div>
+      </div>
+
+      <!-- Year of Addiction Field -->
+      <div class="mb-3">
+        <label for="yearOfAddiction" class="form-label">Year of Addiction</label>
+        <input formControlName="yearOfAddiction" min="0" type="number" class="form-control" id="yearOfAddiction" placeholder="Enter year of addiction">
+        <div *ngIf="addictionForm.get('yearOfAddiction')?.invalid && addictionForm.get('yearOfAddiction')?.touched" class="text-danger">
+          Valid number of year is required
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary" [disabled]="addictionForm.invalid">Register Addiction</button>
+      </div>
+    </form>
   </div>
-</div>
-
-
-<!--<app-modal-->
-<!--  [isOpen]="showModal"-->
-<!--  [title]="'Add New Addiction'"-->
-<!--  [showCloseButton]="true">-->
-
-<!--  <div>-->
-<!--    <h3>This appears inside the modal!</h3>-->
-<!--    <button >Click Me</button>-->
-<!--  </div>-->
-<!--</app-modal>-->
-<!--<button (click)="showModal = true">Open Modal</button>-->
+</app-modal>

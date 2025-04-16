@@ -8,6 +8,7 @@ import {Subject, takeUntil} from 'rxjs';
 import {ToastrService} from 'ngx-toastr';
 import {RouterLink} from '@angular/router';
 import {AddictionRequest} from '../../models/RequestModel/addictionRequest';
+import {ModalComponent} from '../modal/modal.component';
 
 @Component({
   selector: 'app-addiction',
@@ -15,7 +16,8 @@ import {AddictionRequest} from '../../models/RequestModel/addictionRequest';
     ReactiveFormsModule,
     NgIf,
     NgForOf,
-    RouterLink
+    RouterLink,
+    ModalComponent
   ],
   templateUrl: './addiction.component.html',
   styleUrl: './addiction.component.css'
@@ -26,6 +28,7 @@ export class AddictionComponent implements OnInit {
   addictionForm!: FormGroup;
   addictions: AddictionResponse[] = [];
   private destroy$ = new Subject<void>();
+  showModal: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -77,9 +80,10 @@ export class AddictionComponent implements OnInit {
     this.addictionService.addAddiction(addiction).subscribe({
       next: () => {
         this.toastr.success('Addiction created successfully');
-        this.addictionForm.reset();
         const closeButton = document.querySelector('.btn-close') as HTMLElement // Better to use a proper modal service
         closeButton?.click();
+        this.addictionForm.reset();
+        this.showModal = false;
       },
       error: (err) => {
         this.toastr.error('Failed to create addiction');
@@ -103,4 +107,6 @@ export class AddictionComponent implements OnInit {
       }
     });
   }
+
+  protected readonly close = close;
 }
