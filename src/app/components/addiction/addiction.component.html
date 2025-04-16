@@ -1,7 +1,7 @@
 <div class="container my-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold">🧠 Addiction Center</h2>
-    <button class="btn btn-light-blue" (click)="showModal = true">
+    <button class="btn btn-light-blue" (click)="openAddModal()">
       + Add New Addiction
     </button>
   </div>
@@ -9,20 +9,20 @@
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     <div class="col" *ngFor="let addiction of addictions">
       <div class="card p-3">
-        <div  class="d-flex justify-content-between align-items-start">
+        <div class="d-flex justify-content-between align-items-start">
           <div>
             <h5 class="card-title"> {{ addiction.name }}</h5>
             <p class="text-muted mb-1"> years of addiction : <strong>{{ addiction.yearOfAddiction }}</strong></p>
             <p class="text-muted mb-1"> Severity Level: <strong>{{ addiction.severityLevel }}</strong></p>
             <p *ngIf="addiction.streakCount > 0" class="text-muted mb-1"> Days of streak :{{ addiction.streakCount }}</p>
-            <p  class="text-muted mb-1"> Description : <strong> {{ addiction.description }}</strong></p>
+            <p class="text-muted mb-1"> Description : <strong> {{ addiction.description }}</strong></p>
           </div>
           <div class="dropdown">
             <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
               Actions
             </button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" style="cursor: pointer">✏️ Edit</a></li>
+              <li><a class="dropdown-item" style="cursor: pointer" (click)="openEditModal(addiction)">✏️ Edit</a></li>
               <li><a class="dropdown-item text-danger" style="cursor: pointer" (click)="deleteAddiction(addiction.name)">🗑️ Delete</a></li>
             </ul>
           </div>
@@ -36,15 +36,15 @@
   </div>
 </div>
 
-<!-- Modal for Adding New Addiction -->
+<!-- Modal for Adding/Editing Addiction -->
 <app-modal
   [isOpen]="showModal"
-  [title]="'Add New Addiction'"
+  [title]="modalTitle"
   [showCloseButton]="true"
-  (closed)="showModal = false"
+  (closed)="closeModal()"
 >
   <div class="modal-body">
-    <form (ngSubmit)="createAddiction()" [formGroup]="addictionForm">
+    <form (ngSubmit)="isEditMode ? updateAddiction() : createAddiction()" [formGroup]="addictionForm">
       <!-- Name Field -->
       <div class="mb-3">
         <label for="name" class="form-label">Name</label>
@@ -92,7 +92,9 @@
 
       <!-- Submit Button -->
       <div class="text-center">
-        <button type="submit" class="btn btn-primary" [disabled]="addictionForm.invalid">Register Addiction</button>
+        <button type="submit" class="btn btn-primary" [disabled]="addictionForm.invalid">
+          {{ isEditMode ? 'Update Addiction' : 'Register Addiction' }}
+        </button>
       </div>
     </form>
   </div>
