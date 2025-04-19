@@ -83,41 +83,6 @@ export class AddictionService {
       })
     );
   }
-  // getAddiction(): Observable<any> {
-  //   const token = sessionStorage.getItem('token');
-  //   const headers = new HttpHeaders({
-  //     'Authorization': `Bearer ${token}`,
-  //   });
-  //   return this.http.get(`${this.url}/addictions`, {headers: headers})
-  // }
-  // deleteAddiction(name: string): Observable<any> {
-  //   const token = sessionStorage.getItem('token');
-  //   const headers = new HttpHeaders({
-  //     'Authorization': `Bearer ${token}`,
-  //   });
-  //   return this.http.delete(`${this.url}/delete/${name}`, {headers: headers})
-  // }
-  // Fetch addictions from the server
-  // fetchAddictions() {
-  //   this.http.get<AddictionResponse[]>('your-api-endpoint').subscribe(
-  //     (addictions) => {
-  //       this.addictionsSubject.next(addictions); // Update the BehaviorSubject
-  //     },
-  //     (err) => {
-  //       console.log(err);
-  //     }
-  //   );
-  // }
-
-  // // Add new addiction and update the addiction list
-  // addAddiction(addiction: AddictionRequest): Observable<AddictionResponse> {
-  //   return this.http.post<AddictionResponse>('your-api-endpoint', addiction).pipe(
-  //     tap((newAddiction) => {
-  //       const currentAddictions = this.addictionsSubject.getValue();
-  //       this.addictionsSubject.next([...currentAddictions, newAddiction]); // Push the new addiction to the list
-  //     })
-  //   );
-  // }
 
   updateAddiction(id: number, addiction: any) {
     const token = sessionStorage.getItem('token');

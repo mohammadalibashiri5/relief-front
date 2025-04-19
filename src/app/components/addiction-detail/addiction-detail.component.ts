@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {AddictionResponse} from "../../models/ResponseModel/addictionResponse";
 import {AddictionService} from "../../services/addiction.service";
@@ -19,6 +19,8 @@ import {ToastrService} from 'ngx-toastr';
 export class AddictionDetailComponent implements OnInit, OnDestroy {
 
   @Input() addictions: AddictionResponse[] = [];
+  @Output() edit = new EventEmitter<AddictionResponse>();
+  @Output() delete = new EventEmitter<string>();
 
   private destroy$ = new Subject<void>();
   constructor(private addictionService: AddictionService, private toastr: ToastrService) {}
@@ -39,9 +41,8 @@ export class AddictionDetailComponent implements OnInit, OnDestroy {
             this.addictions = addictions;
           });
       },
-      error: (err) => {
+      error: () => {
         this.toastr.error('Failed to load addictions');
-        console.error(err);
       }
     });
   }

@@ -14,8 +14,8 @@
             <i class="bi bi-gear-fill"></i>
           </button>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" style="cursor: pointer" (click)="openEditModal(addiction)">✏️ Edit</a></li>
-            <li><a class="dropdown-item text-danger" style="cursor: pointer" (click)="deleteAddiction(addiction.name)">🗑️ Delete</a></li>
+            <li><a class="dropdown-item" style="cursor: pointer" (click)="edit.emit(addiction)">✏️ Edit</a></li>
+            <li><a class="dropdown-item text-danger" style="cursor: pointer" (click)="delete.emit(addiction.name)">🗑️ Delete</a></li>
           </ul>
         </div>
       </div>

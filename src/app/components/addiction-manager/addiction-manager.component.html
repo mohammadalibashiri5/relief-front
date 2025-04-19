@@ -5,7 +5,7 @@
       + Add New Addiction
     </button>
   </div>
-
+</div>
 
 <!-- Modal for Adding/Editing Addiction -->
 <app-modal
@@ -70,3 +70,7 @@
     </form>
   </div>
 </app-modal>
+<app-addiction-detail
+  (edit)="openEditModal($event)"
+  (delete)="deleteAddiction($event)">
+</app-addiction-detail>

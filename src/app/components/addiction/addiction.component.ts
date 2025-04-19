@@ -1,13 +1,11 @@
 import {Component} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
-import {AddictionDetailComponent} from '../addiction-detail/addiction-detail.component';
 import {AddictionManagerComponent} from '../addiction-manager/addiction-manager.component';
 
 @Component({
   selector: 'app-addiction',
   imports: [
     ReactiveFormsModule,
-    AddictionDetailComponent,
     AddictionManagerComponent
   ],
   templateUrl: './addiction.component.html',
