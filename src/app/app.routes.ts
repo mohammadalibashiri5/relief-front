@@ -7,6 +7,7 @@ import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {CheckinComponent} from './components/checkin/checkin.component';
 import {authGuard} from './auth.guard';
 import {TriggerComponent} from './components/trigger/trigger.component';
+import {AddictionDetailComponent} from './components/addiction-detail/addiction-detail.component';
 
 export const routes: Routes = [
   { path:"", component:HomeComponent },
@@ -15,6 +16,7 @@ export const routes: Routes = [
   { path:"my-addictions", component:AddictionComponent, canActivate: [authGuard] },
   { path:"checkin", component:CheckinComponent , canActivate: [authGuard]},
   { path:"dashboard", component:DashboardComponent , canActivate: [authGuard]},
+  { path:"addiction", component:AddictionDetailComponent , canActivate: [authGuard]},
   { path:"trigger", component:TriggerComponent , canActivate: [authGuard]}
 
 ];

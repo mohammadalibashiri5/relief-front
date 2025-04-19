@@ -1,0 +1,28 @@
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  <div class="col" *ngFor="let addiction of addictions">
+    <div class="card p-3">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <h5 class="card-title"> {{ addiction.name }}</h5>
+          <p class="text-muted mb-1"> years of addiction : <strong>{{ addiction.yearOfAddiction }}</strong></p>
+          <p class="text-muted mb-1"> Severity Level: <strong>{{ addiction.severityLevel }}</strong></p>
+          <p *ngIf="addiction.streakCount > 0" class="text-muted mb-1"> Days of streak :{{ addiction.streakCount }}</p>
+          <p class="text-muted mb-1"> Description : <strong> {{ addiction.description }}</strong></p>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="bi bi-gear-fill"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" style="cursor: pointer" (click)="openEditModal(addiction)">✏️ Edit</a></li>
+            <li><a class="dropdown-item text-danger" style="cursor: pointer" (click)="deleteAddiction(addiction.name)">🗑️ Delete</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-outline-primary w-100 me-2" routerLink="../trigger">⚠️ Write What you make do this addiction</button>
+      </div>
+    </div>
+  </div>
+</div>

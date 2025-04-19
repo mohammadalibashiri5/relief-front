@@ -1,27 +1,31 @@
 import {Component} from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms';
-import {AddictionDetailComponent} from '../addiction-detail/addiction-detail.component';
-import {AddictionManagerComponent} from '../addiction-manager/addiction-manager.component';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
+import {ModalComponent} from "../modal/modal.component";
+import {NgForOf, NgIf} from "@angular/common";
+import {SeverityLevel} from '../../models/enum/SeverityLevel';
+import {AddictionResponse} from '../../models/ResponseModel/addictionResponse';
+import {AddictionService} from '../../services/addiction.service';
+import {ToastrService} from 'ngx-toastr';
+import {AddictionRequest} from '../../models/RequestModel/addictionRequest';
 
 @Component({
-  selector: 'app-addiction',
+  selector: 'app-addiction-manager',
   imports: [
-    ReactiveFormsModule,
-    AddictionDetailComponent,
-    AddictionManagerComponent
+    FormsModule,
+    ModalComponent,
+    NgForOf,
+    NgIf,
+    ReactiveFormsModule
   ],
-  templateUrl: './addiction.component.html',
-  styleUrl: './addiction.component.css'
+  templateUrl: './addiction-manager.component.html',
+  styleUrl: './addiction-manager.component.css'
 })
-export class AddictionComponent {
-
- /* severityLevels = Object.values(SeverityLevel);
+export class AddictionManagerComponent {
+  severityLevels = Object.values(SeverityLevel);
   addictionForm!: FormGroup;
-  addictions: AddictionResponse[] = [];
-  private destroy$ = new Subject<void>();
-  showModal: boolean = false;
   isEditMode: boolean = false;
   modalTitle: string = 'Add New Addiction';
+  showModal: boolean = false;
   currentAddictionId: number | null = null;
 
   constructor(
@@ -37,38 +41,9 @@ export class AddictionComponent {
     });
   }
 
-  ngOnInit(): void {
-    this.initializeAddictions();
-  }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
-  private initializeAddictions(): void {
-    this.addictionService.fetchAddictions().pipe(
-      takeUntil(this.destroy$)
-    ).subscribe({
-      next: () => {
-        this.addictionService.getAddictions()
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((addictions) => {
-            this.addictions = addictions;
-          });
-      },
-      error: (err) => {
-        this.toastr.error('Failed to load addictions');
-        console.error(err);
-      }
-    });
-  }
-  openAddModal(): void {
-    this.isEditMode = false;
-    this.modalTitle = 'Add New Addiction';
-    this.addictionForm.reset();
-    this.showModal = true;
-  }
+
 
   openEditModal(addiction: AddictionResponse): void {
     this.isEditMode = true;
@@ -125,7 +100,7 @@ export class AddictionComponent {
       next: () => {
         this.toastr.success('Addiction updated successfully');
         this.closeModal();
-        this.initializeAddictions();
+       // this.initializeAddictions();
       },
       error: (err) => {
         this.toastr.error('Failed to update addiction');
@@ -148,5 +123,9 @@ export class AddictionComponent {
         console.error(err);
       }
     });
-  }*/
+  }
+
+  openAddModal() {
+    this.showModal = true;
+  }
 }
