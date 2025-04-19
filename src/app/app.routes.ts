@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {HomeComponent} from './components/home/home.component';
 import {RegisterComponent} from './components/register/register.component';
 import {LoginComponent} from './components/login/login.component';
@@ -6,7 +6,7 @@ import {AddictionComponent} from './components/addiction/addiction.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {CheckinComponent} from './components/checkin/checkin.component';
 import {authGuard} from './auth.guard';
-import {TriggerComponent} from './components/trigger/trigger.component';
+import {TriggerManagerComponent} from './components/trigger-manager/trigger-manager.component';
 import {AddictionDetailComponent} from './components/addiction-detail/addiction-detail.component';
 
 export const routes: Routes = [
@@ -17,6 +17,6 @@ export const routes: Routes = [
   { path:"checkin", component:CheckinComponent , canActivate: [authGuard]},
   { path:"dashboard", component:DashboardComponent , canActivate: [authGuard]},
   { path:"addiction", component:AddictionDetailComponent , canActivate: [authGuard]},
-  { path:"trigger", component:TriggerComponent , canActivate: [authGuard]}
+  { path:"trigger", component:TriggerManagerComponent , canActivate: [authGuard]}
 
 ];

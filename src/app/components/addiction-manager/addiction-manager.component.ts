@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ModalComponent} from "../modal/modal.component";
 import {NgForOf, NgIf} from "@angular/common";
@@ -7,6 +7,7 @@ import {AddictionResponse} from '../../models/ResponseModel/addictionResponse';
 import {AddictionService} from '../../services/addiction.service';
 import {ToastrService} from 'ngx-toastr';
 import {AddictionRequest} from '../../models/RequestModel/addictionRequest';
+import {AddictionDetailComponent} from '../addiction-detail/addiction-detail.component';
 
 @Component({
   selector: 'app-addiction-manager',
@@ -15,18 +16,33 @@ import {AddictionRequest} from '../../models/RequestModel/addictionRequest';
     ModalComponent,
     NgForOf,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AddictionDetailComponent
   ],
   templateUrl: './addiction-manager.component.html',
   styleUrl: './addiction-manager.component.css'
 })
 export class AddictionManagerComponent {
-  severityLevels = Object.values(SeverityLevel);
+  severityLevels:SeverityLevel[] = Object.values(SeverityLevel);
   addictionForm!: FormGroup;
   isEditMode: boolean = false;
   modalTitle: string = 'Add New Addiction';
   showModal: boolean = false;
   currentAddictionId: number | null = null;
+  addictions!:AddictionResponse[];
+
+  @ViewChild(AddictionDetailComponent) addictionList!: AddictionDetailComponent;
+
+  refreshAddictions() {
+    this.addictionService.fetchAddictions().subscribe({
+      next: () => {
+        this.addictionService.getAddictions().subscribe((addictions) => {
+          this.addictions = addictions; // Update parent's list
+        });
+      },
+      error: () => this.toastr.error('Failed to refresh addictions')
+    });
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,10 +56,6 @@ export class AddictionManagerComponent {
       yearOfAddiction: [null, Validators.required],
     });
   }
-
-
-
-
 
   openEditModal(addiction: AddictionResponse): void {
     this.isEditMode = true;
@@ -59,6 +71,7 @@ export class AddictionManagerComponent {
 
     this.showModal = true;
   }
+
 
   closeModal(): void {
     this.showModal = false;
@@ -100,7 +113,7 @@ export class AddictionManagerComponent {
       next: () => {
         this.toastr.success('Addiction updated successfully');
         this.closeModal();
-       // this.initializeAddictions();
+        this.refreshAddictions();
       },
       error: (err) => {
         this.toastr.error('Failed to update addiction');
