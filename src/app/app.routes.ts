@@ -17,6 +17,6 @@ export const routes: Routes = [
   { path:"checkin", component:CheckinComponent , canActivate: [authGuard]},
   { path:"dashboard", component:DashboardComponent , canActivate: [authGuard]},
   { path:"addiction", component:AddictionDetailComponent , canActivate: [authGuard]},
-  { path:"trigger", component:TriggerManagerComponent , canActivate: [authGuard]}
+  { path:"triggers", component:TriggerManagerComponent , canActivate: [authGuard]}
 
 ];

@@ -1,12 +1,13 @@
 <div class="container my-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold">🧠 Addiction Center</h2>
+    <h2 class="fw-bold text-primary">
+      <i class="bi bi-heart-pulse me-2"></i>My Addictions
+    </h2>
     <button class="btn btn-light-blue" (click)="openAddModal()">
       + Add New Addiction
     </button>
   </div>
 </div>
-
 <!-- Modal for Adding/Editing Addiction -->
 <app-modal
   [isOpen]="showModal"
@@ -35,7 +36,8 @@
           rows="3"
           placeholder="Enter addiction description"
         ></textarea>
-        <div *ngIf="addictionForm.get('description')?.invalid && addictionForm.get('description')?.touched" class="text-danger">
+        <div *ngIf="addictionForm.get('description')?.invalid && addictionForm.get('description')?.touched"
+             class="text-danger">
           Description is required
         </div>
       </div>
@@ -47,7 +49,8 @@
           <option value="" disabled>Select severity level</option>
           <option *ngFor="let level of severityLevels" [value]="level">{{ level }}</option>
         </select>
-        <div *ngIf="addictionForm.get('severityLevel')?.invalid && addictionForm.get('severityLevel')?.touched" class="text-danger">
+        <div *ngIf="addictionForm.get('severityLevel')?.invalid && addictionForm.get('severityLevel')?.touched"
+             class="text-danger">
           Severity level is required.
         </div>
       </div>
@@ -55,10 +58,13 @@
       <!-- Year of Addiction Field -->
       <div class="mb-3">
         <label for="yearOfAddiction" class="form-label">Year of Addiction</label>
-        <input formControlName="yearOfAddiction" min="0" type="number" class="form-control" id="yearOfAddiction" placeholder="Enter year of addiction">
-        <div *ngIf="addictionForm.get('yearOfAddiction')?.invalid && addictionForm.get('yearOfAddiction')?.touched" class="text-danger">
+        <input formControlName="yearOfAddiction" min="0" type="number" class="form-control" id="yearOfAddiction"
+               placeholder="Enter year of addiction">
+        <div *ngIf="addictionForm.get('yearOfAddiction')?.invalid && addictionForm.get('yearOfAddiction')?.touched"
+             class="text-danger">
           Valid number of year is required
         </div>
+
       </div>
 
       <!-- Submit Button -->
@@ -70,7 +76,11 @@
     </form>
   </div>
 </app-modal>
-<app-addiction-detail
-  (edit)="openEditModal($event)"
-  (delete)="deleteAddiction($event)">
-</app-addiction-detail>
+
+
+<div class="container">
+  <app-addiction-detail
+    (edit)="openEditModal($event)"
+    (delete)="deleteAddiction($event)">
+  </app-addiction-detail>
+</div>
