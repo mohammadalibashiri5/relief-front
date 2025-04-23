@@ -1,28 +1,81 @@
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-  <div class="col" *ngFor="let addiction of addictions">
-    <div class="card p-3">
-      <div class="d-flex justify-content-between align-items-start">
-        <div>
-          <h5 class="card-title"> {{ addiction.name }}</h5>
-          <p class="text-muted mb-1"> years of addiction : <strong>{{ addiction.yearOfAddiction }}</strong></p>
-          <p class="text-muted mb-1"> Severity Level: <strong>{{ addiction.severityLevel }}</strong></p>
-          <p *ngIf="addiction.streakCount > 0" class="text-muted mb-1"> Days of streak :{{ addiction.streakCount }}</p>
-          <p class="text-muted mb-1"> Description : <strong> {{ addiction.description }}</strong></p>
+<div>
+  <!-- Addictions Grid -->
+  <div *ngIf="addictions.length > 0; else noAddictions" class="row g-4">
+    <div class="col-md-6 col-lg-4" *ngFor="let addiction of addictions">
+      <div class="card h-100 shadow-sm border-0">
+        <!-- Card Header with Dropdown -->
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <span class="badge" [ngClass]="{
+              'bg-danger': addiction.severityLevel === 'HIGH',
+              'bg-warning': addiction.severityLevel === 'MEDIUM',
+              'bg-success': addiction.severityLevel === 'LOW'
+            }">
+              {{ addiction.severityLevel }}
+            </span>
+            <span class="ms-2">{{ addiction.name }}</span>
+          </h5>
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+              <i class="bi bi-three-dots-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item cursor" (click)="edit.emit(addiction)">
+                <i class="bi bi-pencil-square me-2 text-primary"></i>Edit
+              </a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger cursor" (click)="delete.emit(addiction.name)">
+                <i class="bi bi-trash me-2"></i>Delete
+              </a></li>
+            </ul>
+          </div>
         </div>
-        <div class="dropdown">
-          <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
-            <i class="bi bi-gear-fill"></i>
+
+        <!-- Card Body -->
+        <div class="card-body">
+          <div class="mb-3">
+            <h6 class="text-muted mb-1">Duration</h6>
+            <p class="fs-5">
+              <i class="bi bi-calendar-week me-2 text-primary"></i>
+              {{ addiction.yearOfAddiction }} year(s)
+            </p>
+          </div>
+
+          <div class="mb-3" *ngIf="addiction.streakCount > 0">
+            <h6 class="text-muted mb-1">Current Streak</h6>
+            <p class="fs-5">
+              <i class="bi bi-fire me-2 text-danger"></i>
+              {{ addiction.streakCount }} day(s)
+            </p>
+          </div>
+
+          <div class="mb-3">
+            <h6 class="text-muted mb-1">Description</h6>
+            <p class="text-muted">{{ addiction.description || 'No description' }}</p>
+          </div>
+        </div>
+
+        <!-- Card Footer -->
+        <div class="card-footer bg-transparent border-top-0">
+          <button class="btn btn-outline-primary w-100" (click)="goToTriggers(addiction.name)">
+            <i class="bi bi-lightning-charge me-2"></i>
+            Manage Triggers
           </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" style="cursor: pointer" (click)="edit.emit(addiction)">✏️ Edit</a></li>
-            <li><a class="dropdown-item text-danger" style="cursor: pointer" (click)="delete.emit(addiction.name)">🗑️ Delete</a></li>
-          </ul>
         </div>
-      </div>
-      <hr>
-      <div class="d-flex justify-content-between">
-        <button class="btn btn-outline-primary w-100 me-2" routerLink="../trigger">⚠️ Write What you make do this addiction</button>
       </div>
     </div>
   </div>
+
+  <!-- Empty State -->
+  <ng-template #noAddictions>
+    <div class="alert alert-info">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-info-circle-fill me-3 fs-4"></i>
+        <div>
+          <h5 class="alert-heading">No addictions tracked yet</h5>
+          <p class="mb-0">Start by adding your first addiction to begin your recovery journey.</p>
+        </div>
+      </div>
+    </div>
+  </ng-template>
 </div>

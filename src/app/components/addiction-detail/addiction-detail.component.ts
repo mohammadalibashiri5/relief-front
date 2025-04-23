@@ -1,17 +1,17 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {RouterLink} from "@angular/router";
+import {Router} from "@angular/router";
 import {AddictionResponse} from "../../models/ResponseModel/addictionResponse";
 import {AddictionService} from "../../services/addiction.service";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {Subject, takeUntil} from 'rxjs';
 import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-addiction-detail',
   imports: [
-    RouterLink,
     NgForOf,
-    NgIf
+    NgIf,
+    NgClass
   ],
   templateUrl: './addiction-detail.component.html',
   styleUrl: './addiction-detail.component.css'
@@ -23,7 +23,7 @@ export class AddictionDetailComponent implements OnInit, OnDestroy {
   @Output() delete = new EventEmitter<string>();
 
   private destroy$ = new Subject<void>();
-  constructor(private addictionService: AddictionService, private toastr: ToastrService) {}
+  constructor(private addictionService: AddictionService, private toastr: ToastrService, private router: Router) {}
 
   ngOnInit(): void {
     this.initializeAddictions();
@@ -48,9 +48,15 @@ export class AddictionDetailComponent implements OnInit, OnDestroy {
   }
 
 
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
+  goToTriggers(addictionName: string) {
+    this.router.navigate(['/triggers'], {
+      queryParams: { addictionName: addictionName }
+    }).then(() => {});
+  }
 }
