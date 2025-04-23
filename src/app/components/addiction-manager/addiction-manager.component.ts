@@ -96,8 +96,11 @@ export class AddictionManagerComponent {
         this.showModal = false;
       },
       error: (err) => {
+        if (err.status === 400) {
+          this.toastr.error('Addiction already exists');
+          return;
+        }
         this.toastr.error('Failed to create addiction');
-        console.error(err);
       }
     });
   }

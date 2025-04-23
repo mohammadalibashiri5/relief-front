@@ -78,7 +78,6 @@ export class AddictionService {
         this.addictionsSubject.next([...currentAddictions, newAddiction]);
       }),
       catchError((err) => {
-        console.error('Failed to add addiction:', err);
         return throwError(() => err); // Let the component handle the error
       })
     );
