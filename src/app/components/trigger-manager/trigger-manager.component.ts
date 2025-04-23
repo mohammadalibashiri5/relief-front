@@ -20,14 +20,26 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class TriggerManagerComponent implements OnInit {
   triggers: TriggerResponse[] = [];
   triggerForm: FormGroup;
-  addictionName!:string;
+  addictionName!: string;
+  isEditMode = false;
+  currentTriggerId: number | null = null;
+
+
+  editTrigger(trigger: TriggerResponse) {
+    this.isEditMode = true;
+    this.currentTriggerId = trigger.id;
+    this.triggerForm.patchValue({
+      name: trigger.name,
+      description: trigger.description
+    });
+  }
 
   constructor(
     private fb: FormBuilder,
     private triggerService: TriggerService,
     private toastr: ToastrService,
-    private route:ActivatedRoute,
-    private router:Router
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.triggerForm = this.fb.group({
       name: ['', Validators.required],
@@ -37,30 +49,31 @@ export class TriggerManagerComponent implements OnInit {
 
   ngOnInit(): void {
     this.addictionName = this.route.snapshot.queryParamMap.get('addictionName') || '';
-    console.log('Route Params:', this.route.snapshot.params);
-
-// Check query parameters (URL?key=value)
-    console.log('Query Params:', this.route.snapshot.queryParams);
-
-// Check fragment (URL#hash)
-    console.log('Fragment:', this.route.snapshot.fragment);    this.getTriggers();
+    this.getTriggers();
   }
 
   onSubmit() {
-    if (this.addictionName === undefined) {
+    if (!this.addictionName) {
       this.toastr.error('Invalid addiction selected!');
       return;
     }
-    if (this.triggerForm.valid) {
-      const triggerRequest: TriggerRequest = this.triggerForm.value;
 
+    if (this.triggerForm.invalid) {
+      this.toastr.warning('Please fill all required fields');
+      return;
+    }
+
+    if (this.isEditMode && this.currentTriggerId) {
+      this.updateTrigger(this.currentTriggerId);
+    } else {
+      const triggerRequest: TriggerRequest = this.triggerForm.value;
       this.triggerService.createTrigger(this.addictionName, triggerRequest).subscribe({
         next: () => {
           this.toastr.success('Trigger added successfully');
-          this.triggerForm.reset();
+          this.resetForm();
+          this.getTriggers();
         },
-        error: (err) => console.error('Error adding trigger:', err),
-        complete: () => this.getTriggers()
+        error: (err) => console.error('Error adding trigger:', err)
       });
     }
   }
@@ -79,5 +92,48 @@ export class TriggerManagerComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['../my-addictions']).then(() => {});
+  }
+
+  deleteTrigger(triggerName: string) {
+    if (!confirm('Are you sure you want to delete this trigger?')) {
+      return;
+    }
+    this.triggerService.deleteTrigger(triggerName).subscribe({
+      next: () => {
+        this.toastr.success(  `${triggerName } deleted successfully`, triggerName );
+      },
+      error: (err) => {
+        console.error('Error deleting trigger:', err);
+      },
+      complete: () => this.getTriggers()
+    });
+  }
+
+  updateTrigger(id: number) {
+    if (this.triggerForm.invalid) {
+      this.toastr.warning('Please fill all required fields');
+      return;
+    }
+    const triggerRequest: TriggerRequest = {
+      ...this.triggerForm.value,
+      addictionName: this.addictionName // Include addiction name
+    };
+    this.triggerService.updateTrigger(id, triggerRequest).subscribe({
+      next: () => {
+        this.toastr.success('Trigger updated successfully');
+        this.resetForm();
+        this.getTriggers();
+      },
+      error: (err) => {
+        console.error('Error updating trigger:', err);
+        this.toastr.error('Failed to update trigger');
+      }
+    });
+  }
+
+  resetForm() {
+    this.triggerForm.reset();
+    this.isEditMode = false;
+    this.currentTriggerId = null;
   }
 }

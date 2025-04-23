@@ -5,3 +5,7 @@
 .btn-link:hover .transition-all {
   transform: translateX(-3px);
 }
+.cursor {
+  cursor: pointer;
+}
+
