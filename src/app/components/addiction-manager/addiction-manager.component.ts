@@ -36,7 +36,7 @@ export class AddictionManagerComponent {
   refreshAddictions() {
     this.addictionService.fetchAddictions().subscribe({
       next: () => {
-        this.addictionService.getAddictions().subscribe((addictions) => {
+        this.addictionService.fetchAddictions().subscribe((addictions) => {
           this.addictions = addictions; // Update parent's list
         });
       },

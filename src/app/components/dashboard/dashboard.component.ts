@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {IUserResponse} from '../../models/ResponseModel/userResponse';
 import {Router} from '@angular/router';
-import {DatePipe, NgForOf, NgIf} from '@angular/common';
+import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {UserService} from '../../services/user.service';
 import {ToastrService} from 'ngx-toastr';
 
@@ -10,7 +10,8 @@ import {ToastrService} from 'ngx-toastr';
   imports: [
     NgForOf,
     NgIf,
-    DatePipe
+    DatePipe,
+    NgClass
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
@@ -43,4 +44,11 @@ export class DashboardComponent implements OnInit {
     this.userService.logout();
   }
 
+  deleteAccount() {
+
+  }
+
+  emergencyCall() {
+
+  }
 }
