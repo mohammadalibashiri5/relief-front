@@ -1,13 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {CheckinService} from '../../services/checkin.service';
-import {DatePipe, NgForOf, NgIf} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {LoginService} from '../../services/login.service';
 import {IUserResponse} from '../../models/ResponseModel/userResponse';
 import {AddictionService} from '../../services/addiction.service';
 import {CheckInResponse} from '../../models/ResponseModel/CheckInResponse';
 import {StreakLevel} from '../../models/enum/StreakLevel';
-import {AddictionResponse} from '../../models/ResponseModel/addictionResponse';
 
 
 @Component({
@@ -46,7 +45,7 @@ export class CheckinComponent implements OnInit {
       checkinStatus: ['', Validators.required]
     });
 
-    this.addictionService.getAddictions().subscribe({
+    this.addictionService.fetchAddictions().subscribe({
       next: value => this.addictions = value
     });
     this.checkInStatus = new class implements CheckInResponse {

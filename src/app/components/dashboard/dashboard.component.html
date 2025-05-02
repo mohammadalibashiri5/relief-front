@@ -1,129 +1,153 @@
-
-
-<div class="container mt-4">
-  <!-- Header -->
-  <div class="text-center mb-4" *ngIf="user">
-    <h1>Dashboard</h1>
-    <p class="text-muted">Welcome to your dashboard {{ user.name }}! Manage your profile and track your progress here.</p>
+<div class="dashboard-container">
+  <!-- Hero Header -->
+  <div class="dashboard-header text-center py-5 bg-light rounded-3 mb-4" *ngIf="user">
+    <h1 class="display-4 fw-bold text-primary">
+      <i class="bi bi-speedometer2 me-2"></i>Your Recovery Dashboard
+    </h1>
+    <p class="lead text-muted">
+      Welcome back, <span class="text-dark fw-bold">{{ user.name }}</span>!
+      Track your progress and manage your recovery journey.
+    </p>
   </div>
 
-  <section style="background-color: #eee;">
-    <div class="container py-5">
-      <div class="row">
-      </div>
+  <!-- Main Content -->
+  <div class="dashboard-content">
+    <div class="row g-4">
+      <!-- Profile Card -->
+      <div class="col-lg-4">
+        <div class="card profile-card shadow-sm h-100">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+              <i class="bi bi-person-circle me-2"></i>Profile Summary
+            </h5>
+          </div>
+          <div class="card-body text-center">
+            <div class="avatar-placeholder mb-3">
+              <i class="bi bi-person-fill text-muted" style="font-size: 4rem;"></i>
+            </div>
+            <h4 class="mb-2">{{ user!.name }} {{ user!.familyName }}</h4>
+            <p class="text-muted mb-4">Member since {{ user!.createdAt | date:'mediumDate' }}</p>
 
-      <div class="row" *ngIf="user">
-        <div class="col-lg-4">
-          <div class="card mb-4">
-            <div class="card-body text-center">
-              <h5 class="my-3">{{user.name }} {{ user.familyName }}</h5>
-              <ng-template *ngIf="user.addictions.length > 0; else noAddictions">
-              <p class="text-muted mb-4">List of addiction</p>
-              <ul *ngFor="let addiction of user.addictions" class="list-group list-group-flush">
-                <li>{{addiction.name}}</li>
-              </ul>
-              </ng-template>
-              <ng-template #noAddictions>
-                <p class="text-muted mb-4">For the moment you have no addictions</p>
-              </ng-template>
-              <div class="d-flex justify-content-center mb-2">
-                <button  type="button" class="btn btn-danger btn-lg">Emergency Call</button>
+            <!-- Addictions Section -->
+            <div class="addictions-section">
+              <h6 class="section-title">
+                <i class="bi bi-heart-pulse me-2"></i>Your Addictions
+              </h6>
+
+              <div *ngIf="user!.addictions.length > 0; else noAddictions">
+                <div class="addiction-badges">
+                  <span *ngFor="let addiction of user!.addictions"
+                        class="badge rounded-pill bg-light text-dark me-2 mb-2">
+                    {{ addiction.name }}
+                    <span class="ms-1" [ngClass]="{
+                      'text-danger': addiction.severityLevel === 'HIGH',
+                      'text-warning': addiction.severityLevel === 'MEDIUM',
+                      'text-success': addiction.severityLevel === 'LOW'
+                    }">
+                      ⚠️
+                    </span>
+                  </span>
+                </div>
               </div>
+              <ng-template #noAddictions>
+                <div class="alert alert-light">
+                  <i class="bi bi-info-circle me-2"></i>
+                  You haven't added any addictions yet
+                </div>
+              </ng-template>
+            </div>
+
+            <!-- Emergency Button -->
+            <div class="mt-4 pt-3 border-top">
+              <button class="btn btn-danger w-100" (click)="emergencyCall()">
+                <i class="bi bi-telephone-outbound-fill me-2"></i>
+                Emergency Support
+              </button>
             </div>
           </div>
         </div>
-        <div class="col-lg-8">
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">First Name</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">{{ user.name }}</p>
-                </div>
+      </div>
+
+      <!-- Details Card -->
+      <div class="col-lg-8">
+        <div class="card details-card shadow-sm h-100">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+              <i class="bi bi-card-checklist me-2"></i>Account Details
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="detail-item row py-2 align-items-center">
+              <div class="col-sm-3">
+                <span class="detail-label">
+                  <i class="bi bi-person-fill me-2"></i>First Name
+                </span>
               </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Last Name</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">{{ user.familyName }}</p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Email</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">{{ user.email }}</p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Username</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">{{ user.username }}</p>
-                </div>
-              </div>
-              <hr>
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Inscription date</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0">{{ user.createdAt | date }}</p>
-                </div>
+              <div class="col-sm-9">
+                <span class="detail-value">{{ user!.name }}</span>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="card mb-4 mb-md-0">
-                <div class="card-body">
-                  <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status
-                  </p>
-                  <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
-                  <div class="progress rounded" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
-                  <div class="progress rounded mb-2" style="height: 5px;">
-                    <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66"
-                         aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                </div>
+            <hr class="my-2">
+
+            <div class="detail-item row py-2 align-items-center">
+              <div class="col-sm-3">
+                <span class="detail-label">
+                  <i class="bi bi-people-fill me-2"></i>Last Name
+                </span>
+              </div>
+              <div class="col-sm-9">
+                <span class="detail-value">{{ user!.familyName }}</span>
+              </div>
+            </div>
+            <hr class="my-2">
+
+            <div class="detail-item row py-2 align-items-center">
+              <div class="col-sm-3">
+                <span class="detail-label">
+                  <i class="bi bi-envelope-fill me-2"></i>Email
+                </span>
+              </div>
+              <div class="col-sm-9">
+                <span class="detail-value">{{ user!.email }}</span>
+              </div>
+            </div>
+            <hr class="my-2">
+
+            <div class="detail-item row py-2 align-items-center">
+              <div class="col-sm-3">
+                <span class="detail-label">
+                  <i class="bi bi-person-badge-fill me-2"></i>Username
+                </span>
+              </div>
+              <div class="col-sm-9">
+                <span class="detail-value">{{ user!.username }}</span>
+              </div>
+            </div>
+            <hr class="my-2">
+
+            <div class="detail-item row py-2 align-items-center">
+              <div class="col-sm-3">
+                <span class="detail-label">
+                  <i class="bi bi-calendar-check-fill me-2"></i>Member Since
+                </span>
+              </div>
+              <div class="col-sm-9">
+                <span class="detail-value">{{ user!.createdAt | date:'fullDate' }}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
 
-  <div class="row justify-content-center">
-    <div class="col-1">
-      <button (click)="logout()" class="btn btn-danger mb-2">Log Out</button>
+    <!-- Action Buttons -->
+    <div class="action-buttons mt-4 text-center">
+      <button (click)="logout()" class="btn btn-outline-danger me-3">
+        <i class="bi bi-box-arrow-right me-2"></i>Log Out
+      </button>
+      <button (click)="deleteAccount()" class="btn btn-outline-dark">
+        <i class="bi bi-trash-fill me-2"></i>Delete Account
+      </button>
     </div>
   </div>
 </div>

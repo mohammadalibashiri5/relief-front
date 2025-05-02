@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { RegisterService } from '../../services/register.service';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import { IUser } from '../../models/RequestModel/userModel';
-import {NgIf} from '@angular/common';
+import {NgClass, NgIf} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ToastrService} from 'ngx-toastr';
 
@@ -15,6 +15,8 @@ import {ToastrService} from 'ngx-toastr';
     ReactiveFormsModule,
     NgIf,
     FormsModule,
+    RouterLink,
+    NgClass,
   ],
   styleUrls: ['./register.component.css']
 })
@@ -22,6 +24,7 @@ export class RegisterComponent {
   registerForm: FormGroup;
   passwordFieldType: string = 'password'; // Initial type for the password field
   passwordIconClass: string = 'bi bi-eye-slash'; // Initial icon class
+  isSubmitting: boolean = false;
 
 
 

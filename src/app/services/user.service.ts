@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, catchError, Observable, of, tap} from 'rxjs';
 import {IUserResponse} from '../models/ResponseModel/userResponse';
 import {LoginService} from './login.service';
@@ -11,7 +11,8 @@ export class UserService {
 
   private userSubject: BehaviorSubject<IUserResponse | null> = new BehaviorSubject<IUserResponse | null>(null);
 
-  constructor(private loginService: LoginService, private router: Router) { }
+  constructor(private loginService: LoginService,
+              private router: Router) { }
 
   getUser(): Observable<IUserResponse | null> {
     return this.userSubject.asObservable();
