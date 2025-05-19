@@ -35,6 +35,6 @@ export class NavbarComponent  {
 
 
   logout() {
-
+    this.userService.logout();
   }
 }

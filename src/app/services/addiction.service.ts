@@ -3,13 +3,14 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AddictionRequest} from '../models/RequestModel/addictionRequest';
 import {Observable} from 'rxjs';
 import {AddictionResponse} from '../models/ResponseModel/addictionResponse';
+import {environment} from '../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AddictionService{
 
-  private readonly url = "http://localhost:8080";
+  private readonly url = environment.API_BASE_URL;
 
   constructor(private http: HttpClient) {}
 
