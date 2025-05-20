@@ -14,14 +14,14 @@ export class TriggerService {
   constructor(private http: HttpClient) {
   }
 
-  createTrigger(addictionName: string, trigger: TriggerRequest): Observable<any> {
+  createTrigger(addictionId: number, trigger: TriggerRequest): Observable<any> {
     const token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + token
     });
 
     const params = new HttpParams()
-      .set('addictionName', addictionName);
+      .set('addictionId', addictionId);
 
     // Combine headers and params into a single options object
     const options = {
@@ -41,12 +41,12 @@ export class TriggerService {
   }
 
 
-  fetchTriggers(): Observable<TriggerResponse[]> {
+  fetchTriggers(addictionId:number): Observable<TriggerResponse[]> {
     let token = sessionStorage.getItem('token');
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + token,
     });
-    return this.http.get<TriggerResponse[]>(`${this.apiUrl}/getAll`, {headers}).pipe(
+    return this.http.get<TriggerResponse[]>(`${this.apiUrl}/getByAddiction/${addictionId}`, {headers}).pipe(
       tap(response => {
         console.log('Triggers fetched successfully:', response);
       }),
