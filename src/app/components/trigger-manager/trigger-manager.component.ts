@@ -6,6 +6,8 @@ import {NgForOf, NgIf} from '@angular/common';
 import {TriggerRequest} from '../../models/RequestModel/triggerRequest';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
+import {AddictionService} from '../../services/addiction.service';
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-trigger',
@@ -21,9 +23,11 @@ export class TriggerManagerComponent implements OnInit {
   triggers: TriggerResponse[] = [];
   triggerForm: FormGroup;
   addictionName!: string;
+  addictionId!: number;
   isEditMode = false;
   currentTriggerId: number | null = null;
 
+  private destroy$ = new Subject<void>();
 
   editTrigger(trigger: TriggerResponse) {
     this.isEditMode = true;
@@ -38,6 +42,7 @@ export class TriggerManagerComponent implements OnInit {
     private fb: FormBuilder,
     private triggerService: TriggerService,
     private toastr: ToastrService,
+    private addictionService: AddictionService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -49,11 +54,19 @@ export class TriggerManagerComponent implements OnInit {
 
   ngOnInit(): void {
     this.addictionName = this.route.snapshot.queryParamMap.get('addictionName') || '';
+    const idParam = this.route.snapshot.queryParamMap.get('addictionId');
+    this.addictionId = idParam ? +idParam : 0; // Convert to number or default to 0
+    console.log(this.addictionId);
+    if (!this.addictionId) {
+      this.toastr.error('Invalid addiction ID!');
+      // Optionally redirect back or handle the error
+      return;
+    }
     this.getTriggers();
   }
 
   onSubmit() {
-    if (!this.addictionName) {
+    if (!this.addictionId) {
       this.toastr.error('Invalid addiction selected!');
       return;
     }
@@ -67,7 +80,7 @@ export class TriggerManagerComponent implements OnInit {
       this.updateTrigger(this.currentTriggerId);
     } else {
       const triggerRequest: TriggerRequest = this.triggerForm.value;
-      this.triggerService.createTrigger(this.addictionName, triggerRequest).subscribe({
+      this.triggerService.createTrigger(this.addictionId, triggerRequest).subscribe({
         next: () => {
           this.toastr.success('Trigger added successfully');
           this.resetForm();
@@ -78,16 +91,22 @@ export class TriggerManagerComponent implements OnInit {
     }
   }
 
-  getTriggers() {
-    this.triggerService.fetchTriggers().subscribe({
-      next: (triggers) => {
-        this.triggers = triggers;
-      },
-      error: () => {
-        this.toastr.error('Failed to load triggers');
-      }
-    });
+  getTriggers(): void {
+    this.triggerService.fetchTriggers(this.addictionId)
+      .pipe(
+        takeUntil(this.destroy$) // Assuming you add a destroy$ Subject for cleanup
+      )
+      .subscribe({
+        next: (triggers) => {
+          this.triggers = triggers;
+        },
+        error: () => {
+          this.toastr.error('Failed to load triggers');
+          this.triggers = []; // Reset triggers on error
+        }
+      });
   }
+
 
 
   goBack() {
@@ -135,5 +154,10 @@ export class TriggerManagerComponent implements OnInit {
     this.triggerForm.reset();
     this.isEditMode = false;
     this.currentTriggerId = null;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

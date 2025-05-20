@@ -48,4 +48,13 @@ export class AddictionService{
     return this.http.put<AddictionResponse>(`${this.url}/update/${id}`, addiction , { headers });
 
   }
+
+  getAddictionById(addictionId: number) {
+    const token = sessionStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<AddictionResponse>(`${this.url}/addiction/${addictionId}`, { headers });
+
+  }
 }
