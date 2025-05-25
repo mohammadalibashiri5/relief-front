@@ -11,7 +11,7 @@
   </div>
 
   <!-- Main Content -->
-  <div class="dashboard-content">
+  <div class="dashboard-content" *ngIf="user">
     <div class="row g-4">
       <!-- Profile Card -->
       <div class="col-lg-4">
@@ -25,8 +25,8 @@
             <div class="avatar-placeholder mb-3">
               <i class="bi bi-person-fill text-muted" style="font-size: 4rem;"></i>
             </div>
-            <h4 class="mb-2">{{ user!.name }} {{ user!.familyName }}</h4>
-            <p class="text-muted mb-4">Member since {{ user!.createdAt | date:'mediumDate' }}</p>
+            <h4 class="mb-2">{{ user.name }} {{ user.familyName }}</h4>
+            <p class="text-muted mb-4">Member since {{ user.createdAt | date:'mediumDate' }}</p>
 
             <!-- Addictions Section -->
             <div class="addictions-section">

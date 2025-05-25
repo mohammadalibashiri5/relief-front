@@ -41,18 +41,14 @@ export class AddictionDetailComponent implements OnInit {
   }
 
 
-  goToTriggers(addictionName: string, addictionId: number): void {
-    if (!addictionName || addictionId == null) {
-      this.toastr.error('Invalid addiction details');
-      return;
-    }
 
+  goToTriggers(addictionId: number, addictionName:string ): void {
     this.router.navigate(['/triggers'], {
       queryParams: {
-        addictionName,
-        addictionId
+        addictionId,
+        addictionName
       }
-    });
+    }).then();
   }
 
 }

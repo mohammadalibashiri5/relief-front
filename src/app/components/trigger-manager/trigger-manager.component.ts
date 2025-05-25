@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TriggerService} from '../../services/trigger.service';
 import {TriggerResponse} from '../../models/ResponseModel/triggerResponse';
 import {ToastrService} from 'ngx-toastr';
@@ -19,7 +19,7 @@ import {Subject, takeUntil} from "rxjs";
   templateUrl: './trigger-manager.component.html',
   styleUrl: './trigger-manager.component.css'
 })
-export class TriggerManagerComponent implements OnInit {
+export class TriggerManagerComponent implements OnInit, OnDestroy {
   triggers: TriggerResponse[] = [];
   triggerForm: FormGroup;
   addictionName!: string;
@@ -42,7 +42,6 @@ export class TriggerManagerComponent implements OnInit {
     private fb: FormBuilder,
     private triggerService: TriggerService,
     private toastr: ToastrService,
-    private addictionService: AddictionService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -53,13 +52,10 @@ export class TriggerManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.addictionName = this.route.snapshot.queryParamMap.get('addictionName') || '';
     const idParam = this.route.snapshot.queryParamMap.get('addictionId');
     this.addictionId = idParam ? +idParam : 0; // Convert to number or default to 0
-    console.log(this.addictionId);
     if (!this.addictionId) {
       this.toastr.error('Invalid addiction ID!');
-      // Optionally redirect back or handle the error
       return;
     }
     this.getTriggers();
@@ -100,9 +96,11 @@ export class TriggerManagerComponent implements OnInit {
         next: (triggers) => {
           this.triggers = triggers;
         },
-        error: () => {
-          this.toastr.error('Failed to load triggers');
-          this.triggers = []; // Reset triggers on error
+        error: (err) => {
+          if (err.status === 400) {
+            this.toastr.error('Invalid addiction ID');
+            this.goBack();
+          } else this.toastr.error('Failed to load triggers');
         }
       });
   }
