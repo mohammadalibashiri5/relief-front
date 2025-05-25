@@ -42,49 +42,27 @@ export class TriggerService {
 
 
   fetchTriggers(addictionId:number): Observable<TriggerResponse[]> {
-    let token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Authorization': 'Bearer ' + token,
-    });
-    return this.http.get<TriggerResponse[]>(`${this.apiUrl}/getByAddiction/${addictionId}`, {headers}).pipe(
-      tap(response => {
-        console.log('Triggers fetched successfully:', response);
-      }),
+    const params = new HttpParams()
+      .set('addictionId', addictionId);
+
+    return this.http.get<TriggerResponse[]>(`${this.apiUrl}/getByAddiction/${addictionId}`, { params }).pipe(
+      tap(response => {}),
       catchError(error => {
-        console.error('Error fetching triggers:', error);
         return throwError(() => error);
       })
     );
   }
 
   deleteTrigger(triggerName: string): Observable<void> {
-    const token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
 
-    // HttpParams is immutable - must chain .set() calls
     const params = new HttpParams().set('triggerName', triggerName);
-
-    const options = {
-      headers: headers,
-      params: params
-    };
-
-    return this.http.delete<void>(`${this.apiUrl}/delete`, options);
+    return this.http.delete<void>(`${this.apiUrl}/delete`, { params });
   }
 
   updateTrigger(triggerId: number, triggerRequest: TriggerRequest): Observable<TriggerResponse> {
-    const token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-
     return this.http.put<TriggerResponse>(
       `${this.apiUrl}/update/${triggerId}`,
       triggerRequest,
-      {headers}
     ).pipe(
       catchError(error => {
         console.error('Error updating trigger:', error);

@@ -22,18 +22,11 @@ export class LoginService {
   }
 
 
-
-
   getUser(): Observable<IUserResponse> {
-    let token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Authorization': 'Bearer ' + token,
-    })
-    return this.http.get<IUserResponse>(`${this.url}/api/users/getUser`, {headers: headers})
+    return this.http.get<IUserResponse>(`${this.url}/api/users/getUser`)
   }
 
   isLoggedIn():boolean {
     return sessionStorage.getItem('token') != null;
-
   }
 }
