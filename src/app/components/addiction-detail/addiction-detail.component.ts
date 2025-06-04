@@ -17,7 +17,7 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class AddictionDetailComponent implements OnInit {
 
-  @Input() addictions: AddictionResponse[] = [];
+  @Input() addictions: AddictionResponse[] | null = [];
   @Output() edit = new EventEmitter<AddictionResponse>();
   @Output() delete = new EventEmitter<string>();
 

@@ -29,7 +29,7 @@ export class AddictionManagerComponent {
   modalTitle: string = 'Add New Addiction';
   showModal: boolean = false;
   currentAddictionId: number | null = null;
-  addictions!:AddictionResponse[];
+  addictions!:AddictionResponse[] | null;
 
   @ViewChild(AddictionDetailComponent) addictionList!: AddictionDetailComponent;
 

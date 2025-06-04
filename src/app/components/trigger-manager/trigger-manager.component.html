@@ -17,8 +17,8 @@
           <label class="form-label fw-bold">For Addiction</label>
           <div class="p-3 bg-light rounded">
             <span class="badge bg-primary fs-6">
-              <i class="bi bi-exclamation-triangle-fill me-2"></i>
-              {{ addictionName || 'No addiction selected' }}
+              <i class="bi bi-exclamation-triangle-fill me-2" ></i>
+              {{ addictionName|| 'No addiction selected' }}
             </span>
           </div>
         </div>
@@ -73,6 +73,7 @@
                 {{ trigger.repetitionCount || 0 }}
               </span>
               {{ trigger.name }}
+
             </h5>
           </div>
           <div class="card-body">
@@ -98,6 +99,7 @@
                 </ul>
               </div>
             </div>
+            <app-solution-manager></app-solution-manager>
           </div>
         </div>
       </div>
