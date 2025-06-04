@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {AddictionRequest} from '../models/RequestModel/addictionRequest';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, catchError, Observable, of, tap} from 'rxjs';
 import {AddictionResponse} from '../models/ResponseModel/addictionResponse';
 import {environment} from '../../environment';
 
@@ -12,10 +12,27 @@ export class AddictionService{
 
   private readonly url = environment.API_BASE_URL;
 
+  private addictionSubject: BehaviorSubject<AddictionResponse | null> = new BehaviorSubject<AddictionResponse | null>(null);
+  private addictionsSubject: BehaviorSubject<AddictionResponse[] | null> = new BehaviorSubject<AddictionResponse[] | null>(null);
+
+
   constructor(private http: HttpClient) {}
 
-  fetchAddictions(): Observable<AddictionResponse[]> {
-    return this.http.get<AddictionResponse[]>(`${this.url}/addictions`);
+  getAddiction(): Observable<AddictionResponse | null> {
+    return this.addictionSubject.asObservable();
+  }
+
+  fetchAddictions(): Observable<AddictionResponse[] | null> {
+    return this.http.get<AddictionResponse[]>(`${this.url}/addictions`).pipe(tap({
+      next:(addictions) => {
+        this.addictionsSubject.next(addictions);
+      },
+      error:()=> {
+        this.clearAddictions();
+      }
+    }),
+      catchError(()=> of(null))
+    );
   }
 
   deleteAddiction(name: string): Observable<void> {
@@ -44,5 +61,9 @@ export class AddictionService{
 
     return this.http.get<AddictionResponse>(`${this.url}/addiction/${addictionName}`,  { params } );
 
+  }
+
+  private clearAddictions() {
+    this.addictionsSubject.next(null);
   }
 }

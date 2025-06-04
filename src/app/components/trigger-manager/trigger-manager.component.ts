@@ -8,13 +8,15 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {ActivatedRoute, Router} from '@angular/router';
 import {AddictionService} from '../../services/addiction.service';
 import {Subject, takeUntil} from "rxjs";
+import {SolutionManagerComponent} from '../solution-manager/solution-manager.component';
 
 @Component({
   selector: 'app-trigger',
   imports: [
     NgForOf,
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    SolutionManagerComponent
   ],
   templateUrl: './trigger-manager.component.html',
   styleUrl: './trigger-manager.component.css'
@@ -90,7 +92,7 @@ export class TriggerManagerComponent implements OnInit, OnDestroy {
   getTriggers(): void {
     this.triggerService.fetchTriggers(this.addictionId)
       .pipe(
-        takeUntil(this.destroy$) // Assuming you add a destroy$ Subject for cleanup
+        takeUntil(this.destroy$)
       )
       .subscribe({
         next: (triggers) => {
