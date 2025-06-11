@@ -1,23 +1,68 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {AddictionRequest} from '../models/RequestModel/addictionRequest';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, catchError, Observable, of, tap} from 'rxjs';
+import {AddictionResponse} from '../models/ResponseModel/addictionResponse';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AddictionService {
+export class AddictionService{
 
-  private readonly url = "http://localhost:8080";
+  private readonly url = `${environment.API_BASE_URL}/user/addictions`;
 
-  constructor(private http: HttpClient) { }
+  private addictionSubject: BehaviorSubject<AddictionResponse | null> = new BehaviorSubject<AddictionResponse | null>(null);
+  private addictionsSubject: BehaviorSubject<AddictionResponse[] | null> = new BehaviorSubject<AddictionResponse[] | null>(null);
 
-  addAddiction(addiction:AddictionRequest): Observable<any> {
-    const token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-    });
-    return this.http.post(`${this.url}/add-addiction`, addiction, {headers: headers})
+
+  constructor(private http: HttpClient) {}
+
+  getAddiction(): Observable<AddictionResponse | null> {
+    return this.addictionSubject.asObservable();
   }
 
+  fetchAddictions(): Observable<AddictionResponse[] | null> {
+    return this.http.get<AddictionResponse[]>(this.url).pipe(tap({
+      next:(addictions) => {
+        this.addictionsSubject.next(addictions);
+      },
+      error:()=> {
+        this.clearAddictions();
+      }
+    }),
+      catchError(()=> of(null))
+    );
+  }
+
+  deleteAddiction(name: string): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${name}`);
+  }
+
+  addAddiction(addiction: AddictionRequest): Observable<AddictionResponse> {
+    return this.http.post<AddictionResponse>(`${this.url}`, addiction);
+  }
+
+  updateAddiction(id: number, addiction: any) {
+    return this.http.put<AddictionResponse>(`${this.url}/${id}`, addiction);
+
+  }
+
+  getAddictionById(addictionId: number) {
+    return this.http.get<AddictionResponse>(`${this.url}user/addiction/${addictionId}`);
+
+  }
+
+  getAddictionByName(addictionName: string) {
+
+    const params = new HttpParams()
+      .set('addictionName', addictionName);
+
+    return this.http.get<AddictionResponse>(`${this.url}user/addictions/${addictionName}`,  { params } );
+
+  }
+
+  private clearAddictions() {
+    this.addictionsSubject.next(null);
+  }
 }

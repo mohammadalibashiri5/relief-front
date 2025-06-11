@@ -1,3 +1,8 @@
-<app-navbar [user]="user"></app-navbar>
-<router-outlet></router-outlet>
+<div class="d-flex flex-column min-vh-100">
+
+<app-navbar></app-navbar>
+<main class="flex-fill">
+  <router-outlet></router-outlet>
+</main>
 <app-footer></app-footer>
+</div>

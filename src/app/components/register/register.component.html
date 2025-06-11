@@ -1,83 +1,185 @@
-<div class="container text-center mt-5">
-  <form (ngSubmit)="addUser()" [formGroup]="registerForm">
-    <div class="row align-items-start">
-      <div class="col-md-6">
-        <div class="form-floating mb-3">
-          <input type="text" formControlName="name" class="form-control" id="firstname" placeholder="John">
-          <label for="firstname">First Name</label>
-          <div *ngIf="name.hasError('required') && (name.dirty || name.touched)">
-            <p style="color: red">Your name must not be empty</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-floating">
-          <input type="text" class="form-control" formControlName="familyName" id="lastname" placeholder="Smith">
-          <label for="lastname">Last Name</label>
-          <div *ngIf="familyName.hasError('required') && (familyName.dirty || familyName.touched)">
-            <p style="color: red">Your family name must not be empty</p>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="container py-5">
+  <!-- Form Header -->
+  <div class="text-center mb-5">
+    <h2 class="display-5 fw-bold text-primary">
+      <i class="bi bi-person-plus-fill me-2"></i>Create Your Account
+    </h2>
+    <p class="lead text-muted">
+      Join our community and start your recovery journey today
+    </p>
+  </div>
 
-    <div class="row align-items-start">
-      <div class="col-md-6">
-        <div class="form-floating mb-3">
-          <input type="email" class="form-control" id="email" formControlName="email" placeholder="Email address">
-          <label for="email">Email address</label>
-          <div *ngIf="email.invalid && (email.dirty || email.touched)">
-            <p style="color: red">Invalid email address</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-floating position-relative">
-          <input [type]="passwordFieldType" class="form-control" id="password" formControlName="password" placeholder="Password">
-          <label for="password">Password</label>
-          <i
-            class="position-absolute top-50 end-0 translate-middle-y me-3"
-            [class]="passwordIconClass"
-            (click)="togglePasswordVisibility()"
-            style="cursor: pointer;"
-            *ngIf="password.dirty"
-          >
-          </i>
-          <div *ngIf="password.hasError('required') && (password.dirty || password.touched)">
-            <p style="color: red">Your password must not be empty</p>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- Registration Form -->
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <form [formGroup]="registerForm" (ngSubmit)="addUser()" class="card shadow-sm p-4" novalidate>
+        <div class="row g-3">
 
-    <div class="row align-items-start">
-      <div class="col-md-6">
-        <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="username" formControlName="username" placeholder="Username">
-          <label for="username">Username</label>
-          <div *ngIf="username.hasError('required') && (username.dirty || username.touched)">
-            <p style="color: red">Your username must not be empty</p>
+          <!-- First Name -->
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     id="firstname"
+                     formControlName="name"
+                     placeholder="John"
+                     autocomplete="given-name"
+                     autofocus
+                     [ngClass]="{
+                       'is-invalid': name.invalid && (name.dirty || name.touched),
+                       'is-valid': name.valid && (name.dirty || name.touched)
+                     }">
+              <label for="firstname">First Name</label>
+              <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
+                <i class="bi bi-exclamation-circle me-1"></i>
+                Please enter your first name
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-floating">
-          <input type="date" class="form-control" id="birthdate" formControlName="dateOfBirth">
-          <label for="birthdate">Birth Date</label>
-          <div *ngIf="dateOfBirth.hasError('required') && (dateOfBirth.dirty || dateOfBirth.touched)">
-            <p style="color: red">Your birth date must not be empty</p>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="row justify-content-between mt-4">
-      <div class="col-6 text-start">
-        <p>Already have an account? <a href="/login">Log in</a></p>
-      </div>
-      <div class="col-6 text-end">
-        <button class="btn btn-primary" [disabled]="registerForm.invalid" type="submit">Submit</button>
-      </div>
+          <!-- Last Name -->
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     id="lastname"
+                     formControlName="familyName"
+                     placeholder="Smith"
+                     autocomplete="family-name"
+                     [ngClass]="{
+                       'is-invalid': familyName.invalid && (familyName.dirty || familyName.touched),
+                       'is-valid': familyName.valid && (familyName.dirty || familyName.touched)
+                     }">
+              <label for="lastname">Last Name</label>
+              <div *ngIf="familyName.invalid && (familyName.dirty || familyName.touched)" class="invalid-feedback">
+                <i class="bi bi-exclamation-circle me-1"></i>
+                Please enter your last name
+              </div>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="col-md-6">
+            <div class="form-floating position-relative">
+              <input type="email"
+                     class="form-control"
+                     id="email"
+                     formControlName="email"
+                     placeholder="Email address"
+                     autocomplete="email"
+                     [ngClass]="{
+                       'is-invalid': email.invalid && (email.dirty || email.touched),
+                       'is-valid': email.valid && (email.dirty || email.touched)
+                     }">
+              <label for="email">Email address</label>
+              <div *ngIf="email.pending" class="form-text text-info">
+                <i class="bi bi-info-circle me-1"></i>Checking email availability...
+              </div>
+              <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
+                <i class="bi bi-exclamation-circle me-1"></i>
+                <span *ngIf="email.errors?.['required']">Email is required</span>
+                <span *ngIf="email.errors?.['email']">Please enter a valid email</span>
+                <span *ngIf="email.errors?.['emailTaken']">This email is already registered</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="col-md-6">
+            <div class="form-floating position-relative">
+              <input [type]="passwordFieldType"
+                     class="form-control"
+                     id="password"
+                     formControlName="password"
+                     placeholder="Password"
+                     autocomplete="new-password"
+                     [ngClass]="{
+                       'is-invalid': password.invalid && (password.dirty || password.touched),
+                       'is-valid': password.valid && (password.dirty || password.touched)
+                     }">
+              <label for="password">Password</label>
+              <button type="button"
+                      class="btn btn-link position-absolute top-50 end-0 translate-middle-y me-2"
+                      aria-label="Toggle password visibility"
+                      (click)="togglePasswordVisibility()">
+                <i [class]="passwordIconClass"></i>
+              </button>
+              <div *ngIf="password.invalid && (password.dirty || password.touched)" class="invalid-feedback">
+                <i class="bi bi-exclamation-circle me-1"></i>
+                <span *ngIf="password.errors?.['required']">Password is required</span>
+                <span *ngIf="password.errors?.['minlength']">Minimum {{password.errors?.['minlength'].requiredLength}} characters</span>
+                <span *ngIf="password.errors?.['pattern']">Password must contain uppercase, number, and special character</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Username -->
+          <div class="col-md-6">
+            <div class="form-floating position-relative">
+              <input type="text"
+                     class="form-control"
+                     id="username"
+                     formControlName="username"
+                     placeholder="Username"
+                     autocomplete="username"
+                     [ngClass]="{
+                       'is-invalid': username.invalid && (username.dirty || username.touched),
+                       'is-valid': username.valid && (username.dirty || username.touched)
+                     }">
+              <label for="username">Username</label>
+              <div *ngIf="username.pending" class="form-text text-info">
+                <i class="bi bi-info-circle me-1"></i>Checking username availability...
+              </div>
+              <div *ngIf="username.invalid && (username.dirty || username.touched)" class="invalid-feedback">
+                <i class="bi bi-exclamation-circle me-1"></i>
+                <span *ngIf="username.errors?.['required']">Please choose a username</span>
+                <span *ngIf="username.errors?.['usernameTaken']">This username is already taken</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Birth Date -->
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="date"
+                     class="form-control"
+                     id="birthdate"
+                     formControlName="dateOfBirth"
+                     placeholder="Birth Date"
+                     autocomplete="day"
+                     [attr.max]="maxBirthDate"
+                     [ngClass]="{
+                       'is-invalid': dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched),
+                       'is-valid': dateOfBirth.valid && (dateOfBirth.dirty || dateOfBirth.touched)
+                     }">
+              <label for="birthdate">Birth Date</label>
+              <div *ngIf="dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched)" class="invalid-feedback">
+                <i class="bi bi-exclamation-circle me-1"></i>
+                Please enter a valid birth date (must be 13+ years old)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Footer -->
+        <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+          <div>
+            <p class="mb-0">Already have an account?
+              <a routerLink="/login" class="text-primary fw-semibold">Log in</a>
+            </p>
+          </div>
+          <button type="submit"
+                  class="btn btn-primary px-4 py-2"
+                  [disabled]="registerForm.invalid || isSubmitting"
+                  [class.btn-loading]="isSubmitting">
+            <span *ngIf="!isSubmitting">Create Account</span>
+            <span *ngIf="isSubmitting">
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Processing...
+            </span>
+          </button>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>

@@ -1,4 +1,5 @@
 @import "bootstrap-icons";
+@import 'ngx-toastr/toastr';
 
 body {
   background-image: url("assets/wave-background.jpg");

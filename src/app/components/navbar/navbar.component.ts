@@ -1,49 +1,39 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {HomeComponent} from '../home/home.component';
-import {FooterComponent} from '../footer/footer.component';
+import {Component} from '@angular/core';
 import {NgForOf, NgIf} from '@angular/common';
-import {RegisterService} from '../../services/register.service';
-import {LoginService} from '../../services/login.service';
 import {UserService} from '../../services/user.service';
-import {IUser} from '../../models/RequestModel/userModel';
+import {RouterLink, RouterLinkActive} from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   imports: [
     NgIf,
-    NgForOf
+    NgForOf,
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent implements OnInit {
-  @Input() user: IUser;
+export class NavbarComponent  {
 
   constructor(private userService: UserService) {
-    this.user =  {
-      name:"",
-      familyName:"",
-      username:"",
-      email:"",
-      password:"",
-      dateOfBirth: new Date
-    }
 
   }
 
-  ngOnInit(): void {
 
-  }
   isNotLoggedIn(): boolean {
     return !sessionStorage.getItem('token');
   }
 
-  links: { name: string; url: string }[] = [
-    { name: 'Home', url: '/' },
-    { name: 'Addictions', url: '/my-addictions' },
-    { name: 'Experiences', url: '/experiences' },
-    { name: 'Checkin', url: '/checkin' },
+  links = [
+    { name: 'Home', url: '/', icon: 'bi-house', exact: true },
+    { name: 'Addictions', url: '/my-addictions', icon: 'bi-heart-pulse', exact: false },
+    { name: 'Articles', url: '/articles', icon: 'bi-book', exact: false },
+    { name: 'Checkin', url: '/checkin', icon: 'bi-calendar-check-fill', exact: false }
   ];
 
 
+  logout() {
+    this.userService.logout();
+  }
 }

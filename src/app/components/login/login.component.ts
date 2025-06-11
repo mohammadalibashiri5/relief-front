@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {IUser} from '../../models/RequestModel/userModel';
 import {LoginService} from '../../services/login.service';
 import {Router} from '@angular/router';
+import {UserService} from '../../services/user.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   user!: IUser;
 
-  constructor(private fb:FormBuilder, private auth:LoginService, private router:Router) {
+  constructor(private fb:FormBuilder, private auth:LoginService, private router:Router, private userService:UserService, private toastr: ToastrService) {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required]
@@ -33,20 +35,17 @@ export class LoginComponent {
 
     this.auth.loginUser(email, password).subscribe({
       next: token => {
-        sessionStorage.setItem('token', token.token)
-
+        sessionStorage.setItem('token', token.token);
+        this.userService.fetchUser().subscribe(() => {
+          this.router.navigate(['/dashboard']).then(() => this.toastr.success('Login successful!'));
+        })
       },
       error: (err) => {
-        if (err.status == 404 || err.status == 401 || err.status == 403) {
+        if ([401, 403, 404].includes(err.status)) {
           alert('Wrong Email or Password');
         }
-      },
-      complete: () => {
-
-        this.router.navigate(['/checkin']).then(r => alert('Welcome ' + email));
       }
-
-    })
+    });
 
   }
 

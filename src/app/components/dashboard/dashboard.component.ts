@@ -1,45 +1,53 @@
 import {Component, OnInit} from '@angular/core';
 import {IUserResponse} from '../../models/ResponseModel/userResponse';
-import {LoginService} from '../../services/login.service';
 import {Router} from '@angular/router';
-import {NgForOf} from '@angular/common';
+import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import {UserService} from '../../services/user.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
-    NgForOf
+    NgForOf,
+    NgIf,
+    DatePipe,
+    NgClass
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit{
-  user!: IUserResponse;
+export class DashboardComponent implements OnInit {
+  user: IUserResponse | null = null;
 
-  constructor(private login:LoginService, private router:Router) { }
-
-  ngOnInit(): void {
-    this.loadUser();
+  constructor(private userService: UserService, private router: Router, private toastr: ToastrService) {
   }
 
-
-   loadUser() {
-    this.login.getUser().subscribe({
-      next:value => {
-        this.user = value;
-      },
-      error:err => {
-        if (err) {
-          this.router.navigate(['login']).then(() => sessionStorage.clear());
+  ngOnInit(): void {
+    this.userService.fetchUser().subscribe({
+      next: (user) => {
+        if (user) {
+          this.user = user;
         }
-        alert("Oops, one error is found " );
+      },
+      error: (err) => {
+        if (err.status === 403) {
+          this.router.navigate(['/login']).then(() => {
+            this.toastr.warning('You are not authorized to view this page.');
+          });
+        }
       }
-    })
+    });
   }
 
   logout() {
-    if (sessionStorage.getItem("token")) {
-      this.router.navigate(['login']).then(() => sessionStorage.clear());
-    }
+    this.userService.logout();
   }
 
+  deleteAccount() {
+
+  }
+
+  emergencyCall() {
+
+  }
 }

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { RegisterService } from '../../services/register.service';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import { Router } from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import { IUser } from '../../models/RequestModel/userModel';
-import {NgIf} from '@angular/common';
+import {NgClass, NgIf} from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {ToastrService} from 'ngx-toastr';
 
 
 @Component({
@@ -14,6 +15,8 @@ import {MatSnackBar} from '@angular/material/snack-bar';
     ReactiveFormsModule,
     NgIf,
     FormsModule,
+    RouterLink,
+    NgClass,
   ],
   styleUrls: ['./register.component.css']
 })
@@ -21,6 +24,7 @@ export class RegisterComponent {
   registerForm: FormGroup;
   passwordFieldType: string = 'password'; // Initial type for the password field
   passwordIconClass: string = 'bi bi-eye-slash'; // Initial icon class
+  isSubmitting: boolean = false;
 
 
 
@@ -28,7 +32,7 @@ export class RegisterComponent {
     private userService: RegisterService,
     private readonly fb: FormBuilder,
     private readonly router: Router,
-    private _snackBar: MatSnackBar // Inject MatSnackBar here
+    private toastr:ToastrService
   ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
@@ -65,7 +69,7 @@ export class RegisterComponent {
     return this.registerForm.controls['familyName'];
   }
 
-  get username() {
+  public get username() {
     return this.registerForm.controls['username'];
   }
 
@@ -73,20 +77,12 @@ export class RegisterComponent {
     return this.registerForm.controls['dateOfBirth'];
   }
 
-  // Toggle password visibility
+  maxBirthDate= new Date(new Date().setFullYear(new Date().getFullYear() - 13)).toISOString().split('T')[0];
   togglePasswordVisibility() {
     this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
     this.passwordIconClass = this.passwordIconClass === 'bi bi-eye-slash' ? 'bi bi-eye' : 'bi bi-eye-slash';
   }
 
-  // Show SnackBar (Toast)
-  showSnackBar(message: string, action: string = 'Close') {
-    this._snackBar.open(message, action, {
-      duration: 30000, // Duration in ms
-      horizontalPosition: 'right', // Horizontal position (right or left)
-      verticalPosition: 'bottom', // Vertical position (top or bottom)
-    });
-  }
 
   addUser() {
     const user: IUser = {
@@ -102,15 +98,15 @@ export class RegisterComponent {
       next: (user) => {
       },
       error: (err) => {
-        if (err.status === 409 || err.status === 400) {
-          this.showSnackBar('Email already exists!');
+        if (err.status === 409 || err.status === 400 && err.message("")|| err.status === 403) {
+          this.toastr.error('Email or username already exist!');
         } else {
-          this.showSnackBar('Something went wrong. Please try again.');
+          this.toastr.error('Something went wrong. Please try again.');
         }
       },
       complete: () => {
-        this.router.navigate(['/']).then(() => {
-          this.showSnackBar(`${user.name} ', Your account has been registered successfully!'`);
+        this.router.navigate(['/login']).then(() => {
+          this.toastr.success('Registration successful! Please log in.');
         });
       },
     });
