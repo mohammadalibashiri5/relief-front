@@ -3,38 +3,31 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, Observable, tap, throwError} from 'rxjs';
 import {TriggerResponse} from '../models/ResponseModel/triggerResponse';
 import {TriggerRequest} from '../models/RequestModel/triggerRequest';
+import {environment} from '../../environments/environment';
+import {ToastrService} from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TriggerService {
 
-  private apiUrl = 'http://localhost:8080/api/trigger';
+  private apiUrl = `${environment.API_BASE_URL}/trigger`;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private toastr:ToastrService) {
   }
 
   createTrigger(addictionId: number, trigger: TriggerRequest): Observable<any> {
-    const token = sessionStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Authorization': 'Bearer ' + token
-    });
 
     const params = new HttpParams()
       .set('addictionId', addictionId);
 
-    // Combine headers and params into a single options object
-    const options = {
-      headers: headers,
-      params: params
-    };
 
-    return this.http.post(`${this.apiUrl}/add`, trigger, options).pipe(
-      tap(response => {
-        console.log('Trigger created successfully:', response);
+    return this.http.post(`${this.apiUrl}/add`, trigger, {params}).pipe(
+      tap(() => {
+        this.toastr.success('Trigger created successfully!');
       }),
       catchError(error => {
-        console.error('Error creating trigger:', error);
+        this.toastr.error('Error creating trigger:');
         return throwError(() => error);
       })
     );
@@ -42,10 +35,7 @@ export class TriggerService {
 
 
   fetchTriggers(addictionId:number): Observable<TriggerResponse[]> {
-    const params = new HttpParams()
-      .set('addictionId', addictionId);
-
-    return this.http.get<TriggerResponse[]>(`${this.apiUrl}/getByAddiction/${addictionId}`, { params }).pipe(
+    return this.http.get<TriggerResponse[]>(`${this.apiUrl}/getByAddiction/${addictionId}`).pipe(
       tap(response => {}),
       catchError(error => {
         return throwError(() => error);
@@ -53,10 +43,8 @@ export class TriggerService {
     );
   }
 
-  deleteTrigger(triggerName: string): Observable<void> {
-
-    const params = new HttpParams().set('triggerName', triggerName);
-    return this.http.delete<void>(`${this.apiUrl}/delete`, { params });
+  deleteTrigger(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
 
   updateTrigger(triggerId: number, triggerRequest: TriggerRequest): Observable<TriggerResponse> {

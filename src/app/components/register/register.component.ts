@@ -77,7 +77,7 @@ export class RegisterComponent {
     return this.registerForm.controls['dateOfBirth'];
   }
 
-  // Toggle password visibility
+  maxBirthDate= new Date(new Date().setFullYear(new Date().getFullYear() - 13)).toISOString().split('T')[0];
   togglePasswordVisibility() {
     this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
     this.passwordIconClass = this.passwordIconClass === 'bi bi-eye-slash' ? 'bi bi-eye' : 'bi bi-eye-slash';
@@ -98,8 +98,8 @@ export class RegisterComponent {
       next: (user) => {
       },
       error: (err) => {
-        if (err.status === 409 || err.status === 400) {
-          this.toastr.error('Email already exists!');
+        if (err.status === 409 || err.status === 400 && err.message("")|| err.status === 403) {
+          this.toastr.error('Email or username already exist!');
         } else {
           this.toastr.error('Something went wrong. Please try again.');
         }

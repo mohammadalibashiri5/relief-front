@@ -12,8 +12,9 @@
   <!-- Registration Form -->
   <div class="row justify-content-center">
     <div class="col-lg-8">
-      <form [formGroup]="registerForm" (ngSubmit)="addUser()" class="card shadow-sm p-4">
+      <form [formGroup]="registerForm" (ngSubmit)="addUser()" class="card shadow-sm p-4" novalidate>
         <div class="row g-3">
+
           <!-- First Name -->
           <div class="col-md-6">
             <div class="form-floating">
@@ -22,13 +23,14 @@
                      id="firstname"
                      formControlName="name"
                      placeholder="John"
+                     autocomplete="given-name"
+                     autofocus
                      [ngClass]="{
                        'is-invalid': name.invalid && (name.dirty || name.touched),
                        'is-valid': name.valid && (name.dirty || name.touched)
                      }">
               <label for="firstname">First Name</label>
-              <div *ngIf="name.invalid && (name.dirty || name.touched)"
-                   class="invalid-feedback">
+              <div *ngIf="name.invalid && (name.dirty || name.touched)" class="invalid-feedback">
                 <i class="bi bi-exclamation-circle me-1"></i>
                 Please enter your first name
               </div>
@@ -43,13 +45,13 @@
                      id="lastname"
                      formControlName="familyName"
                      placeholder="Smith"
+                     autocomplete="family-name"
                      [ngClass]="{
                        'is-invalid': familyName.invalid && (familyName.dirty || familyName.touched),
                        'is-valid': familyName.valid && (familyName.dirty || familyName.touched)
                      }">
               <label for="lastname">Last Name</label>
-              <div *ngIf="familyName.invalid && (familyName.dirty || familyName.touched)"
-                   class="invalid-feedback">
+              <div *ngIf="familyName.invalid && (familyName.dirty || familyName.touched)" class="invalid-feedback">
                 <i class="bi bi-exclamation-circle me-1"></i>
                 Please enter your last name
               </div>
@@ -58,22 +60,26 @@
 
           <!-- Email -->
           <div class="col-md-6">
-            <div class="form-floating">
+            <div class="form-floating position-relative">
               <input type="email"
                      class="form-control"
                      id="email"
                      formControlName="email"
                      placeholder="Email address"
+                     autocomplete="email"
                      [ngClass]="{
                        'is-invalid': email.invalid && (email.dirty || email.touched),
                        'is-valid': email.valid && (email.dirty || email.touched)
                      }">
               <label for="email">Email address</label>
-              <div *ngIf="email.invalid && (email.dirty || email.touched)"
-                   class="invalid-feedback">
+              <div *ngIf="email.pending" class="form-text text-info">
+                <i class="bi bi-info-circle me-1"></i>Checking email availability...
+              </div>
+              <div *ngIf="email.invalid && (email.dirty || email.touched)" class="invalid-feedback">
                 <i class="bi bi-exclamation-circle me-1"></i>
                 <span *ngIf="email.errors?.['required']">Email is required</span>
                 <span *ngIf="email.errors?.['email']">Please enter a valid email</span>
+                <span *ngIf="email.errors?.['emailTaken']">This email is already registered</span>
               </div>
             </div>
           </div>
@@ -86,6 +92,7 @@
                      id="password"
                      formControlName="password"
                      placeholder="Password"
+                     autocomplete="new-password"
                      [ngClass]="{
                        'is-invalid': password.invalid && (password.dirty || password.touched),
                        'is-valid': password.valid && (password.dirty || password.touched)
@@ -93,35 +100,40 @@
               <label for="password">Password</label>
               <button type="button"
                       class="btn btn-link position-absolute top-50 end-0 translate-middle-y me-2"
+                      aria-label="Toggle password visibility"
                       (click)="togglePasswordVisibility()">
                 <i [class]="passwordIconClass"></i>
               </button>
-              <div *ngIf="password.invalid && (password.dirty || password.touched)"
-                   class="invalid-feedback">
+              <div *ngIf="password.invalid && (password.dirty || password.touched)" class="invalid-feedback">
                 <i class="bi bi-exclamation-circle me-1"></i>
                 <span *ngIf="password.errors?.['required']">Password is required</span>
                 <span *ngIf="password.errors?.['minlength']">Minimum {{password.errors?.['minlength'].requiredLength}} characters</span>
+                <span *ngIf="password.errors?.['pattern']">Password must contain uppercase, number, and special character</span>
               </div>
             </div>
           </div>
 
           <!-- Username -->
           <div class="col-md-6">
-            <div class="form-floating">
+            <div class="form-floating position-relative">
               <input type="text"
                      class="form-control"
                      id="username"
                      formControlName="username"
                      placeholder="Username"
+                     autocomplete="username"
                      [ngClass]="{
                        'is-invalid': username.invalid && (username.dirty || username.touched),
                        'is-valid': username.valid && (username.dirty || username.touched)
                      }">
               <label for="username">Username</label>
-              <div *ngIf="username.invalid && (username.dirty || username.touched)"
-                   class="invalid-feedback">
+              <div *ngIf="username.pending" class="form-text text-info">
+                <i class="bi bi-info-circle me-1"></i>Checking username availability...
+              </div>
+              <div *ngIf="username.invalid && (username.dirty || username.touched)" class="invalid-feedback">
                 <i class="bi bi-exclamation-circle me-1"></i>
-                Please choose a username
+                <span *ngIf="username.errors?.['required']">Please choose a username</span>
+                <span *ngIf="username.errors?.['usernameTaken']">This username is already taken</span>
               </div>
             </div>
           </div>
@@ -133,15 +145,17 @@
                      class="form-control"
                      id="birthdate"
                      formControlName="dateOfBirth"
+                     placeholder="Birth Date"
+                     autocomplete="day"
+                     [attr.max]="maxBirthDate"
                      [ngClass]="{
                        'is-invalid': dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched),
                        'is-valid': dateOfBirth.valid && (dateOfBirth.dirty || dateOfBirth.touched)
                      }">
               <label for="birthdate">Birth Date</label>
-              <div *ngIf="dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched)"
-                   class="invalid-feedback">
+              <div *ngIf="dateOfBirth.invalid && (dateOfBirth.dirty || dateOfBirth.touched)" class="invalid-feedback">
                 <i class="bi bi-exclamation-circle me-1"></i>
-                Please enter your birth date
+                Please enter a valid birth date (must be 13+ years old)
               </div>
             </div>
           </div>
@@ -156,11 +170,11 @@
           </div>
           <button type="submit"
                   class="btn btn-primary px-4 py-2"
-                  [disabled]="registerForm.invalid"
+                  [disabled]="registerForm.invalid || isSubmitting"
                   [class.btn-loading]="isSubmitting">
             <span *ngIf="!isSubmitting">Create Account</span>
             <span *ngIf="isSubmitting">
-              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
               Processing...
             </span>
           </button>

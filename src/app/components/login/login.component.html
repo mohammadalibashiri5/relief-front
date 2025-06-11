@@ -1,38 +1,66 @@
-<div class="container">
-  <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
-    <div class="row">
-      <div class="mb-3">
-        <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input type="email" class="form-control" formControlName="email" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="mb-3 position-relative">
-        <label for="password">Password</label>
-        <div class="input-group">
-          <input [type]="passwordFieldType" class="form-control" id="password" autocomplete="current-password" formControlName="password" placeholder="Password">
-          <span class="input-group-text">
-        <i [class]="passwordIconClass" (click)="togglePasswordVisibility()" style="cursor: pointer;"></i>
-      </span>
+<div class="container d-flex justify-content-center align-items-center min-vh-50 py-5">
+  <div class="card shadow-lg p-4" style="width: 100%; max-width: 500px;">
+    <div class="card-body">
+      <h2 class="card-title text-center mb-4">Welcome Back!</h2>
+      <p class="text-center text-muted mb-4">Please enter your credentials to login</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="loginUser()" class="needs-validation" novalidate>
+        <!-- Email Field -->
+        <div class="mb-4">
+          <label for="email" class="form-label fw-bold">Email Address</label>
+          <div class="input-group">
+            <span class="input-group-text bg-transparent">
+              <i class="bi bi-envelope-fill text-primary"></i>
+            </span>
+            <input type="email"
+                   class="form-control border-start-0"
+                   id="email"
+                   formControlName="email"
+                   placeholder="your@email.com"
+                   required>
+          </div>
+          <div class="form-text text-muted mt-1">We'll never share your email with anyone else.</div>
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-          <label class="form-check-label" for="exampleCheck1">Remember Me :)</label>
+
+        <!-- Password Field -->
+        <div class="mb-4">
+          <label for="password" class="form-label fw-bold">Password</label>
+          <div class="input-group">
+            <span class="input-group-text bg-transparent">
+              <i class="bi bi-lock-fill text-primary"></i>
+            </span>
+            <input [type]="passwordFieldType"
+                   class="form-control border-start-0"
+                   id="password"
+                   formControlName="password"
+                   placeholder="••••••••"
+                   autocomplete="current-password"
+                   required>
+            <button type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="togglePasswordVisibility()"
+                    title="Toggle password visibility">
+              <i [class]="passwordIconClass"></i>
+            </button>
+          </div>
         </div>
-      </div>
+
+        <!-- Submit Button -->
+        <div class="d-grid gap-2 mb-3">
+          <button type="submit"
+                  class="btn btn-primary btn-lg rounded-pill fw-bold"
+                  [disabled]="!loginForm.valid">
+            Sign In
+          </button>
+        </div>
+
+        <!-- Sign Up Link -->
+        <div class="text-center mt-4">
+          <p class="text-muted">Don't have an account?
+            <a href="/register" class="text-primary fw-bold text-decoration-none">Sign up</a>
+          </p>
+        </div>
+      </form>
     </div>
-    <div class="row justify-content-between">
-      <div class="col-3 m-2">
-        <p>Not a member? No worries <a href="/register">Sign up</a></p>
-      </div>
-      <div class="col-1 m-2">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </div>
-  </form>
+  </div>
 </div>

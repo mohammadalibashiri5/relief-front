@@ -55,7 +55,7 @@ export class TriggerManagerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.queryParamMap.get('addictionId');
-    this.addictionId = idParam ? +idParam : 0; // Convert to number or default to 0
+    this.addictionId = idParam ? +idParam : 0;
     if (!this.addictionId) {
       this.toastr.error('Invalid addiction ID!');
       return;
@@ -102,6 +102,7 @@ export class TriggerManagerComponent implements OnInit, OnDestroy {
           if (err.status === 400) {
             this.toastr.error('Invalid addiction ID');
             this.goBack();
+            console.error(this.addictionId);
           } else this.toastr.error('Failed to load triggers');
         }
       });
@@ -113,13 +114,13 @@ export class TriggerManagerComponent implements OnInit, OnDestroy {
     this.router.navigate(['../my-addictions']).then(() => {});
   }
 
-  deleteTrigger(triggerName: string) {
+  deleteTrigger(id: number) {
     if (!confirm('Are you sure you want to delete this trigger?')) {
       return;
     }
-    this.triggerService.deleteTrigger(triggerName).subscribe({
+    this.triggerService.deleteTrigger(id).subscribe({
       next: () => {
-        this.toastr.success(  `${triggerName } deleted successfully`, triggerName );
+        this.toastr.success(  `Trigger deleted successfully`);
       },
       error: (err) => {
         console.error('Error deleting trigger:', err);
