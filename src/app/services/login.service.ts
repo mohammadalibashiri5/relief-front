@@ -4,13 +4,14 @@ import {Observable} from 'rxjs';
 import {IUser} from '../models/RequestModel/userModel';
 import {AuthenticationResponse} from '../models/ResponseModel/authenticationResponse';
 import {IUserResponse} from '../models/ResponseModel/userResponse';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  private url = "http://localhost:8080";
+  private url = environment.API_BASE_URL;
 
 
   constructor(private http: HttpClient) {
@@ -23,7 +24,7 @@ export class LoginService {
 
 
   getUser(): Observable<IUserResponse> {
-    return this.http.get<IUserResponse>(`${this.url}/api/users/getUser`)
+    return this.http.get<IUserResponse>(`${this.url}/users/getUser`)
   }
 
   isLoggedIn():boolean {

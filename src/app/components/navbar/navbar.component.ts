@@ -28,9 +28,8 @@ export class NavbarComponent  {
   links = [
     { name: 'Home', url: '/', icon: 'bi-house', exact: true },
     { name: 'Addictions', url: '/my-addictions', icon: 'bi-heart-pulse', exact: false },
-    { name: 'Progress', url: '/progress', icon: 'bi-graph-up', exact: false },
-    { name: 'Resources', url: '/resources', icon: 'bi-book', exact: false },
-    { name: 'Community', url: '/community', icon: 'bi-people', exact: false }
+    { name: 'Articles', url: '/articles', icon: 'bi-book', exact: false },
+    { name: 'Checkin', url: '/checkin', icon: 'bi-calendar-check-fill', exact: false }
   ];
 
 

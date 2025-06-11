@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {CheckInResponse} from '../models/ResponseModel/CheckInResponse';
+import {environment} from '../../environments/environment';
 
 
 @Injectable({
@@ -9,7 +10,7 @@ import {CheckInResponse} from '../models/ResponseModel/CheckInResponse';
 })
 export class CheckinService {
 
-  private apiUrl = 'http://localhost:8080/api/checkin'; // Adjust based on your backend endpoint
+  private apiUrl = environment.API_BASE_URL;
 
   constructor(private http: HttpClient) {}
 

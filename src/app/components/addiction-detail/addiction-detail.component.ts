@@ -42,11 +42,10 @@ export class AddictionDetailComponent implements OnInit {
 
 
 
-  goToTriggers(addictionId: number, addictionName:string ): void {
+  goToTriggers(addictionId: number ): void {
     this.router.navigate(['/triggers'], {
       queryParams: {
         addictionId,
-        addictionName
       }
     }).then();
   }
