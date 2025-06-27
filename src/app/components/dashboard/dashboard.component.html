@@ -34,8 +34,9 @@
                 <i class="bi bi-heart-pulse me-2"></i>Your Addictions
               </h6>
 
-              <div *ngIf="user!.addictions.length > 0; else noAddictions">
-                <div class="addiction-badges">
+              <!--
+                <div *ngIf="user!.addictions.length > 0; else noAddictions">
+                  <div class="addiction-badges">
                   <span *ngFor="let addiction of user!.addictions"
                         class="badge rounded-pill bg-light text-dark me-2 mb-2">
                     {{ addiction.name }}
@@ -47,8 +48,9 @@
                       ⚠️
                     </span>
                   </span>
+                  </div>
                 </div>
-              </div>
+              </!-->
               <ng-template #noAddictions>
                 <div class="alert alert-light">
                   <i class="bi bi-info-circle me-2"></i>

@@ -1,8 +1,10 @@
 <div class="d-flex flex-column min-vh-100">
 
-<app-navbar></app-navbar>
-<main class="flex-fill">
-  <router-outlet></router-outlet>
-</main>
-<app-footer></app-footer>
+  <app-navbar *ngIf="role === 'ROLE_VISITOR'"></app-navbar>
+  <app-admin-navbar *ngIf="role === 'ROLE_ADMIN' || role === 'ROLE_SUPER_ADMIN' +
+   ''"></app-admin-navbar>
+  <main class="flex-fill">
+    <router-outlet></router-outlet>
+  </main>
+  <app-footer></app-footer>
 </div>
