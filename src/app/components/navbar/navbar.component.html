@@ -25,21 +25,6 @@
         </li>
       </ul>
 
-      <!-- Right Side Controls -->
-      <div class="d-flex align-items-center">
-        <!-- Language Selector -->
-        <div class="dropdown me-3">
-          <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-            <i class="bi bi-translate me-1"></i>
-            <span class="d-none d-md-inline">Language</span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#"><i class="bi bi-translate me-2"></i>English</a></li>
-            <li><a class="dropdown-item" href="#"><i class="bi bi-translate me-2"></i>French</a></li>
-            <li><a class="dropdown-item" href="#"><i class="bi bi-translate me-2"></i>Persian</a></li>
-          </ul>
-        </div>
-
         <!-- Auth Controls -->
         <ng-container *ngIf="isNotLoggedIn(); else loggedInView">
           <a class="btn btn-outline-light me-2" routerLink="/register">
@@ -67,5 +52,4 @@
         </ng-template>
       </div>
     </div>
-  </div>
 </nav>

@@ -7,6 +7,10 @@ import {IUserResponse} from '../../models/ResponseModel/userResponse';
 import {AddictionService} from '../../services/addiction.service';
 import {CheckInResponse} from '../../models/ResponseModel/CheckInResponse';
 import {StreakLevel} from '../../models/enum/StreakLevel';
+import {CalendarOptions} from '@fullcalendar/core';
+import {FullCalendarModule} from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 
 
 @Component({
@@ -16,11 +20,25 @@ import {StreakLevel} from '../../models/enum/StreakLevel';
     ReactiveFormsModule,
     NgForOf,
     NgIf,
+    FullCalendarModule,
   ],
   templateUrl: './checkin.component.html',
   styleUrl: './checkin.component.css',
 })
 export class CheckinComponent implements OnInit {
+  calendarOptions: CalendarOptions = {
+    initialView: 'dayGridMonth',
+    plugins: [dayGridPlugin, interactionPlugin],
+    dateClick: (arg) => this.handleDateClick(arg),
+    events: [
+      {title: 'event 1', date: '2019-04-01'},
+      {title: 'event 2', date: '2019-04-02'}
+    ]
+  };
+
+  handleDateClick(arg: DateClickArg) {
+    alert('date click! ' + arg.dateStr)
+  }
   checkinForm!: FormGroup;
   user!:IUserResponse;
   addictions!:any;

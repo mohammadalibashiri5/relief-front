@@ -1,7 +1,9 @@
 <div class="container">
 
-
   <h2 class="text-center mt-2">Daily Check-In</h2>
+  <div class="row">
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  </div>
   <ng-template *ngIf="addictionName.length > 0 ; else noAddictions">
     <form [formGroup]="checkinForm" (ngSubmit)="registerCheckIn()">
       <label for="addiction">Select Your Addiction:</label>

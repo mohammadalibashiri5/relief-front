@@ -19,6 +19,6 @@ export const routes: Routes = [
   { path:"dashboard", component:DashboardComponent , canActivate: [authGuard]},
   { path:"addiction", component:AddictionDetailComponent , canActivate: [authGuard]},
   { path:"triggers", component:TriggerManagerComponent , canActivate: [authGuard]},
-  { path:"articles", component:ArticlesComponent , canActivate: [authGuard]}
+  { path:"articles", component:ArticlesComponent }
 
 ];
