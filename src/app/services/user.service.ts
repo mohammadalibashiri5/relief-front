@@ -28,7 +28,7 @@ export class UserService {
           this.clearUser();
         }
       }),
-      catchError(() => of(null)) // Continue the observable chain even if there's an error
+      catchError(() => of(null))
     );
   }
 

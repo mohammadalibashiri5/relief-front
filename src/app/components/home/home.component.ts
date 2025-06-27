@@ -1,11 +1,23 @@
 import { Component } from '@angular/core';
+import {NgIf} from '@angular/common';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [
+    NgIf,
+    RouterLink
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
+  userIsLoggedIn: boolean = false;
+
+  constructor() {
+    if (sessionStorage.getItem('token')) {
+      this.userIsLoggedIn = true;
+    }
+  }
 
 }
