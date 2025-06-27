@@ -1,17 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {IUserResponse} from '../../models/ResponseModel/userResponse';
 import {Router} from '@angular/router';
-import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import {DatePipe, NgIf} from '@angular/common';
 import {UserService} from '../../services/user.service';
 import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
-    NgForOf,
     NgIf,
-    DatePipe,
-    NgClass
+    DatePipe
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'

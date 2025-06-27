@@ -31,6 +31,13 @@ export class UserService {
       catchError(() => of(null))
     );
   }
+  isAdmin(): boolean {
+    return this.userSubject.value?.role === 'ROLE_ADMIN';
+  }
+
+  isUser(): boolean {
+    return this.userSubject.value?.role === 'ROLE_VISITOR';
+  }
 
   setUser(user: IUserResponse): void {
     this.userSubject.next(user);

@@ -1,0 +1,46 @@
+<!-- Modal Trigger Button -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#solutionModal">
+  Add Solution
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="solutionModal" tabindex="-1" aria-labelledby="solutionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="solutionModalLabel">Create New Solution</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form [formGroup]="solutionForm" (ngSubmit)="submitSolution()">
+          <!-- Name Field -->
+          <div class="mb-4">
+            <label for="solutionName" class="form-label fw-bold">Solution Name</label>
+            <input type="text" class="form-control py-2" id="solutionName"
+                   formControlName="name" placeholder="Enter solution name">
+            <div *ngIf="solutionForm.get('name')?.invalid && solutionForm.get('name')?.touched"
+                 class="text-danger small mt-1">
+              Solution name is required
+            </div>
+          </div>
+
+          <!-- Description Field -->
+          <div class="mb-4">
+            <label for="solutionDescription" class="form-label fw-bold">Description</label>
+            <textarea class="form-control py-2" id="solutionDescription" rows="4"
+                      formControlName="description" placeholder="Describe your solution..."></textarea>
+          </div>
+
+          <div class="modal-footer border-0 px-0 pb-0">
+            <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4" [disabled]="!solutionForm.valid">
+              Save Solution
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {{solutions.name}}
+  </div>
+</div>
