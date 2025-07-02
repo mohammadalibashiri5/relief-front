@@ -37,7 +37,7 @@ export class LoginComponent {
       next: () => {
         const user = this.auth.getCurrentUser();
         if (user?.roles?.includes('ROLE_ADMIN')) {
-          this.router.navigate(['/articles']);
+          this.router.navigate(['/admin/dashboard']).then(()=> { this.toastr.success('Welcome to the admin dashboard!');});
         } else {
           this.router.navigate(['/dashboard']);
         }

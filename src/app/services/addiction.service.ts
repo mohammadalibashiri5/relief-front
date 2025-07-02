@@ -35,8 +35,8 @@ export class AddictionService{
     );
   }
 
-  deleteAddiction(name: string): Observable<void> {
-    return this.http.delete<void>(`${this.url}/${name}`);
+  deleteAddiction(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
   }
 
   addAddiction(addiction: AddictionRequest): Observable<AddictionResponse> {
