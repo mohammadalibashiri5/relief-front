@@ -19,7 +19,7 @@ export class AddictionDetailComponent implements OnInit {
 
   @Input() addictions: AddictionResponse[] | null = [];
   @Output() edit = new EventEmitter<AddictionResponse>();
-  @Output() delete = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<number>();
 
   constructor(private addictionService: AddictionService, private toastr: ToastrService, private router: Router) {
   }

@@ -22,7 +22,7 @@ export class AdminNavbarComponent {
 
 
   isAuthenticated(): boolean {
-    return this.login.isAuthenticated();
+    return this.login.isAuthenticated() && this.login.hasRole('ROLE_ADMIN');
   }
 
   links = [
@@ -32,6 +32,6 @@ export class AdminNavbarComponent {
 
 
   logout() {
-    this.userService.logout();
+    this.login.logout();
   }
 }

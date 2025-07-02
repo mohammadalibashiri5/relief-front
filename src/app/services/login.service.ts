@@ -10,7 +10,6 @@ interface JwtPayload {
   iat?: number;       // Issued at timestamp
   exp?: number;       // Expiration timestamp
   roles: string;    // Array of role strings
-  // Add any other claims your JWT contains
 }
 interface UserInfo {
   email: string;
@@ -23,9 +22,6 @@ interface UserInfo {
 export class LoginService {
 
   private url = environment.API_BASE_URL;
-
-
-  //constructor(private http: HttpClient) { }
 
   private tokenKey = 'jwt_token';
   private userKey = 'current_user';
@@ -83,16 +79,13 @@ export class LoginService {
     return user?.roles ? user.roles.includes(role) : false;
   }
 
-  hasAnyRole(roles: string[]): boolean {
-    const user = this.getCurrentUser();
-    return user?.roles ? roles.some(role => user.roles.includes(role)) : false;
-  }
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
+
 
  // loginUser(email: string, password: string): Observable<AuthenticationResponse> {
  //   return this.http.post<AuthenticationResponse>(`${this.url}/auth/login`, {email: email, password: password});
@@ -101,7 +94,7 @@ export class LoginService {
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/login']).then(() => {});
   }
 
   getUser(): Observable<IUserResponse> {

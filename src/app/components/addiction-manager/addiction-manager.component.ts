@@ -125,12 +125,12 @@ export class AddictionManagerComponent {
     });
   }
 
-  deleteAddiction(name: string): void {
+  deleteAddiction(id: number): void {
     if (!confirm('Are you sure you want to delete this addiction?')) {
       return;
     }
 
-    this.addictionService.deleteAddiction(name).subscribe({
+    this.addictionService.deleteAddiction(id).subscribe({
       next: () => {
         this.toastr.success('Addiction deleted successfully');
       },

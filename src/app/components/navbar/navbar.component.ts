@@ -22,8 +22,11 @@ export class NavbarComponent  {
   }
 
 
-  isNotLoggedIn(): boolean {
-    return !this.login.isAuthenticated();
+  isLoggedIn(): boolean {
+    if (this.login.hasRole('ROLE_ADMIN')) {
+      return false;
+    }
+    return this.login.isAuthenticated();
   }
 
   links = [
@@ -35,6 +38,6 @@ export class NavbarComponent  {
 
 
   logout() {
-    this.userService.logout();
+    this.login.logout();
   }
 }
