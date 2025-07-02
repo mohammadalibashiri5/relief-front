@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {NgForOf, NgIf} from '@angular/common';
 import {UserService} from '../../services/user.service';
 import {RouterLink, RouterLinkActive} from '@angular/router';
+import {LoginService} from '../../services/login.service';
 
 @Component({
   selector: 'app-navbar',
@@ -16,13 +17,13 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
 })
 export class NavbarComponent  {
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private login:LoginService) {
 
   }
 
 
   isNotLoggedIn(): boolean {
-    return !sessionStorage.getItem('token');
+    return !this.login.isAuthenticated();
   }
 
   links = [

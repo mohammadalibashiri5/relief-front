@@ -26,7 +26,7 @@
       </ul>
 
       <!-- Auth Controls -->
-      <ng-container *ngIf="isNotLoggedIn(); else loggedInView">
+      <ng-container *ngIf="!isAuthenticated(); else loggedInView">
         <a class="btn btn-outline-light me-2" routerLink="/register">
           <i class="bi bi-person-plus me-1"></i>
           <span class="d-none d-md-inline">Register</span>

@@ -34,11 +34,13 @@ export class LoginComponent {
     let password = this.loginForm.value?.password!;
 
     this.auth.loginUser(email, password).subscribe({
-      next: token => {
-        sessionStorage.setItem('token', token.token);
-        this.userService.fetchUser().subscribe(() => {
-          this.router.navigate(['/dashboard']).then(() => this.toastr.success('Login successful!'));
-        })
+      next: () => {
+        const user = this.auth.getCurrentUser();
+        if (user?.roles?.includes('ROLE_ADMIN')) {
+          this.router.navigate(['/articles']);
+        } else {
+          this.router.navigate(['/dashboard']);
+        }
       },
       error: (err) => {
         if ([401, 403, 404].includes(err.status)) {

@@ -1,31 +1,39 @@
-import {HttpHeaders, HttpInterceptorFn} from '@angular/common/http';
+import {HttpErrorResponse, HttpInterceptorFn} from '@angular/common/http';
 import {catchError, throwError} from 'rxjs';
 import {Router} from '@angular/router';
 import {inject} from '@angular/core';
+import {LoginService} from '../services/login.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
+  const authService = inject(LoginService);
 
-  const token = sessionStorage.getItem('token');
-  let headers = new HttpHeaders({
-    'Content-Type': 'application/json'
-  });
+  // Get token through AuthService
+  const token = authService.getToken();
 
+  // Clone request
+  let authReq = req.clone();
+
+  // Add authorization header if token exists
   if (token) {
-    headers = headers.set('Authorization', `Bearer ${token}`);
+    authReq = req.clone({
+      headers: req.headers.set('Authorization', `Bearer ${token}`)
+    });
   }
 
-  const authReq = req.clone({headers});
   return next(authReq).pipe(
-    catchError((error) => {
-      if (error.status === 403) {
-        sessionStorage.removeItem('token');
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401 || error.status === 403) {
+        authService.logout(); // Use AuthService's logout method
+
         router.navigate(['/login'], {
-          queryParams: {sessionExpired: true}
-        }).then(()=>{});
+          queryParams: {
+            sessionExpired: true,
+            redirectUrl: router.url
+          }
+        });
       }
       return throwError(() => error);
     })
   );
-
 };
