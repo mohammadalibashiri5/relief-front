@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {UserService} from '../../services/user.service';
+import {LoginService} from '../../services/login.service';
 
 @Component({
   selector: 'app-admin-navbar',
@@ -15,13 +16,13 @@ import {UserService} from '../../services/user.service';
   styleUrl: './admin-navbar.component.css'
 })
 export class AdminNavbarComponent {
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private login:LoginService) {
 
   }
 
 
-  isNotLoggedIn(): boolean {
-    return !sessionStorage.getItem('token');
+  isAuthenticated(): boolean {
+    return this.login.isAuthenticated();
   }
 
   links = [

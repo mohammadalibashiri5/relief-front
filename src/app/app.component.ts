@@ -1,24 +1,29 @@
-import {Component, Input} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {FooterComponent} from './components/footer/footer.component';
-import {IUser} from './models/RequestModel/userModel';
 import {AdminNavbarComponent} from './components/admin-navbar/admin-navbar.component';
-import {NgIf} from '@angular/common';
-import {UserService} from './services/user.service';
+import {LoginService} from './services/login.service';
+import {HasRoleDirective} from './has-role.directive';
 
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent, FooterComponent, AdminNavbarComponent, NgIf],
+  imports: [RouterOutlet, NavbarComponent, FooterComponent, AdminNavbarComponent, HasRoleDirective],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  role: string | null = null;
-  constructor(private userService: UserService) {
-    this.userService.getUser().subscribe(user => {
-      this.role = user?.role || null;
-    });
+  isAdmin: boolean = false;
+
+  constructor(private auth: LoginService) {
+    this.updateAdminStatus();
+    // Listen for auth changes if your app needs it
   }
+
+  private updateAdminStatus(): void {
+    this.isAdmin = this.auth.hasRole('ROLE_ADMIN');
+  }
+
+
 }

@@ -1,36 +1,185 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+
+
+<!-- Addiction Type Navigation -->
+<div class="addiction-nav mb-4">
+  <div class="container">
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-wine-bottle me-2"></i>Alcohol</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-pills me-2"></i>Drugs</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-smoking me-2"></i>Nicotine</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-utensils me-2"></i>Food</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-gamepad me-2"></i>Gaming</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><i class="fas fa-shopping-cart me-2"></i>Shopping</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- Admin Controls (Visible only to admins) -->
+<div class="admin-controls py-3 mb-4" *appHasRole="'ROLE_ADMIN'">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="mb-0"><i class="fas fa-user-shield me-2"></i>Admin Panel</h5>
+      <div>
+        <button class="btn btn-sm btn-success me-2"><i class="fas fa-plus me-1"></i>Add Article</button>
+        <button class="btn btn-sm btn-primary"><i class="fas fa-cog me-1"></i>Manage Categories</button>
+      </div>
     </div>
   </div>
-</nav>
+</div>
+
+<!-- Hero Carousel -->
+<div class="container mb-5">
+  <div id="articleCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#articleCarousel" data-bs-slide-to="0" class="active"></button>
+      <button type="button" data-bs-target="#articleCarousel" data-bs-slide-to="1"></button>
+      <button type="button" data-bs-target="#articleCarousel" data-bs-slide-to="2"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active" style="background-image: url('https://source.unsplash.com/random/1200x400/?recovery');">
+        <div class="carousel-caption text-start">
+          <h3>Understanding Addiction</h3>
+          <p>The first step to recovery is understanding what you're dealing with.</p>
+          <a href="#" class="btn btn-primary">Read Article</a>
+        </div>
+      </div>
+      <div class="carousel-item" style="background-image: url('https://source.unsplash.com/random/1200x400/?support');">
+        <div class="carousel-caption">
+          <h3>Finding Support</h3>
+          <p>You don't have to go through this alone - discover support options.</p>
+          <a href="#" class="btn btn-primary">Read Article</a>
+        </div>
+      </div>
+      <div class="carousel-item" style="background-image: url('https://source.unsplash.com/random/1200x400/?hope');">
+        <div class="carousel-caption text-end">
+          <h3>Stories of Hope</h3>
+          <p>Read inspiring recovery journeys from people who've been where you are.</p>
+          <a href="#" class="btn btn-primary">Read Article</a>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#articleCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#articleCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+</div>
+
+<!-- Articles Grid -->
+<div class="container mb-5">
+  <div class="row">
+    <div class="col-md-8">
+      <h3 class="mb-4">Latest Articles</h3>
+      <div class="row">
+        <!-- Article Cards -->
+        <div class="col-lg-6 mb-4">
+          <div class="card article-card h-100">
+            <img src="https://source.unsplash.com/random/400x200/?alcohol" class="card-img-top" alt="Article Image">
+            <span class="badge category-badge">Alcohol</span>
+            <div class="card-body">
+              <h5 class="card-title">5 Signs Your Drinking Might Be a Problem</h5>
+              <p class="card-text">Recognizing the early warning signs of alcohol dependency can help you take action before it becomes severe.</p>
+              <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+            </div>
+            <div class="card-footer bg-transparent">
+              <small class="text-muted">Published 3 days ago</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+          <div class="card article-card h-100">
+            <img src="https://source.unsplash.com/random/400x200/?drugs" class="card-img-top" alt="Article Image">
+            <span class="badge category-badge">Drugs</span>
+            <div class="card-body">
+              <h5 class="card-title">Navigating Withdrawal: What to Expect</h5>
+              <p class="card-text">A comprehensive guide to the withdrawal process and how to manage symptoms safely.</p>
+              <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+            </div>
+            <div class="card-footer bg-transparent">
+              <small class="text-muted">Published 1 week ago</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+          <div class="card article-card h-100">
+            <img src="https://source.unsplash.com/random/400x200/?gaming" class="card-img-top" alt="Article Image">
+            <span class="badge category-badge">Gaming</span>
+            <div class="card-body">
+              <h5 class="card-title">When Gaming Stops Being Fun</h5>
+              <p class="card-text">How to recognize gaming addiction and strategies to regain balance in your life.</p>
+              <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+            </div>
+            <div class="card-footer bg-transparent">
+              <small class="text-muted">Published 2 weeks ago</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+          <div class="card article-card h-100">
+            <img src="https://source.unsplash.com/random/400x200/?food" class="card-img-top" alt="Article Image">
+            <span class="badge category-badge">Food</span>
+            <div class="card-body">
+              <h5 class="card-title">Breaking the Binge Cycle</h5>
+              <p class="card-text">Practical strategies for overcoming compulsive eating behaviors.</p>
+              <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+            </div>
+            <div class="card-footer bg-transparent">
+              <small class="text-muted">Published 3 weeks ago</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Popular Topics</h5>
+        </div>
+        <div class="card-body">
+          <div class="d-flex flex-wrap gap-2">
+            <a href="#" class="btn btn-sm btn-outline-secondary">Withdrawal</a>
+            <a href="#" class="btn btn-sm btn-outline-secondary">Relapse</a>
+            <a href="#" class="btn btn-sm btn-outline-secondary">Support Groups</a>
+            <a href="#" class="btn btn-sm btn-outline-secondary">Therapy</a>
+            <a href="#" class="btn btn-sm btn-outline-secondary">Medication</a>
+            <a href="#" class="btn btn-sm btn-outline-secondary">Recovery Stories</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Need Help Now?</h5>
+        </div>
+        <div class="card-body">
+          <p>If you're in crisis or need immediate support:</p>
+          <ul class="list-unstyled">
+            <li class="mb-2"><i class="fas fa-phone me-2"></i> <strong>Hotline:</strong> 1-800-662-HELP</li>
+            <li class="mb-2"><i class="fas fa-comment me-2"></i> <strong>Text:</strong> HELP to 741741</li>
+            <li><i class="fas fa-globe me-2"></i> <strong>Online Chat:</strong> <a href="#">Start Chat</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
