@@ -1,43 +1,44 @@
 import {Component} from '@angular/core';
-import {NgForOf, NgIf} from '@angular/common';
-import {UserService} from '../../services/user.service';
+import {AuthService} from '../../services/auth.service';
 import {RouterLink, RouterLinkActive} from '@angular/router';
-import {LoginService} from '../../services/login.service';
+import {AdminNavbarComponent} from '../admin-navbar/admin-navbar.component';
+import {UserNavbarComponent} from '../user-navbar/user-navbar.component';
+import {NgForOf, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   imports: [
-    NgIf,
-    NgForOf,
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    AdminNavbarComponent,
+    UserNavbarComponent,
+    NgIf,
+    NgForOf
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent  {
-
-  constructor(private userService: UserService, private login:LoginService) {
-
-  }
-
-
-  isLoggedIn(): boolean {
-    if (this.login.hasRole('ROLE_ADMIN')) {
-      return false;
-    }
-    return this.login.isAuthenticated();
-  }
-
-  links = [
+   commonLinks = [
     { name: 'Home', url: '/', icon: 'bi-house', exact: true },
-    { name: 'Addictions', url: '/my-addictions', icon: 'bi-heart-pulse', exact: false },
     { name: 'Articles', url: '/articles', icon: 'bi-book', exact: false },
+    { name: 'Addictions', url: '/my-addictions', icon: 'bi-heart-pulse', exact: false },
     { name: 'Checkin', url: '/checkin', icon: 'bi-calendar-check-fill', exact: false }
   ];
 
 
-  logout() {
-    this.login.logout();
+  constructor(public authService: AuthService) {}
+
+  isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
   }
+
+  isAdmin(): boolean {
+    return this.authService.hasRole('ROLE_ADMIN');
+  }
+
+  isUser(): boolean {
+    return this.isAuthenticated() && !this.isAdmin();
+  }
+
 }

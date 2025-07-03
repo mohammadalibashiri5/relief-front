@@ -1,37 +1,32 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {NgForOf, NgIf} from "@angular/common";
 import {RouterLink, RouterLinkActive} from "@angular/router";
 import {UserService} from '../../services/user.service';
-import {LoginService} from '../../services/login.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-admin-navbar',
-    imports: [
-        NgForOf,
-        NgIf,
-        RouterLink,
-        RouterLinkActive
-    ],
+  imports: [
+    NgIf,
+    RouterLink,
+    NgForOf,
+    RouterLinkActive
+  ],
   templateUrl: './admin-navbar.component.html',
   styleUrl: './admin-navbar.component.css'
 })
 export class AdminNavbarComponent {
-  constructor(private userService: UserService, private login:LoginService) {
-
+  isAdmin: boolean = false;
+  constructor(private auth: AuthService) {
+    this.isAdmin = auth.hasRole('ROLE_ADMIN');
   }
 
-
-  isAuthenticated(): boolean {
-    return this.login.isAuthenticated() && this.login.hasRole('ROLE_ADMIN');
-  }
-
-  links = [
-    { name: 'Home', url: '/', icon: 'bi-house', exact: true },
-    { name: 'Articles', url: '/articles', icon: 'bi-book', exact: false },
+  adminLinks = [
+    { name: 'Admin Dashboard', url: '/admin', icon: 'bi-shield-lock', exact: false },
+    { name: 'User Management', url: '/admin/users', icon: 'bi-people-fill', exact: false }
   ];
 
-
   logout() {
-    this.login.logout();
+    this.auth.logout();
   }
 }

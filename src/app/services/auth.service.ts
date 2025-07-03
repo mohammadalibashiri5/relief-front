@@ -1,25 +1,24 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
+import {BehaviorSubject, catchError, map, Observable, of, switchMap, tap} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {Observable, tap} from 'rxjs';
-import {IUserResponse} from '../models/ResponseModel/userResponse';
-import {environment} from '../../environments/environment';
 import {Router} from '@angular/router';
-
-interface JwtPayload {
-  sub: string;        // User identifier (email/username)
-  iat?: number;       // Issued at timestamp
-  exp?: number;       // Expiration timestamp
-  roles: string;    // Array of role strings
-}
+import {environment} from '../../environments/environment';
+import {IUserResponse} from '../models/ResponseModel/userResponse';
 interface UserInfo {
   email: string;
   roles: string[];
 }
-
+interface JwtPayload {
+  sub: string;        // User identifier (email/username)
+  iat?: number;       // Issued at timestamp
+  exp?: number;       // Expiration timestamp
+  roles: string;      // Array of role strings
+}
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+
+export class AuthService {
 
   private url = environment.API_BASE_URL;
 
@@ -86,10 +85,6 @@ export class LoginService {
     return !!this.getToken();
   }
 
-
- // loginUser(email: string, password: string): Observable<AuthenticationResponse> {
- //   return this.http.post<AuthenticationResponse>(`${this.url}/auth/login`, {email: email, password: password});
- // }
 
   logout(): void {
     localStorage.removeItem(this.tokenKey);
