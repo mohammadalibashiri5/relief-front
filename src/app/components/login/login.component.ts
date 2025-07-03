@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {IUser} from '../../models/RequestModel/userModel';
-import {LoginService} from '../../services/login.service';
 import {Router} from '@angular/router';
 import {UserService} from '../../services/user.service';
 import {ToastrService} from 'ngx-toastr';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -20,7 +20,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   user!: IUser;
 
-  constructor(private fb:FormBuilder, private auth:LoginService, private router:Router, private userService:UserService, private toastr: ToastrService) {
+  constructor(private fb:FormBuilder, private auth:AuthService, private router:Router, private userService:UserService, private toastr: ToastrService) {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required]

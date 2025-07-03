@@ -1,5 +1,5 @@
 import {Directive, Input, TemplateRef, ViewContainerRef} from '@angular/core';
-import {LoginService} from './services/login.service';
+import {AuthService} from './services/auth.service';
 
 @Directive({
   selector: '[appHasRole]'
@@ -22,7 +22,7 @@ export class HasRoleDirective {
   constructor(
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef,
-    private authService: LoginService
+    private authService: AuthService
   ) {}
 
 }

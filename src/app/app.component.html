@@ -1,14 +1,5 @@
 <div class="d-flex flex-column min-vh-100">
-  <ng-container *appHasRole="'ROLE_ADMIN'">
-    <app-admin-navbar></app-admin-navbar>
-  </ng-container>
-
-  <ng-container *appHasRole="'ROLE_VISITOR'">
-    <app-navbar></app-navbar>
-  </ng-container>
-  <ng-container>
-    <app-navbar></app-navbar>
-  </ng-container>
+<app-navbar></app-navbar>
   <main class="flex-fill">
     <router-outlet></router-outlet>
   </main>

@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {CheckinService} from '../../services/checkin.service';
 import {NgForOf, NgIf} from '@angular/common';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {LoginService} from '../../services/login.service';
 import {IUserResponse} from '../../models/ResponseModel/userResponse';
 import {AddictionService} from '../../services/addiction.service';
 import {CheckInResponse} from '../../models/ResponseModel/CheckInResponse';
@@ -11,6 +10,7 @@ import {CalendarOptions} from '@fullcalendar/core';
 import {FullCalendarModule} from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
+import {AuthService} from '../../services/auth.service';
 
 
 @Component({
@@ -49,7 +49,7 @@ export class CheckinComponent implements OnInit {
   checkInStatus:CheckInResponse;
 
   constructor(private checkInService: CheckinService,
-              private loginService: LoginService,
+              private loginService: AuthService,
               private fb: FormBuilder,
               private addictionService: AddictionService) {
     this.loginService.getUser().subscribe({

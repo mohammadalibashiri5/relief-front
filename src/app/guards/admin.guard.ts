@@ -1,10 +1,10 @@
 import {CanActivateFn, Router} from '@angular/router';
-import {LoginService} from '../services/login.service';
 import {inject} from '@angular/core';
 import {ToastrService} from 'ngx-toastr';
+import {AuthService} from '../services/auth.service';
 
 export const adminGuard: CanActivateFn = (route, state) => {
-  const authService:LoginService = inject(LoginService);
+  const authService:AuthService = inject(AuthService);
   const router:Router = inject(Router);
   const toastr:ToastrService = inject(ToastrService);
 
