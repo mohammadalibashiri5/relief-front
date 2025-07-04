@@ -22,8 +22,6 @@ export class NavbarComponent  {
    commonLinks = [
     { name: 'Home', url: '/', icon: 'bi-house', exact: true },
     { name: 'Articles', url: '/articles', icon: 'bi-book', exact: false },
-    { name: 'Addictions', url: '/my-addictions', icon: 'bi-heart-pulse', exact: false },
-    { name: 'Checkin', url: '/checkin', icon: 'bi-calendar-check-fill', exact: false }
   ];
 
 
@@ -36,9 +34,11 @@ export class NavbarComponent  {
   isAdmin(): boolean {
     return this.authService.hasRole('ROLE_ADMIN');
   }
-
   isUser(): boolean {
-    return this.isAuthenticated() && !this.isAdmin();
+    return this.authService.hasRole('ROLE_VISITOR');
   }
 
+  logout() {
+    this.authService.logout();
+  }
 }
