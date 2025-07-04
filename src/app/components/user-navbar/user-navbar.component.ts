@@ -20,7 +20,7 @@ export class UserNavbarComponent {
 
   userLinks = [
     { name: 'Addictions', url: '/my-addictions', icon: 'bi-heart-pulse', exact: false },
-    { name: 'Checkin', url: '/checkin', icon: 'bi-calendar-check-fill', exact: false }
+    { name: 'Checkin', url: '/checkin', icon: 'bi-calendar-check-fill', exact: false },
   ];
 
   logout() {

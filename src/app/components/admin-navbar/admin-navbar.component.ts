@@ -22,8 +22,7 @@ export class AdminNavbarComponent {
   }
 
   adminLinks = [
-    { name: 'Admin Dashboard', url: '/admin', icon: 'bi-shield-lock', exact: false },
-    { name: 'User Management', url: '/admin/users', icon: 'bi-people-fill', exact: false }
+    { name: 'Articles', url: '/articles', icon: 'bi-book', exact: false },
   ];
 
   logout() {
