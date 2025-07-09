@@ -1,0 +1,132 @@
+<div class="addiction-management">
+  <div class="header">
+    <div class="header-content">
+      <i class="bi bi-heart-pulse-fill"></i>
+      <div class="header-text">
+        <h2>Addiction Types Management</h2>
+        <p>Comprehensive management for addiction categories and types</p>
+      </div>
+    </div>
+    <div class="header-decoration"></div>
+  </div>
+
+  <div class="management-container">
+    <!-- Form Section -->
+    <div class="form-card card-glass">
+      <div class="card-header">
+        <h3><i class="bi bi-plus-circle-dotted"></i> Add New Category</h3>
+        <div class="card-accent"></div>
+      </div>
+
+      <form [formGroup]="addictionForm" (ngSubmit)="addAddiction()">
+        <div class="form-group floating-input">
+          <select
+            id="type"
+            formControlName="type"
+            class="form-control"
+            [class.is-invalid]="type?.invalid && type?.touched"
+          >
+            <option value="" disabled selected></option>
+            <option *ngFor="let cat of categories" [value]="cat">{{cat}}</option>
+          </select>
+          <label for="type">Category Type</label>
+          <i class="bi bi-tag-fill input-icon"></i>
+          <div *ngIf="type?.invalid && type?.touched" class="invalid-feedback">
+            <span *ngIf="type?.errors?.['required']">Category type is required</span>
+          </div>
+        </div>
+
+        <div class="form-group floating-input">
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            class="form-control"
+            [class.is-invalid]="name?.invalid && name?.touched"
+          >
+          <label for="name">Addiction Name</label>
+          <i class="bi bi-card-heading input-icon"></i>
+          <div *ngIf="name?.invalid && name?.touched" class="invalid-feedback">
+            <span *ngIf="name?.errors?.['required']">Name is required</span>
+            <span *ngIf="name?.errors?.['minlength']">Minimum 2 characters</span>
+          </div>
+        </div>
+
+        <div class="form-group floating-input">
+          <input
+            type="url"
+            id="imageUrl"
+            formControlName="imageUrl"
+            class="form-control"
+            [class.is-invalid]="imageUrl?.invalid && imageUrl?.touched"
+          >
+          <label for="imageUrl">Image URL</label>
+          <i class="bi bi-image-fill input-icon"></i>
+          <div *ngIf="imageUrl?.invalid && imageUrl?.touched" class="invalid-feedback">
+            <span *ngIf="imageUrl?.errors?.['required']">Image URL is required</span>
+            <span *ngIf="imageUrl?.errors?.['pattern']">Valid URL starting with https://</span>
+          </div>
+        </div>
+
+        <div *ngIf="imageUrl?.value" class="image-preview">
+          <div class="preview-container">
+            <img
+              ngSrc="{{imageUrl!.value}}"
+              alt="Addiction preview"
+              (error)="handleImageError($event)"
+              class="preview-image"
+              fill>
+            <div class="preview-overlay">
+              <i class="bi bi-zoom-in"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-submit mt-2" [disabled]="addictionForm.invalid">
+            <span>Add Category</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- List Section -->
+    <div class="list-card card-glass">
+      <div class="card-header">
+        <h3><i class="bi bi-collection-fill"></i> Existing Categories</h3>
+      </div>
+
+      <div *ngIf="addictions.length === 0" class="empty-state">
+        <i class="bi bi-inbox"></i>
+        <h4>No categories found</h4>
+        <p>Start by adding your first addiction category</p>
+      </div>
+
+      <div class="addiction-grid" *ngIf="addictions.length > 0">
+        <div class="addiction-item" *ngFor="let addiction of addictions">
+          <div class="item-image-container">
+            <img
+              ngSrc="{{addiction.imageUrl}}"
+              [alt]="addiction.name"
+              (error)="handleImageError($event)"
+              class="item-image"
+              fill>
+            <div class="item-badge">{{ addiction.categoryType }}</div>
+          </div>
+          <div class="item-content">
+            <h4>{{ addiction.name }}</h4>
+            <div class="item-actions">
+              <button class="btn-action edit">
+                <i class="bi bi-pencil-square"></i>
+              </button>
+              <button class="btn-action delete">
+                <i class="bi bi-trash3"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
