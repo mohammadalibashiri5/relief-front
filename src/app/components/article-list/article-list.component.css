@@ -1,0 +1,34 @@
+.loading, .no-articles {
+  padding: 20px;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.article-card {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+.article-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.article-card h3 {
+  margin-top: 0;
+  color: #3f51b5;
+}
+
+.category {
+  font-weight: bold;
+  color: #666;
+  font-size: 0.9em;
+}

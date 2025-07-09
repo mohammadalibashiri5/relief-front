@@ -13,6 +13,8 @@ import {AdminDashboardComponent} from './components/admin-dashboard/admin-dashbo
 import {UnauthorizedComponent} from './components/unauthorized/unauthorized.component';
 import {adminGuard} from './guards/admin.guard';
 import {ArticleManageComponent} from './components/article-manage/article-manage.component';
+import {AdminCategoryTypeComponent} from './components/admin-category-type/admin-category-type.component';
+import {AdminAddictionsComponent} from './components/admin-addictions/admin-addictions.component';
 
 export const routes: Routes = [
   { path:"", component:HomeComponent },
@@ -23,6 +25,8 @@ export const routes: Routes = [
   { path:"dashboard", component:DashboardComponent , canActivate: [authGuard], data: {roles: ['ROLE_VISITOR']}},
   { path:"admin/dashboard", component:AdminDashboardComponent , canActivate: [adminGuard], data: {roles: 'ROLE_ADMIN'}},
   { path:"articles/panel", component:ArticleManageComponent , canActivate: [adminGuard], data: {roles: 'ROLE_ADMIN'}},
+  { path:"categoryType", component:AdminCategoryTypeComponent , canActivate: [adminGuard], data: {roles: 'ROLE_ADMIN'}},
+  { path:"admin/addictions", component:AdminAddictionsComponent , canActivate: [adminGuard], data: {roles: 'ROLE_ADMIN'}},
   { path:"addiction", component:AddictionDetailComponent , canActivate: [authGuard]},
   { path:"unauthorized", component:UnauthorizedComponent},
   { path:"triggers", component:TriggerManagerComponent , canActivate: [authGuard]},

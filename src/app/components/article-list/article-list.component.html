@@ -1,0 +1,96 @@
+<!--<app-category-select
+  (categorySelected)="onCategorySelected($event)">
+</app-category-select>
+
+<div *ngIf="isLoading" class="loading">Loading articles...</div>
+
+<div *ngIf="!isLoading">
+  <div *ngIf="articles.length === 0" class="no-articles">
+    No articles found for this category.
+  </div>
+
+  <div class="article-grid">
+    <div *ngFor="let article of articles" class="article-card">
+      <h3>{{ article.title }}</h3>
+      <p class="category">{{ article.category }}</p>
+      <p>{{ article.content }}</p>
+     <a [routerLink]="['/articles', article.id]">Read more</a>
+    </div>
+  </div>
+</div>
+-->
+<!-- Category Navigation -->
+<div class="addiction-nav mb-4">
+  <div class="container">
+    <ul class="nav nav-pills">
+      <li class="nav-item" *ngFor="let category of categories">
+        <a class="nav-link"
+           [class.active]="isActiveCategory(category)"
+           (click)="loadArticles(category)"
+           href="javascript:void(0)">
+          <i class="fas {{category}} me-2"></i>{{category}}
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"
+           [class.active]="!selectedCategory"
+           (click)="loadArticles()"
+           href="javascript:void(0)">
+          <i class="fas fa-list me-2"></i>All Categories
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- Loading Indicator -->
+<div *ngIf="isLoading" class="container text-center py-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+  <p class="mt-2">Loading articles...</p>
+</div>
+
+<!-- Error Message -->
+<div *ngIf="errorMessage && !isLoading" class="container">
+  <div class="alert alert-warning">
+    {{errorMessage}}
+  </div>
+</div>
+
+<!-- Articles Grid -->
+<div *ngIf="!isLoading && !errorMessage" class="container mb-5">
+  <div class="row">
+    <div class="col-md-8">
+      <h3 class="mb-4">
+        {{selectedCategory ? selectedCategory + ' Articles' : 'Latest Articles'}}
+        <small *ngIf="articles.length > 0" class="text-muted">({{articles.length}} found)</small>
+      </h3>
+
+      <div *ngIf="articles.length === 0" class="alert alert-info">
+        No articles found. Check back later or try another category.
+      </div>
+
+      <div class="row">
+        <!-- Article Cards -->
+        <div class="col-lg-6 mb-4" *ngFor="let article of articles">
+          <div class="card article-card h-100">
+            <img [src]="article.imageUrl || 'https://source.unsplash.com/random/400x200/?' + article.category"
+                 class="card-img-top"
+                 [alt]="article.title">
+            <span class="badge category-badge">{{article.category}}</span>
+            <div class="card-body">
+              <h5 class="card-title">{{article.title}}</h5>
+              <p class="card-text">{{article.content || 'No summary available'}}</p>
+              <!--<a [routerLink]="['/articles', article.id]" class="btn btn-sm btn-outline-primary">Read More</a>-->
+            </div>
+            <div class="card-footer bg-transparent">
+              <small class="text-muted">Published {{article.createdAt | date }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

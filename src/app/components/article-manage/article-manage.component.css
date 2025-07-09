@@ -1,0 +1,38 @@
+.image-upload-container {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #e9ecef;
+  }
+
+  &.has-image {
+    padding: 0;
+    background: transparent;
+    img {
+      max-height: 300px;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-header {
+  border-radius: 0 !important;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 200px;
+}

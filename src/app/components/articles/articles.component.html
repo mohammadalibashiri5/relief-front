@@ -1,184 +1,111 @@
 
 
-<!-- Addiction Type Navigation -->
-<div class="addiction-nav mb-4">
-  <div class="container">
-    <ul class="nav nav-pills">
-      <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fas fa-wine-bottle me-2"></i>Alcohol</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fas fa-pills me-2"></i>Drugs</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fas fa-smoking me-2"></i>Nicotine</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fas fa-utensils me-2"></i>Food</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fas fa-gamepad me-2"></i>Gaming</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fas fa-shopping-cart me-2"></i>Shopping</a>
-      </li>
-    </ul>
-  </div>
-</div>
-
-<!-- Admin Controls (Visible only to admins) -->
-<div class="admin-controls py-3 mb-4" *appHasRole="'ROLE_ADMIN'">
-  <div class="container">
-    <div class="d-flex justify-content-between align-items-center">
-      <h5 class="mb-0"><i class="fas fa-user-shield me-2"></i>Admin Panel</h5>
-      <div>
-        <button routerLink="panel" class="btn btn-sm btn-success me-2"><i class="fas fa-plus me-1"></i>Add Article</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Hero Carousel -->
-<div class="container mb-5">
-  <div id="articleCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#articleCarousel" data-bs-slide-to="0" class="active"></button>
-      <button type="button" data-bs-target="#articleCarousel" data-bs-slide-to="1"></button>
-      <button type="button" data-bs-target="#articleCarousel" data-bs-slide-to="2"></button>
-    </div>
-    <div class="carousel-inner">
-      <div class="carousel-item active" style="background-image: url('https://source.unsplash.com/random/1200x400/?recovery');">
-        <div class="carousel-caption text-start">
-          <h3>Understanding Addiction</h3>
-          <p>The first step to recovery is understanding what you're dealing with.</p>
-          <a href="#" class="btn btn-primary">Read Article</a>
-        </div>
-      </div>
-      <div class="carousel-item" style="background-image: url('https://source.unsplash.com/random/1200x400/?support');">
-        <div class="carousel-caption">
-          <h3>Finding Support</h3>
-          <p>You don't have to go through this alone - discover support options.</p>
-          <a href="#" class="btn btn-primary">Read Article</a>
-        </div>
-      </div>
-      <div class="carousel-item" style="background-image: url('https://source.unsplash.com/random/1200x400/?hope');">
-        <div class="carousel-caption text-end">
-          <h3>Stories of Hope</h3>
-          <p>Read inspiring recovery journeys from people who've been where you are.</p>
-          <a href="#" class="btn btn-primary">Read Article</a>
-        </div>
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#articleCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#articleCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
-  </div>
-</div>
-
-<!-- Articles Grid -->
-<div class="container mb-5">
+<!-- Addiction Type Navigation
+<h1> </h1>
+<app-article-list></app-article-list>
+-->
+<!-- Main Layout -->
+<div class="container mt-4">
   <div class="row">
-    <div class="col-md-8">
-      <h3 class="mb-4">Latest Articles</h3>
-      <div class="row">
-        <!-- Article Cards -->
-        <div class="col-lg-6 mb-4">
-          <div class="card article-card h-100">
-            <img src="https://source.unsplash.com/random/400x200/?alcohol" class="card-img-top" alt="Article Image">
-            <span class="badge category-badge">Alcohol</span>
-            <div class="card-body">
-              <h5 class="card-title">5 Signs Your Drinking Might Be a Problem</h5>
-              <p class="card-text">Recognizing the early warning signs of alcohol dependency can help you take action before it becomes severe.</p>
-              <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
-            </div>
-            <div class="card-footer bg-transparent">
-              <small class="text-muted">Published 3 days ago</small>
-            </div>
-          </div>
-        </div>
+    <!-- Main Content Area (wider column) -->
+    <div class="col-lg-9">
+      <!-- Category Selector (replaces the nav pills) -->
+      <app-category-select
+        (categorySelected)="onCategorySelected($event)">
+      </app-category-select>
 
-        <div class="col-lg-6 mb-4">
-          <div class="card article-card h-100">
-            <img src="https://source.unsplash.com/random/400x200/?drugs" class="card-img-top" alt="Article Image">
-            <span class="badge category-badge">Drugs</span>
-            <div class="card-body">
-              <h5 class="card-title">Navigating Withdrawal: What to Expect</h5>
-              <p class="card-text">A comprehensive guide to the withdrawal process and how to manage symptoms safely.</p>
-              <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
-            </div>
-            <div class="card-footer bg-transparent">
-              <small class="text-muted">Published 1 week ago</small>
-            </div>
-          </div>
-        </div>
+      <!-- Admin Controls -->
+      <div *appHasRole="'ROLE_ADMIN'" class="admin-controls mb-4">
+        <button routerLink="panel" class="btn btn-success">
+          <i class="fas fa-plus me-2"></i>Add New Article
+        </button>
+      </div>
 
-        <div class="col-lg-6 mb-4">
-          <div class="card article-card h-100">
-            <img src="https://source.unsplash.com/random/400x200/?gaming" class="card-img-top" alt="Article Image">
-            <span class="badge category-badge">Gaming</span>
-            <div class="card-body">
-              <h5 class="card-title">When Gaming Stops Being Fun</h5>
-              <p class="card-text">How to recognize gaming addiction and strategies to regain balance in your life.</p>
-              <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
-            </div>
-            <div class="card-footer bg-transparent">
-              <small class="text-muted">Published 2 weeks ago</small>
-            </div>
-          </div>
-        </div>
+      <!-- Articles List -->
+      <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+      </div>
 
-        <div class="col-lg-6 mb-4">
-          <div class="card article-card h-100">
-            <img src="https://source.unsplash.com/random/400x200/?food" class="card-img-top" alt="Article Image">
-            <span class="badge category-badge">Food</span>
-            <div class="card-body">
-              <h5 class="card-title">Breaking the Binge Cycle</h5>
-              <p class="card-text">Practical strategies for overcoming compulsive eating behaviors.</p>
-              <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+      <div *ngIf="errorMessage" class="alert alert-warning">
+        {{errorMessage}}
+      </div>
+
+      <div *ngIf="!isLoading && articles.length === 0" class="alert alert-info">
+        No articles found. Try another category.
+      </div>
+
+      <div class="articles-list">
+        <div *ngFor="let article of articles" class="article-card mb-4">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">{{article.title}}</h5>
+              <span class="badge bg-secondary">{{article.category}}</span>
             </div>
-            <div class="card-footer bg-transparent">
-              <small class="text-muted">Published 3 weeks ago</small>
+
+            <img [src]="article.imageUrl || 'assets/default-article.jpg'"
+                 class="card-img-top"
+                 [alt]="article.title">
+
+            <div class="card-body">
+              <p class="card-text">{{article.content}}</p>
+
+              <!-- Collapsible Content
+              <div *ngIf="expandedArticleId === article.id" class="article-full-content mt-3">
+                <div [innerHTML]="article.content"></div>
+              </div>
+ -->
+              <!-- Read More/Less Toggle
+              <button class="btn btn-sm btn-link p-0"
+                      (click)="toggleArticleExpand(article.)">
+                {{expandedArticleId === article.id ? 'Read Less' : 'Read More'}}
+              </button>
+              -->
+            </div>
+
+            <div class="card-footer d-flex justify-content-between align-items-center">
+              <small class="text-muted">
+                Published {{article.createdAt | date }}
+              </small>
+
+              <!-- Admin Actions
+              <div *ngIf="authService.isAdmin()" class="admin-actions">
+                <button [routerLink]="['/articles/edit', article.id]"
+                        class="btn btn-sm btn-outline-primary me-2">
+                  Edit
+                </button>
+                <button (click)="deleteArticle(article.id)"
+                        class="btn btn-sm btn-outline-danger">
+                  Delete
+                </button>
+              </div>
+              -->
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Sidebar -->
-    <div class="col-md-4">
-      <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-          <h5 class="mb-0">Popular Topics</h5>
-        </div>
-        <div class="card-body">
-          <div class="d-flex flex-wrap gap-2">
-            <a href="#" class="btn btn-sm btn-outline-secondary">Withdrawal</a>
-            <a href="#" class="btn btn-sm btn-outline-secondary">Relapse</a>
-            <a href="#" class="btn btn-sm btn-outline-secondary">Support Groups</a>
-            <a href="#" class="btn btn-sm btn-outline-secondary">Therapy</a>
-            <a href="#" class="btn btn-sm btn-outline-secondary">Medication</a>
-            <a href="#" class="btn btn-sm btn-outline-secondary">Recovery Stories</a>
+    <!-- Right Sidebar (simplified) -->
+    <div class="col-lg-3">
+        <!-- Category Quick Links -->
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h6 class="mb-0">Browse Categories</h6>
           </div>
-        </div>
-      </div>
-
-      <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
-          <h5 class="mb-0">Need Help Now?</h5>
-        </div>
-        <div class="card-body">
-          <p>If you're in crisis or need immediate support:</p>
-          <ul class="list-unstyled">
-            <li class="mb-2"><i class="fas fa-phone me-2"></i> <strong>Hotline:</strong> 1-800-662-HELP</li>
-            <li class="mb-2"><i class="fas fa-comment me-2"></i> <strong>Text:</strong> HELP to 741741</li>
-            <li><i class="fas fa-globe me-2"></i> <strong>Online Chat:</strong> <a href="#">Start Chat</a></li>
-          </ul>
+          <div class="card-body">
+            <div class="d-grid gap-2">
+              <button *ngFor="let cat of categories"
+                      class="btn btn-outline-secondary btn-sm text-start"
+                      (click)="loadArticles(cat)">
+                <i class="fas {{cat}} me-2"></i>{{cat}}
+              </button>
+              <button class="btn btn-outline-primary btn-sm text-start"
+                      (click)="loadArticles()">
+                <i class="fas fa-list me-2"></i>All Categories
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
