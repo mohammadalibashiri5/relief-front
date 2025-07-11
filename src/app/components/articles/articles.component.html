@@ -10,9 +10,6 @@
     <!-- Main Content Area (wider column) -->
     <div class="col-lg-9">
       <!-- Category Selector (replaces the nav pills) -->
-      <app-category-select
-        (categorySelected)="onCategorySelected($event)">
-      </app-category-select>
 
       <!-- Admin Controls -->
       <div *appHasRole="'ROLE_ADMIN'" class="admin-controls mb-4">
@@ -94,11 +91,7 @@
           </div>
           <div class="card-body">
             <div class="d-grid gap-2">
-              <button *ngFor="let cat of categories"
-                      class="btn btn-outline-secondary btn-sm text-start"
-                      (click)="loadArticles(cat)">
-                <i class="fas {{cat}} me-2"></i>{{cat}}
-              </button>
+
               <button class="btn btn-outline-primary btn-sm text-start"
                       (click)="loadArticles()">
                 <i class="fas fa-list me-2"></i>All Categories

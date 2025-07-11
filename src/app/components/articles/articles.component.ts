@@ -2,10 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ArticleResponse} from '../../models/ResponseModel/articleResponse';
 import {ArticleService} from '../../services/article.service';
 import {AuthService} from '../../services/auth.service';
-import {CategoryType} from '../../models/enum/CategoryType';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {RouterLink} from '@angular/router';
-import {CategorySelectComponent} from '../cateogory-select/category-select.component';
 import {HasRoleDirective} from '../../has-role.directive';
 
 @Component({
@@ -15,7 +13,6 @@ import {HasRoleDirective} from '../../has-role.directive';
     RouterLink,
     DatePipe,
     NgIf,
-    CategorySelectComponent,
     HasRoleDirective
   ],
   templateUrl: './articles.component.html',
@@ -30,10 +27,9 @@ export class ArticlesComponent implements OnInit {
   currentCategory: string | null = null;
 
 
-  categories:CategoryType[] = Object.values(CategoryType);
 
   constructor(
-    private articleService: ArticleService,
+    private readonly articleService: ArticleService,
     public authService: AuthService
   ) {}
 
@@ -47,7 +43,7 @@ export class ArticlesComponent implements OnInit {
 
   loadArticles(category?: string): void {
     this.isLoading = true;
-    this.selectedCategory = category || null;
+    this.selectedCategory = category ?? null;
     this.expandedArticleId = null; // Collapse any expanded article when changing category
 
     this.articleService.getArticles(category).subscribe({

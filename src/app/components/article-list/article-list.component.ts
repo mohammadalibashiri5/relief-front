@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {ArticleResponse} from '../../models/ResponseModel/articleResponse';
 import {ArticleService} from '../../services/article.service';
-import {CategoryType} from '../../models/enum/CategoryType';
 import {CategoryTypeResponse} from '../../models/ResponseModel/categoryTypeResponse';
 import {CategoryTypeService} from '../../services/category-type.service';
 
@@ -53,7 +52,7 @@ export class ArticleListComponent implements OnInit {
   // Define your categories with icons
   categories:CategoryTypeResponse[] = [];
 
-  constructor(private articleService: ArticleService, private category:CategoryTypeService) {
+  constructor(private readonly articleService: ArticleService, private readonly category:CategoryTypeService) {
   }
 
   ngOnInit(): void {
@@ -76,7 +75,7 @@ export class ArticleListComponent implements OnInit {
   loadArticles(category?: string): void {
     this.isLoading = true;
     this.errorMessage = null;
-    this.selectedCategory = category || null;
+    this.selectedCategory = category ?? null;
 
     this.articleService.getArticles(category).subscribe({
       next: (articles) => {
