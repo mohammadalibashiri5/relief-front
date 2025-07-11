@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CateogorySelectComponent } from './category-select.component';
+import { CardWithActionComponent } from './card-with-action.component';
 
-describe('CateogorySelectComponent', () => {
-  let component: CateogorySelectComponent;
-  let fixture: ComponentFixture<CateogorySelectComponent>;
+describe('CardWithActionComponent', () => {
+  let component: CardWithActionComponent;
+  let fixture: ComponentFixture<CardWithActionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CateogorySelectComponent]
+      imports: [CardWithActionComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CateogorySelectComponent);
+    fixture = TestBed.createComponent(CardWithActionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

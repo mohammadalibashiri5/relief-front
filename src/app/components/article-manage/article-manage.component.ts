@@ -1,15 +1,13 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NgForOf, NgIf} from '@angular/common';
+import {NgIf} from '@angular/common';
 import {ArticleService} from '../../services/article.service';
-import {CategoryType} from '../../models/enum/CategoryType';
 
 @Component({
   selector: 'app-article-manage',
   imports: [
     NgIf,
-    ReactiveFormsModule,
-    NgForOf
+    ReactiveFormsModule
   ],
   templateUrl: './article-manage.component.html',
   styleUrl: './article-manage.component.css'
@@ -18,10 +16,9 @@ export class ArticleManageComponent {
   articleForm: FormGroup;
   previewImage: string | ArrayBuffer | null = null;
   isSubmitting = false;
-  categories:CategoryType[] = Object.values(CategoryType);
   isEditMode: any;
 
-  constructor(private fb: FormBuilder, private articleService:ArticleService) {
+  constructor(private readonly fb: FormBuilder, private readonly articleService:ArticleService) {
     this.articleForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(120)]],
       content: ['', [Validators.required, Validators.minLength(100), Validators.maxLength(5000)]],

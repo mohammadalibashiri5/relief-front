@@ -1,10 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 import {AdminAddictionResponse} from '../../models/ResponseModel/adminAddiction';
 import {AdminAddictionService} from '../../services/admin-addiction.service';
 import {CategoryTypeService} from '../../services/category-type.service';
 import {CategoryTypeResponse} from '../../models/ResponseModel/categoryTypeResponse';
+import {ToastrService} from 'ngx-toastr';
+import {AdminAddictionRequest} from '../../models/RequestModel/AdminAddictionRequest';
+import {finalize} from 'rxjs';
+import {CardWithActionComponent} from '../card-with-action/card-with-action.component';
+import {HeaderManagementComponent} from '../header-management/header-management.component';
+import {ItemsCardComponent} from '../items-card/items-card.component';
 
 
 @Component({
@@ -13,17 +19,22 @@ import {CategoryTypeResponse} from '../../models/ResponseModel/categoryTypeRespo
     NgIf,
     ReactiveFormsModule,
     NgForOf,
-    NgOptimizedImage
+    CardWithActionComponent,
+    HeaderManagementComponent,
+    ItemsCardComponent,
   ],
   templateUrl: './admin-addictions.component.html',
+  standalone: true,
   styleUrl: './admin-addictions.component.css'
 })
-export class AdminAddictionsComponent implements OnInit{
+export class AdminAddictionsComponent implements OnInit {
   addictionForm: FormGroup;
   addictions: AdminAddictionResponse[] = [];
-  categories: string[] = []; // Assuming categories are strings, adjust as necessary
+  categories: string[] = [];
+  currentEditId: number | null = null;
+  isLoading = false;
 
-  constructor(private fb: FormBuilder, private addictionService: AdminAddictionService, private categoryService:CategoryTypeService) { // Replace 'any' with your actual service type
+  constructor(private readonly fb: FormBuilder, private readonly addictionService: AdminAddictionService, private readonly categoryService: CategoryTypeService, private readonly toastr: ToastrService) { // Replace 'any' with your actual service type
     this.addictionForm = this.fb.group({
       type: ['', Validators.required],
       name: ['', [Validators.required, Validators.minLength(2)]],
@@ -35,40 +46,47 @@ export class AdminAddictionsComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    // Load existing addictions from service
     this.loadAddictions();
     this.loadCategories();
   }
-  loadCategories(){
+
+  loadCategories() {
     this.categoryService.getCategoryTypes().subscribe({
       next: (categories) => {
         this.categories = categories.map((category: CategoryTypeResponse) => category.name);
       },
-      error: (error) => {
-        console.error('Error loading categories:', error);
+      error: () => {
       }
     });
   }
 
 
-  get type() { return this.addictionForm.get('type'); }
-  get name() { return this.addictionForm.get('name'); }
-  get imageUrl() { return this.addictionForm.get('imageUrl'); }
+  get type() {
+    return this.addictionForm.get('type');
+  }
+
+  get name() {
+    return this.addictionForm.get('name');
+  }
+
+  get imageUrl() {
+    return this.addictionForm.get('imageUrl');
+  }
 
   addAddiction(): void {
     if (this.addictionForm.valid) {
 
-       this.addictionService.createAddiction(this.addictionForm.value, this.type?.value).subscribe({
+      this.addictionService.createAddiction(this.addictionForm.value, this.type?.value).subscribe({
         next: () => {
           this.addictionForm.reset();
         },
-        error: (error: any) => {
-          alert('Failed to add addiction. Please try again.');
+        error: () => {
+          this.toastr.error('Failed to add addiction. Please try again.');
         },
-         complete: () => {
+        complete: () => {
           this.loadAddictions();
-         }
-       });
+        }
+      });
     }
   }
 
@@ -77,15 +95,79 @@ export class AdminAddictionsComponent implements OnInit{
     imgElement.src = 'assets/default-image.webp';
   }
 
-   loadAddictions() {
+  loadAddictions() {
     this.addictionService.getAllAddictions().subscribe({
       next: (addictions: AdminAddictionResponse[]) => {
         this.addictions = addictions;
       },
-      error: (error: any) => {
-        console.error('Error loading addictions:', error);
-        alert('Failed to load addictions. Please try again.');
+      error: () => {
+        this.toastr.error('Failed to load addictions. Please try again.');
       }
     })
+  }
+
+  onEditAddiction(addiction: AdminAddictionResponse) {
+    this.currentEditId = addiction.id;
+    this.addictionForm.patchValue({
+      type: addiction.categoryType,
+      name: addiction.name,
+      imageUrl: addiction.imageUrl
+    });
+  }
+
+  onCancelEdit() {
+    this.currentEditId = null;
+    this.addictionForm.reset();
+  }
+
+  onSubmit() {
+    if (this.addictionForm.invalid) return;
+
+    this.isLoading = true;
+    const formValue = this.addictionForm.value;
+    const requestDto: AdminAddictionRequest = {
+      name: formValue.name,
+      imageUrl: formValue.imageUrl
+    };
+
+    if (this.currentEditId) {
+      this.updateAddiction(this.currentEditId, requestDto);
+    } else {
+      this.addAddiction();
+    }
+  }
+
+  private updateAddiction(addictionId: number, requestDto: AdminAddictionRequest) {
+    this.addictionService.updateAddiction(addictionId, requestDto)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe({
+        next: (updatedAddiction) => {
+          const index = this.addictions.findIndex(a => a.id === updatedAddiction.id);
+          if (index !== -1) {
+            this.addictions[index] = updatedAddiction;
+          }
+          this.onCancelEdit();
+        },
+        error: (err) => console.error('Failed to update addiction', err)
+      });
+  }
+
+  onDeleteAddiction(id: number) {
+    if (confirm(`Are you sure you want to delete"?`)) {
+      this.addictionService.deleteAddiction(id).subscribe({
+        next: () => {
+          this.toastr.warning('Addiction deleted successfully');
+          this.loadAddictions();
+        },
+        error: (error) => {
+          if (error.status === 409) {
+            this.toastr.error('Addiction cannot be deleted because it is associated with users');
+            return;
+          }
+          this.toastr.error('Failed to delete addiction');
+        },
+
+      });
+    }
   }
 }
