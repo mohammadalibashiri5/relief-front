@@ -12,22 +12,41 @@ export class ArticleService {
 
   private readonly url:string = environment.API_BASE_URL;
 
-  constructor(private http:HttpClient) { }
+  constructor(private readonly http:HttpClient) { }
 
-  addArticle(article: ArticleRequest): Observable<ArticleResponse> {
-    return this.http.post<ArticleResponse>(`${this.url}/article`, article);
+  addArticle(article: ArticleRequest, category:string): Observable<ArticleResponse> {
+    const params = category ? new HttpParams().set('categoryName', category) : new HttpParams();
+    return this.http.post<ArticleResponse>(`${this.url}/article`, article, { params });
   }
 
-  getArticles(category?: string): Observable<ArticleResponse[]> {
-    // If category is provided, add it as a query parameter
-    const params = category ? new HttpParams().set('category', category) : new HttpParams();
-
-    return this.http.get<ArticleResponse[]>(`${this.url}/articles`, { params })
+  getArticlesByCategory(category: string): Observable<ArticleResponse[]> {
+    const params:HttpParams = new HttpParams().set('category', category);
+    return this.http.get<ArticleResponse[]>(`${this.url}/articlesByCategory`, { params })
       .pipe(
         catchError(error => {
           console.error('Error fetching articles:', error);
-          return of([]); // Return empty array on error
+          return of([]);
         })
       );
+  }
+  getAllArticles(): Observable<ArticleResponse[]> {
+    return this.http.get<ArticleResponse[]>(`${this.url}/articles`)
+      .pipe(
+        catchError(error => {
+          console.error('Error fetching all articles:', error);
+          return of([]);
+        })
+      );
+  }
+
+  getArticleById(id: number) {
+    return this.http.get<ArticleResponse>(`${this.url}/article/${id}`)
+      .pipe(
+        catchError(error => {
+          console.error('Error fetching article by ID:', error);
+          return of(null);
+        })
+      );
+
   }
 }
