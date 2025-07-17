@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {CategoryTypeService} from '../../services/category-type.service';
 import {CategoryTypeRequest} from '../../models/RequestModel/categoryTypeRequest';
 import {CategoryTypeResponse} from '../../models/ResponseModel/categoryTypeResponse';
-import {NgForOf, NgIf} from '@angular/common';
+import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import {AdminAddictionRequest} from '../../models/RequestModel/AdminAddictionRequest';
 import {finalize} from 'rxjs';
 import {ToastrService} from 'ngx-toastr';
@@ -23,7 +23,8 @@ import {ItemsCardComponent} from '../items-card/items-card.component';
     NgForOf,
     CardWithActionComponent,
     HeaderManagementComponent,
-    ItemsCardComponent
+    ItemsCardComponent,
+    NgOptimizedImage
   ]
 })
 export class AdminCategoryTypeComponent implements OnInit {
