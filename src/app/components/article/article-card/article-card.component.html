@@ -1,0 +1,11 @@
+<div class="article-card">
+  <div class="card-image" [style.background-image]="'url(' + article.imageUrl + ')'">
+    <span class="category-badge">{{ article.category | titlecase }}</span>
+  </div>
+  <div class="card-content">
+    <div class="card-date">{{ article.createdAt | date }}</div>
+    <h3 class="card-title">{{ article.title }}</h3>
+    <p class="card-summary">{{ article.content | slice:0:100}} ...</p>
+    <button class="read-more-btn" (click)="readMore()">Read More</button>
+  </div>
+</div>

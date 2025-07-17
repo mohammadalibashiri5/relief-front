@@ -1,0 +1,28 @@
+<div class="article-showcase">
+  <header class="showcase-header">
+    <h1>Latest Articles</h1>
+    <div class="category-filter">
+      <button
+        *ngFor="let category of categories"
+        [class.active]="selectedCategory === category"
+        (click)="onCategoryChange(category)">
+        {{ category | titlecase }}
+      </button>
+    </div>
+  </header>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="!isLoading" class="article-grid">
+    <app-article-card
+      *ngFor="let article of articles"
+      [article]="article">
+    </app-article-card>
+  </div>
+
+  <div *ngIf="!isLoading && articles.length === 0" class="no-articles">
+    <p>No articles found in this category.</p>
+  </div>
+</div>

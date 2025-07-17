@@ -11,8 +11,8 @@ export const adminGuard: CanActivateFn = (route, state) => {
   if (authService.isAuthenticated() && authService.hasRole('ROLE_ADMIN')) {
     return true;
   } else {
-    router.navigate(['/login'], { queryParams: { returnUrl: state.url } }).then(() => { toastr.error('You have to log in first');
+    router.navigate(['/unauthorized'], { queryParams: { returnUrl: state.url } }).then(() => { toastr.error('You are not authorized to view this page');
     });
-    return false; // Block navigation
+    return false;
   }
 };

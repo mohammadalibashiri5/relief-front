@@ -11,6 +11,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (authService.isAuthenticated() && authService.hasRole('ROLE_VISITOR')) {
     return true;
   } else {
-    router.navigate(['/login'], { queryParams: { returnUrl: state.url } }).then(() => { toastr.error('You have to log in first');});
+    router.navigate(['/login'], { queryParams: { returnUrl: state.url } }).then(() => { toastr.error('You have to log in');});
     return false; // Block navigation
   }};
