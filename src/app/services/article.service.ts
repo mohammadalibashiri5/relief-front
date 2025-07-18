@@ -47,6 +47,30 @@ export class ArticleService {
           return of(null);
         })
       );
+  }
 
+  getArticlesByAdmin() {
+    return this.http.get<ArticleResponse[]>(`${this.url}/articlesByAdmin`)
+      .pipe(
+        catchError(error => {
+          console.error('Error fetching articles by admin:', error);
+          return of([]);
+        })
+      );
+  }
+
+  updateArticle(articleId: number, requestDto: ArticleRequest) {
+    const params:HttpParams = new HttpParams().set('articleId', articleId);
+    return this.http.put<ArticleResponse>(`${this.url}/article`, requestDto, { params })
+      .pipe(
+        catchError(error => {
+          console.error('Error updating article:', error);
+          return of(null);
+        })
+      );
+  }
+
+  deleteArticle(id: number) {
+    return this.http.delete<void>(`${this.url}/article/${id}`)
   }
 }

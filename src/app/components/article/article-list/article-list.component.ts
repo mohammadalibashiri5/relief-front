@@ -3,15 +3,13 @@ import {NgForOf, NgIf, TitleCasePipe} from '@angular/common';
 import {ArticleResponse} from '../../../models/ResponseModel/articleResponse';
 import {ArticleService} from '../../../services/article.service';
 import {CategoryTypeService} from '../../../services/category-type.service';
-import {ArticleCardComponent} from '../article-card/article-card.component';
 
 @Component({
   selector: 'app-article-list',
   imports: [
     NgForOf,
     NgIf,
-    TitleCasePipe,
-    ArticleCardComponent
+    TitleCasePipe
   ],
   templateUrl: './article-list.component.html',
   styleUrl: './article-list.component.css'
@@ -71,4 +69,11 @@ export class ArticleListComponent implements OnInit {
   }
 
 
+  onEditArticle(article: ArticleResponse) {
+
+  }
+
+  onDeleteArticle(id: number) {
+
+  }
 }

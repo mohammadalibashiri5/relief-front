@@ -15,12 +15,7 @@
     <div class="spinner"></div>
   </div>
 
-  <div *ngIf="!isLoading" class="article-grid">
-    <app-article-card
-      *ngFor="let article of articles"
-      [article]="article">
-    </app-article-card>
-  </div>
+
 
   <div *ngIf="!isLoading && articles.length === 0" class="no-articles">
     <p>No articles found in this category.</p>

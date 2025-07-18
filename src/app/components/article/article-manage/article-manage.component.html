@@ -7,72 +7,113 @@
 
   <div class="management-content">
     <!-- Form Section -->
-    <app-items-card iconClass="bi-plus-circle-dotted" title="Add new article">
-
+    <app-items-card iconClass="bi-plus-circle-dotted" title="Add New Article">
       <form [formGroup]="articleForm" (ngSubmit)="onSubmit()">
-        <!-- Title Field -->
-        <div class="mb-4">
-          <label for="title" class="form-label">Article Title</label>
-          <input type="text"
-                 class="form-control form-control-lg"
-                 id="title"
-                 formControlName="title"
-                 placeholder="Enter article title">
-          <div *ngIf="articleForm.get('title')?.invalid && articleForm.get('title')?.touched"
-               class="text-danger mt-1">
-            Title is required and should be 5-120 characters
+        <div class="form-group mb-3">
+          <label for="title" class="form-label">Article Title *</label>
+          <input
+            type="text"
+            id="title"
+            formControlName="title"
+            placeholder="Enter article title"
+            class="form-control"
+            [class.is-invalid]="articleForm.get('title')?.invalid && articleForm.get('title')?.touched"
+          >
+          <div *ngIf="articleForm.get('title')?.invalid && articleForm.get('title')?.touched" class="invalid-feedback">
+            <div *ngIf="articleForm.get('title')?.errors?.['required']">Article title is required</div>
+            <div *ngIf="articleForm.get('title')?.errors?.['minlength']">Minimum 5 characters required</div>
           </div>
         </div>
 
-        <!-- Image URL -->
-        <div class="mb-4">
-          <label for="imageUrl" class="form-label">Featured Image URL</label>
-          <input type="url"
-                 class="form-control"
-                 id="imageUrl"
-                 formControlName="imageUrl"
-                 placeholder="https://example.com/image.jpg">
-          <div class="mt-2">
-            <img *ngIf="articleForm.get('imageUrl')?.value"
-                 [src]="articleForm.get('imageUrl')?.value"
-                 class="img-fluid rounded mt-2"
-                 alt="Preview"
-                 style="max-height: 200px;">
+        <div class="form-group mb-3">
+          <label for="imageUrl" class="form-label">Image URL *</label>
+          <input
+            type="url"
+            id="imageUrl"
+            formControlName="imageUrl"
+            placeholder="https://example.com/image.jpg"
+            class="form-control"
+            [class.is-invalid]="articleForm.get('imageUrl')?.invalid && articleForm.get('imageUrl')?.touched"
+          >
+          <div *ngIf="articleForm.get('imageUrl')?.invalid && articleForm.get('imageUrl')?.touched" class="invalid-feedback">
+            <div *ngIf="articleForm.get('imageUrl')?.errors?.['required']">Image URL is required</div>
+            <div *ngIf="articleForm.get('imageUrl')?.errors?.['pattern']">Please enter a valid URL starting with https://</div>
+          </div>
+
+          <div *ngIf="articleForm.get('imageUrl')?.value" class="image-preview mt-3 text-center">
+            <img
+              [src]="articleForm.get('imageUrl')?.value"
+              alt="Article preview"
+              class="img-thumbnail"
+              (error)="handleImageError($event)"
+              style="max-height: 200px;">
+            <small class="text-muted d-block mt-1">Image preview</small>
           </div>
         </div>
 
-        <!-- Category Select -->
-        <div class="mb-4">
-          <label for="category" class="form-label">Category</label>
-          <select class="form-select"
-                  id="category"
-                  formControlName="category">
+        <div class="form-group mb-3">
+          <label for="category" class="form-label">Category *</label>
+          <select
+            class="form-select"
+            id="category"
+            formControlName="category"
+            [class.is-invalid]="articleForm.get('category')?.invalid && articleForm.get('category')?.touched"
+          >
             <option value="" disabled selected>Select a category</option>
             <option *ngFor="let cat of categories" [value]="cat">{{cat}}</option>
           </select>
+          <div *ngIf="articleForm.get('category')?.invalid && articleForm.get('category')?.touched" class="invalid-feedback">
+            Category selection is required
+          </div>
         </div>
 
-        <!-- Content Editor -->
-        <div class="mb-4">
-          <label for="content" class="form-label">Article Content</label>
-          <textarea class="form-control"
-                    id="content"
-                    formControlName="content"
-                    rows="10"
-                    placeholder="Write your article content here..."></textarea>
+        <div class="form-group mb-3">
+          <label for="content" class="form-label">Content *</label>
+          <textarea
+            id="content"
+            formControlName="content"
+            rows="10"
+            placeholder="Write your article content here..."
+            class="form-control"
+            [class.is-invalid]="articleForm.get('content')?.invalid && articleForm.get('content')?.touched"
+          ></textarea>
+          <div *ngIf="articleForm.get('content')?.invalid && articleForm.get('content')?.touched" class="invalid-feedback">
+            <div *ngIf="articleForm.get('content')?.errors?.['required']">Content is required</div>
+            <div *ngIf="articleForm.get('content')?.errors?.['minlength']">Minimum 100 characters required</div>
+          </div>
           <div class="text-end text-muted small mt-1">
             {{ articleForm.get('content')?.value?.length || 0 }}/5000 characters
           </div>
         </div>
+
         <div class="form-actions">
           <button type="submit" class="btn-submit" [disabled]="articleForm.invalid">
-            <span>Add Category</span>
+            <span>{{ articleId ? 'Update' : 'Add' }} Article</span>
             <i class="bi bi-arrow-right"></i>
           </button>
         </div>
       </form>
     </app-items-card>
+
+    <!-- List Section -->
+    <app-items-card iconClass="bi-collection-fill" title="Existing Articles">
+      <div *ngIf="articles.length === 0" class="empty-state">
+        <i class="bi bi-inbox"></i>
+        <h4>No articles found</h4>
+        <p>Start by adding your first article</p>
+      </div>
+
+      <div class="management-grid">
+        <div *ngFor="let article of articles" class="grid-item-wrapper">
+          <app-card-with-action
+            [imageUrl]="article.imageUrl"
+            [title]="article.title"
+            [subtitle]="article.category"
+            (edit)="onEditArticle(article)"
+            (delete)="onDeleteArticle(article.id)">
+          </app-card-with-action>
+        </div>
+      </div>
+    </app-items-card>
   </div>
 </div>
-
-

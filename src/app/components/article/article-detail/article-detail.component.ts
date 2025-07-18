@@ -1,15 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {ArticleResponse} from '../../../models/ResponseModel/articleResponse';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {ArticleService} from '../../../services/article.service';
 import {DatePipe, NgIf, TitleCasePipe} from '@angular/common';
+import {CardWithActionComponent} from '../../card-with-action/card-with-action.component';
 
 @Component({
   selector: 'app-article-detail',
   imports: [
     TitleCasePipe,
     DatePipe,
-    NgIf
+    NgIf,
+    RouterLink,
+    CardWithActionComponent
   ],
   templateUrl: './article-detail.component.html',
   styleUrl: './article-detail.component.css'
@@ -33,5 +36,13 @@ export class ArticleDetailComponent implements OnInit{
       this.article = article;
       this.isLoading = false;
     });
+  }
+
+  onEditArticle(category: any) {
+    
+  }
+
+  onDeleteArticle(id: number) {
+    
   }
 }
