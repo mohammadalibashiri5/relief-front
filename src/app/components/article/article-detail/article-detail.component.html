@@ -11,7 +11,12 @@
     <p>{{ article.content }}</p>
   </div>
 
-  <button class="back-btn" routerLink="/">Back to Articles</button>
+
+  <button class="back-btn" [routerLink]="'../../articles'">Back to Articles</button>
+  <app-card-with-action
+    (edit)="onEditArticle(article)"
+    (delete)="onDeleteArticle(article.id)">
+  </app-card-with-action>
 </div>
 
 <div *ngIf="isLoading" class="loading-spinner">

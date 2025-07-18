@@ -126,7 +126,7 @@ export class AdminCategoryTypeComponent implements OnInit {
     }
   }
 
-  private updateCategoryType(categoryTypeId: number, requestDto: AdminAddictionRequest) {
+  updateCategoryType(categoryTypeId: number, requestDto: AdminAddictionRequest) {
     this.categoryService.updateCategoryType(categoryTypeId, requestDto)
       .pipe(finalize(() => this.isLoading = false))
       .subscribe({
