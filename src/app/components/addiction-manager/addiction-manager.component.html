@@ -8,7 +8,8 @@
     </button>
   </div>
 </div>
-<!-- Modal for Adding/Editing Addiction -->
+
+<!-- Modal for Add/Edit -->
 <app-modal
   [isOpen]="showModal"
   [title]="modalTitle"
@@ -17,72 +18,110 @@
 >
   <div class="modal-body">
     <form [formGroup]="addictionForm" (ngSubmit)="isEditMode ? updateAddiction() : createAddiction()">
-      <!-- Name Field -->
-      <div class="mb-4">
-        <label class="form-label fw-bold">Addiction Name</label>
-        <input
-          formControlName="name"
-          type="text"
-          class="form-control form-control-lg"
-          placeholder="e.g. Nicotine, Alcohol, etc.">
-        <div *ngIf="addictionForm.get('name')?.invalid && addictionForm.get('name')?.touched"
-             class="text-danger mt-1">
-          <i class="bi bi-exclamation-circle me-1"></i>
-          This field is required
-        </div>
-      </div>
 
-      <!-- Description Field -->
-      <div class="mb-4">
-        <label class="form-label fw-bold">Description</label>
-        <textarea
-          formControlName="description"
+      <!-- Category -->
+      <div class="form-group mb-3">
+        <label class="form-label fw-bold" for="category">Category</label>
+        <select
+          id="category"
           class="form-control"
-          rows="4"
-          placeholder="Describe your addiction patterns..."></textarea>
-        <div *ngIf="addictionForm.get('description')?.invalid && addictionForm.get('description')?.touched"
-             class="text-danger mt-1">
-          <i class="bi bi-exclamation-circle me-1"></i>
-          Please provide a description
-        </div>
-      </div>
-
-      <!-- Severity Level -->
-      <div class="mb-4">
-        <label class="form-label fw-bold">Severity Level</label>
-        <select class="form-select" formControlName="severityLevel">
-          <option value="" disabled selected>How severe is this addiction?</option>
-          <option *ngFor="let level of severityLevels" [value]="level">
-            {{ level }}
-            <span *ngIf="level === 'HIGH'" class="text-danger">⚠️</span>
-            <span *ngIf="level === 'MEDIUM'" class="text-warning">⚠️</span>
-            <span *ngIf="level === 'LOW'" class="text-success">⚠️</span>
-          </option>
+          formControlName="categoryName"
+          [disabled]="isLoading"
+          (change)="onCategoryChange()"
+        >
+          <option value="">Select a category</option>
+          @for (category of categories; track category.name) {
+            <option [value]="category.name">
+              {{ category.name }}
+            </option>
+          }
         </select>
-        <div *ngIf="addictionForm.get('severityLevel')?.invalid && addictionForm.get('severityLevel')?.touched"
-             class="text-danger mt-1">
-          <i class="bi bi-exclamation-circle me-1"></i>
-          Please select a severity level
-        </div>
+        @if (addictionForm.get('categoryName')?.invalid && isSubmitted) {
+          <div class="text-danger">Category is required</div>
+        }
       </div>
 
-      <!-- Year of Addiction -->
+      <!-- Addiction -->
+      @if (addictionForm.get('categoryName')?.value) {
+        <div class="form-group mb-3">
+          <label class="form-label fw-bold" for="addiction">Addiction</label>
+          <ng-select
+            [items]="filteredAddictions"
+            bindLabel="name"
+            bindValue="name"
+            placeholder="Select an addiction"
+            formControlName="addictionName"
+            [clearable]="false"
+          >
+            <ng-template ng-label-tmp let-item="item">
+              <div class="d-flex align-items-center">
+                <img [src]="item.imageUrl" alt="{{ item.name }}" class="option-icon me-2" style="width: 20px; height: 20px;" />
+                {{ item.name }}
+              </div>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+              <div class="d-flex align-items-center">
+                <img [src]="item.imageUrl" alt="{{ item.name }}" class="option-icon me-2" style="width: 20px; height: 20px;" />
+                {{ item.name }}
+              </div>
+            </ng-template>
+          </ng-select>
+          @if (addictionForm.get('addictionName')?.invalid && isSubmitted) {
+            <div class="text-danger">Addiction is required</div>
+          }
+        </div>
+      }
+
+      <!-- Severity -->
       <div class="mb-4">
-        <label class="form-label fw-bold">Duration</label>
+        <label class="form-label fw-bold" for="severityLevel">Severity Level</label>
+        <select class="form-select" id="severityLevel" formControlName="severityLevel">
+          <option value="" disabled selected>How severe is this addiction?</option>
+          @for (level of severityLevels; track level) {
+            <option [value]="level">
+              {{ level }}
+              @switch (level) {
+                @case ('HIGH') {
+                  🔴
+                }
+                @case ('MEDIUM') {
+                  🟠
+                }
+                @case ('LOW') {
+                  🟡
+                }
+              }
+            </option>
+          }
+        </select>
+        @if (addictionForm.get('severityLevel')?.invalid && addictionForm.get('severityLevel')?.touched) {
+          <div class="text-danger mt-1">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            Please select a severity level
+          </div>
+        }
+      </div>
+
+      <!-- Duration -->
+      <div class="mb-4">
+        <label class="form-label fw-bold" for="duration">Duration</label>
         <div class="input-group">
           <input
-            formControlName="yearOfAddiction"
+            id="duration"
             type="number"
-            min="0"
             class="form-control"
-            placeholder="0">
+            placeholder="0"
+            min="0"
+            formControlName="yearsOfAddiction"
+          />
           <span class="input-group-text">years</span>
         </div>
-        <div *ngIf="addictionForm.get('yearOfAddiction')?.invalid && addictionForm.get('yearOfAddiction')?.touched"
-             class="text-danger mt-1">
-          <i class="bi bi-exclamation-circle me-1"></i>
-          Please enter a valid number
-        </div>
+        @if (addictionForm.get('yearOfAddiction')?.invalid && addictionForm.get('yearOfAddiction')?.touched) {
+          <div class="text-danger mt-1">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            Please enter a valid number
+          </div>
+        }
       </div>
 
       <!-- Submit Button -->
@@ -90,7 +129,8 @@
         <button
           type="submit"
           class="btn btn-primary btn-lg"
-          [disabled]="addictionForm.invalid">
+          [disabled]="addictionForm.invalid"
+        >
           <i class="bi" [class.bi-save]="isEditMode" [class.bi-plus-circle]="!isEditMode"></i>
           {{ isEditMode ? ' Update Addiction' : ' Register Addiction' }}
         </button>
@@ -99,10 +139,7 @@
   </div>
 </app-modal>
 
-
+<!-- List of Addictions -->
 <div class="container">
-  <app-addiction-detail
-    (edit)="openEditModal($event)"
-    (delete)="deleteAddiction($event)">
-  </app-addiction-detail>
+  <app-addiction-detail (delete)="deleteAddiction($event)"></app-addiction-detail>
 </div>
