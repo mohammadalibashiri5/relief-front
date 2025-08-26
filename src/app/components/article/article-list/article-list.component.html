@@ -11,13 +11,20 @@
     </div>
   </header>
 
-  <div *ngIf="isLoading" class="loading-spinner">
-    <div class="spinner"></div>
-  </div>
+  <app-items-card iconClass="bi-collection-fill" title="Existing Categories">
+    <div *ngIf="articles.length === 0" class="empty-state">
+      <i class="bi bi-inbox"></i>
+      <h4>No Articles found</h4>
+      <p>Start by adding your first category</p>
+    </div>
 
-
-
-  <div *ngIf="!isLoading && articles.length === 0" class="no-articles">
-    <p>No articles found in this category.</p>
-  </div>
+    <div class="management-grid">
+      <div *ngFor="let category of articles" class="grid-item-wrapper">
+        <app-card-with-action
+          [imageUrl]="category.imageUrl"
+          [title]="category.title">
+        </app-card-with-action>
+      </div>
+    </div>
+  </app-items-card>
 </div>

@@ -3,13 +3,17 @@ import {NgForOf, NgIf, TitleCasePipe} from '@angular/common';
 import {ArticleResponse} from '../../../models/ResponseModel/articleResponse';
 import {ArticleService} from '../../../services/article.service';
 import {CategoryTypeService} from '../../../services/category-type.service';
+import {ItemsCardComponent} from '../../items-card/items-card.component';
+import {CardWithActionComponent} from '../../card-with-action/card-with-action.component';
 
 @Component({
   selector: 'app-article-list',
   imports: [
     NgForOf,
     NgIf,
-    TitleCasePipe
+    TitleCasePipe,
+    ItemsCardComponent,
+    CardWithActionComponent
   ],
   templateUrl: './article-list.component.html',
   styleUrl: './article-list.component.css'

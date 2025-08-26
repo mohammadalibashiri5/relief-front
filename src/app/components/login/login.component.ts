@@ -46,7 +46,7 @@ export class LoginComponent {
         }
       },
       error: (err) => {
-        if (err.status === 403) {
+        if (err.status === 403 || err.status === 400) {
           this.toastr.error('Wrong Email or Password');
         }
       }

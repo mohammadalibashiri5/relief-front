@@ -1,12 +1,51 @@
+body {
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 .card {
+  border-radius: 15px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+.form-control, .form-select {
+  border-radius: 10px;
+  padding: 12px;
+  border: 2px solid #e9ecef;
+}
+.form-control:focus, .form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+.btn-primary {
+  background: linear-gradient(to right, #4e54c8, #8f94fb);
   border: none;
-  border-radius: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  padding: 12px;
+  font-weight: 600;
 }
-.btn-light-blue {
-  background-color: #7c4dff;
-  color: white;
+.header-icon {
+  font-size: 2.5rem;
+  color: #4e54c8;
 }
-.btn-light-blue:hover {
-  background-color: #5e35b1;
+.addiction-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+.severity-indicator {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+.high-severity {
+  background-color: #dc3545;
+}
+.medium-severity {
+  background-color: #fd7e14;
+}
+.low-severity {
+  background-color: #ffc107;
 }

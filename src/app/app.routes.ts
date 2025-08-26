@@ -4,7 +4,6 @@ import {RegisterComponent} from './components/register/register.component';
 import {LoginComponent} from './components/login/login.component';
 import {AddictionComponent} from './components/addiction/addiction.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
-import {CheckinComponent} from './components/checkin/checkin.component';
 import {authGuard} from './guards/auth.guard';
 import {TriggerManagerComponent} from './components/trigger-manager/trigger-manager.component';
 import {AddictionDetailComponent} from './components/addiction-detail/addiction-detail.component';
@@ -22,7 +21,6 @@ export const routes: Routes = [
   { path:"register", component:RegisterComponent },
   { path:"login", component:LoginComponent },
   { path:"my-addictions", component:AddictionComponent, canActivate: [authGuard] },
-  { path:"checkin", component:CheckinComponent , canActivate: [authGuard]},
   { path:"dashboard", component:DashboardComponent , canActivate: [authGuard], data: {roles: ['ROLE_VISITOR']}},
   { path:"admin/dashboard", component:AdminDashboardComponent , canActivate: [adminGuard], data: {roles: 'ROLE_ADMIN'}},
   { path:"articles/panel", component:ArticleManageComponent , canActivate: [adminGuard], data: {roles: 'ROLE_ADMIN'}},

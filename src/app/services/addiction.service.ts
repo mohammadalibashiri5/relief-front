@@ -4,19 +4,20 @@ import {AddictionRequest} from '../models/RequestModel/addictionRequest';
 import {BehaviorSubject, catchError, Observable, of, tap} from 'rxjs';
 import {AddictionResponse} from '../models/ResponseModel/addictionResponse';
 import {environment} from '../../environments/environment';
+import {AdminAddictionResponse} from '../models/ResponseModel/adminAddiction';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AddictionService{
 
-  private readonly url = `${environment.API_BASE_URL}/user/addictions`;
+  private readonly url = `${environment.API_BASE_URL}/user-addictions`;
 
-  private addictionSubject: BehaviorSubject<AddictionResponse | null> = new BehaviorSubject<AddictionResponse | null>(null);
-  private addictionsSubject: BehaviorSubject<AddictionResponse[] | null> = new BehaviorSubject<AddictionResponse[] | null>(null);
+  private readonly addictionSubject: BehaviorSubject<AddictionResponse | null> = new BehaviorSubject<AddictionResponse | null>(null);
+  private readonly addictionsSubject: BehaviorSubject<AddictionResponse[] | null> = new BehaviorSubject<AddictionResponse[] | null>(null);
 
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getAddiction(): Observable<AddictionResponse | null> {
     return this.addictionSubject.asObservable();
@@ -39,8 +40,9 @@ export class AddictionService{
     return this.http.delete<void>(`${this.url}/${id}`);
   }
 
-  addAddiction(addiction: AddictionRequest): Observable<AddictionResponse> {
-    return this.http.post<AddictionResponse>(`${this.url}`, addiction);
+  addAddiction( addiction: AddictionRequest, addictionName:string): Observable<AddictionResponse> {
+    const params = new HttpParams().set('addictionName', addictionName ?? '');
+    return this.http.post<AddictionResponse>(this.url, addiction, { params});
   }
 
   updateAddiction(id: number, addiction: any) {
@@ -49,7 +51,7 @@ export class AddictionService{
   }
 
   getAddictionById(addictionId: number) {
-    return this.http.get<AddictionResponse>(`${this.url}user/addiction/${addictionId}`);
+    return this.http.get<AddictionResponse>(`${this.url}/${addictionId}`);
 
   }
 
@@ -58,11 +60,17 @@ export class AddictionService{
     const params = new HttpParams()
       .set('addictionName', addictionName);
 
-    return this.http.get<AddictionResponse>(`${this.url}user/addictions/${addictionName}`,  { params } );
+    return this.http.get<AddictionResponse>(`${this.url}/${addictionName}`,  { params } );
 
   }
 
   private clearAddictions() {
     this.addictionsSubject.next(null);
+  }
+
+  getAddictionByCategoryType(categoryType: string):Observable<AddictionResponse[]> {
+    const params = new HttpParams()
+      .set('categoryType', categoryType);
+    return this.http.get<AddictionResponse[]>(`${this.url}/byCategoryType`,  { params } );
   }
 }
