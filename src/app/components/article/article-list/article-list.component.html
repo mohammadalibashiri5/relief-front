@@ -1,0 +1,30 @@
+<div class="article-showcase">
+  <header class="showcase-header">
+    <h1>Latest Articles</h1>
+    <div class="category-filter">
+      <button
+        *ngFor="let category of categories"
+        [class.active]="selectedCategory === category"
+        (click)="onCategoryChange(category)">
+        {{ category | titlecase }}
+      </button>
+    </div>
+  </header>
+
+  <app-items-card iconClass="bi-collection-fill" title="Existing Categories">
+    <div *ngIf="articles.length === 0" class="empty-state">
+      <i class="bi bi-inbox"></i>
+      <h4>No Articles found</h4>
+      <p>Start by adding your first category</p>
+    </div>
+
+    <div class="management-grid">
+      <div *ngFor="let category of articles" class="grid-item-wrapper">
+        <app-card-with-action
+          [imageUrl]="category.imageUrl"
+          [title]="category.title">
+        </app-card-with-action>
+      </div>
+    </div>
+  </app-items-card>
+</div>

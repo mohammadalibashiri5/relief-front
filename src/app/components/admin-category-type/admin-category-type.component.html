@@ -1,0 +1,89 @@
+<!-- category-management.component.html -->
+<div class="management-container">
+  <app-header-management
+    iconClass="bi-tags-fill"
+    title="Category Types Management"
+    description="Comprehensive management for addiction categories">
+  </app-header-management>
+
+  <div class="management-content">
+    <!-- Form Section -->
+    <app-items-card iconClass="bi-plus-circle-dotted" title="Add New Category">
+      <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+        <div class="form-group mb-3">
+          <label for="name" class="form-label">Category Name *</label>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            placeholder="Enter category name"
+            class="form-control"
+            [class.is-invalid]="name?.invalid && name?.touched"
+          >
+          <div *ngIf="name?.invalid && name?.touched" class="invalid-feedback">
+            <div *ngIf="name?.errors?.['required']">Category name is required</div>
+            <div *ngIf="name?.errors?.['minlength']">Minimum 2 characters required</div>
+          </div>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="imageUrl" class="form-label">Image URL *</label>
+          <input
+            type="url"
+            id="imageUrl"
+            formControlName="imageUrl"
+            placeholder="https://example.com/image.jpg"
+            class="form-control"
+            [class.is-invalid]="imageUrl?.invalid && imageUrl?.touched"
+          >
+          <div *ngIf="imageUrl?.invalid && imageUrl?.touched" class="invalid-feedback">
+            <div *ngIf="imageUrl?.errors?.['required']">Image URL is required</div>
+            <div *ngIf="imageUrl?.errors?.['pattern']">Please enter a valid URL starting with https://
+            </div>
+          </div>
+
+          <div *ngIf="imageUrl?.value" class="image-preview mt-3 text-center">
+            <img
+              onKeyDown="handleImageError($event)"
+              ngSrc= "{{ imageUrl?.value }}"
+              alt="Category preview"
+              class="img-thumbnail"
+              (error)="handleImageError($event)"
+              onerror="this.src='assets/images/default-image.png'"
+              fill>
+            <small class="text-muted d-block mt-1">Image preview</small>
+          </div>
+        </div>
+
+        <div class="form-actions mt-4 text-end">
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-submit" [disabled]="categoryForm.invalid">
+            <span>{{ categoryId ? 'Update' : 'Add' }} Category</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </form>
+    </app-items-card>
+
+    <!-- List Section -->
+    <app-items-card iconClass="bi-collection-fill" title="Existing Categories">
+      <div *ngIf="categories.length === 0" class="empty-state">
+        <i class="bi bi-inbox"></i>
+        <h4>No categories found</h4>
+        <p>Start by adding your first category</p>
+      </div>
+
+      <div class="management-grid">
+        <div *ngFor="let category of categories" class="grid-item-wrapper">
+          <app-card-with-action
+            [imageUrl]="category.imageUrl"
+            [title]="category.name"
+            (edit)="onEditCategory(category)"
+            (delete)="onDeleteCategory(category.id)">
+          </app-card-with-action>
+        </div>
+      </div>
+    </app-items-card>
+  </div>
+</div>

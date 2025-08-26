@@ -2,9 +2,254 @@
 @import 'ngx-toastr/toastr';
 
 body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   background-image: url("assets/wave-background.jpg");
 }
-/* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.cursor-pointer {
+  cursor: pointer;
+}
+/* Base Management Styles */
+.management-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2d3748;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header Styles */
+.header {
+  margin-bottom: 40px;
+  position: relative;
+
+  :is(-content) {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  i {
+    font-size: 2.5rem;
+    color: #4f46e5;
+  }
+
+  h2 {
+    font-weight: 700;
+    margin: 0;
+    color: #1e293b;
+  }
+
+  p {
+    margin: 5px 0 0;
+    color: #64748b;
+  }
+}
+
+.header-decoration {
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #4f46e5, #a78bfa);
+  border-radius: 2px;
+}
+
+/* Glass Card Styles */
+.card-glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  margin-bottom: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+    h3 {
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    i {
+      color: #4f46e5;
+    }
+  }
+}
+
+/* Form Styles */
+.form-group {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.floating-input {
+  label {
+    position: absolute;
+    top: 15px;
+    left: 45px;
+    color: #64748b;
+    transition: all 0.3s;
+    pointer-events: none;
+    background: white;
+    padding: 0 5px;
+  }
+
+  .form-control {
+    padding: 15px 20px 15px 45px;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+    transition: all 0.3s;
+
+    &:focus {
+      border-color: #a78bfa;
+      box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+      background-color: white;
+    }
+
+    &:focus + label,
+    &:not(:placeholder-shown) + label {
+      top: -10px;
+      left: 35px;
+      font-size: 0.8rem;
+      color: #4f46e5;
+    }
+  }
+}
+
+.input-icon {
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  color: #94a3b8;
+}
+
+/* Image Preview */
+.image-preview {
+  margin-top: 20px;
+
+  .preview-container {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .preview-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .preview-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+
+      i {
+        color: white;
+        font-size: 2rem;
+      }
+    }
+
+    &:hover {
+      .preview-overlay {
+        opacity: 1;
+      }
+      .preview-image {
+        transform: scale(1.05);
+      }
+    }
+  }
+}
+
+/* Button Styles */
+.btn-submit {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(79, 70, 229, 0.25);
+  }
+
+  &:disabled {
+    background: #cbd5e1;
+    transform: none;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #64748b;
+
+  i {
+    font-size: 3rem;
+    color: #cbd5e1;
+    margin-bottom: 15px;
+  }
+
+  h4 {
+    margin: 10px 0 5px;
+    color: #475569;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+/* Grid Styles */
+.management-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+
+  .grid-item-wrapper {
+    transition: transform 0.3s;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+}

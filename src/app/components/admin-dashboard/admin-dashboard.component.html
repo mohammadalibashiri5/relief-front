@@ -1,0 +1,21 @@
+<div class="dashboard-container">
+  <div class="header">
+    <h1 class="display-5 fw-bold">Admin Dashboard</h1>
+    <p class="lead">Manage your addiction recovery platform</p>
+  </div>
+
+  <div class="card-grid">
+    <div class="dashboard-card" *ngFor="let link of dashboardLink" [ngClass]="link.color">
+      <div class="card-icon">
+        <i class="bi" [ngClass]="link.icon"></i>
+      </div>
+      <div class="card-content">
+        <h3>{{ link.name }}</h3>
+        <p>{{ link.description }}</p>
+        <a [routerLink]="link.path" class="card-button">
+          Manage <i class="bi bi-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

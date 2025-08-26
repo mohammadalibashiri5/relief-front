@@ -1,0 +1,24 @@
+<div class="article-detail" *ngIf="!isLoading">
+  <div class="detail-header">
+    <span class="category-badge">{{ article.category | titlecase }}</span>
+    <h1>{{ article.title }}</h1>
+    <p class="article-date">{{ article.createdAt | date }}</p>
+  </div>
+
+  <div class="detail-image" [style.background-image]="'url(' + article.imageUrl + ')'"></div>
+
+  <div class="detail-content">
+    <p>{{ article.content }}</p>
+  </div>
+
+
+  <button class="back-btn" [routerLink]="'../../articles'">Back to Articles</button>
+  <app-card-with-action
+    (edit)="onEditArticle(article)"
+    (delete)="onDeleteArticle(article.id)">
+  </app-card-with-action>
+</div>
+
+<div *ngIf="isLoading" class="loading-spinner">
+  <div class="spinner"></div>
+</div>

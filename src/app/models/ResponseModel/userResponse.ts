@@ -7,5 +7,5 @@ export interface IUserResponse {
    email:string,
    createdAt:Date,
    dateOfBirth:Date,
-   addictions:AddictionResponse[]
+   role:string
 }

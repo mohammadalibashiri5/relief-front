@@ -1,0 +1,104 @@
+<!-- category-management.component.html -->
+<div class="management-container">
+  <app-header-management
+    iconClass="bi-tags-fill"
+    title="Addiction Management"
+    description="Comprehensive management for addictions based on categories">
+  </app-header-management>
+
+  <div class="management-content">
+    <!-- Form Section -->
+    <app-items-card iconClass="bi-plus-circle-dotted" title="Add New Addiction">
+      <form [formGroup]="addictionForm" (ngSubmit)="onSubmit()">
+        <div class="form-group floating-input">
+          <select
+            id="type"
+            formControlName="type"
+            class="form-control"
+            [class.is-invalid]="type?.invalid && type?.touched"
+          >
+            <option value="" disabled selected>Select the category type</option>
+            <option *ngFor="let cat of categories" [value]="cat">{{cat}}</option>
+          </select>
+          <label for="type">Category Type</label>
+          <i class="bi bi-tag-fill input-icon"></i>
+          <div *ngIf="type?.invalid && type?.touched" class="invalid-feedback">
+            <span *ngIf="type?.errors?.['required']">Category type is required</span>
+          </div>
+        </div>
+        <div class="form-group mb-3">
+          <label for="name" class="form-label">Addiction Name *</label>
+          <input
+            type="text"
+            id="name"
+            formControlName="name"
+            placeholder="Enter Addiction name"
+            class="form-control"
+            [class.is-invalid]="name?.invalid && name?.touched"
+          >
+          <div *ngIf="name?.invalid && name?.touched" class="invalid-feedback">
+            <div *ngIf="name?.errors?.['required']">Addiction name is required</div>
+            <div *ngIf="name?.errors?.['minlength']">Minimum 2 characters required</div>
+          </div>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="imageUrl" class="form-label">Image URL *</label>
+          <input
+            type="url"
+            id="imageUrl"
+            formControlName="imageUrl"
+            placeholder="https://example.com/image.jpg"
+            class="form-control"
+            [class.is-invalid]="imageUrl?.invalid && imageUrl?.touched"
+          >
+          <div *ngIf="imageUrl?.invalid && imageUrl?.touched" class="invalid-feedback">
+            <div *ngIf="imageUrl?.errors?.['required']">Image URL is required</div>
+            <div *ngIf="imageUrl?.errors?.['pattern']">Please enter a valid URL starting with http:// or https://
+            </div>
+          </div>
+
+          <div *ngIf="imageUrl?.value" class="image-preview mt-3 text-center">
+            <img
+              [src]="imageUrl?.value"
+              alt="Category preview"
+              class="img-thumbnail"
+              style="max-height: 120px;"
+              (error)="handleImageError($event)"
+              onerror="this.src='assets/images/default-image.png'"
+            >
+            <small class="text-muted d-block mt-1">Image preview</small>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-submit" [disabled]="addictionForm.invalid">
+            <span>{{ currentEditId ? 'Update' : 'Add' }} Category</span>
+            <i class="bi bi-arrow-right"></i>
+          </button>
+        </div>
+      </form>
+
+    </app-items-card>
+
+    <!-- List Section -->
+    <app-items-card iconClass="bi-collection-fill" title="Existing Addiction">
+      <div *ngIf="addictions.length === 0" class="empty-state">
+        <i class="bi bi-inbox"></i>
+        <h4>No Addiction found</h4>
+        <p>Start by adding your first Addiction</p>
+      </div>
+
+      <div class="management-grid">
+        <div *ngFor="let addiction of addictions" class="grid-item-wrapper">
+          <app-card-with-action
+            [imageUrl]="addiction.imageUrl"
+            [title]="addiction.name"
+            (edit)="onEditAddiction(addiction)"
+            (delete)="onDeleteAddiction(addiction.id)">
+          </app-card-with-action>
+        </div>
+      </div>
+    </app-items-card>
+  </div>
+</div>

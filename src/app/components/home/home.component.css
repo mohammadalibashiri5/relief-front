@@ -1,6 +1,174 @@
-.trigger {
-  height: 5rem;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-.homeIcon {
-  height: 3rem;
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Hero Section */
+.hero {
+  padding: 6rem 0;
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+.hero-text {
+  flex: 1;
+  animation: fadeInLeft 1s ease;
+}
+
+.hero-text h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.hero-text p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  opacity: 0.9;
+}
+
+.hero-img {
+  flex: 1;
+  animation: fadeInRight 1s ease;
+}
+
+.hero-img img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 5%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+}
+
+/* Info Section */
+.info-section {
+  padding: 5rem 0;
+  background: #b5cee3;
+  animation: fadeInLeft 1s ease;
+  box-shadow: 0 0.5rem 1rem rgba(241, 213, 213, 0.1);
+}
+
+.info-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.info-grid {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+.info-text {
+  flex: 1;
+  text-align: left;
+}
+
+.info-text h3 {
+  font-size: 1.5rem;
+  margin: 1.5rem 0 1rem;
+}
+
+.info-text h3:first-child {
+  margin-top: 0;
+}
+
+.info-image {
+  flex: 1;
+}
+
+.info-image img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+/* CTA Section */
+.cta-section {
+  padding: 5rem 0;
+  text-align: center;
+}
+
+.cta-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.cta-section p {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  font-size: 1.1rem;
+}
+
+.cta-button {
+  background: white;
+  padding: 1rem 2.5rem;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-content, .info-grid {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .hero-text, .hero-img, .info-text, .info-image {
+    width: 100%;
+  }
+
+  .hero-img img, .info-image img {
+    max-width: 100%;
+  }
+
+  .hero {
+    padding: 4rem 0;
+  }
+
+  .info-section, .cta-section {
+    padding: 3rem 0;
+  }
 }

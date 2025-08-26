@@ -1,0 +1,15 @@
+.modal-danger {
+  .modal-header {
+    background-color: #dc3545;
+    color: white;
+  }
+
+  .modal-footer {
+    border-top: 1px solid #dee2e6;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+  }
+}

@@ -1,0 +1,21 @@
+<!-- card-with-actions.component.html -->
+<div class="card-with-actions">
+  <div class="card-image-container">
+    <img [src]="imageUrl" [alt]="title" class="card-image" (error)="handleImageError($event)">
+    <div *ngIf="badgeText" class="card-badge">{{ badgeText }}</div>
+  </div>
+
+  <div class="card-content">
+    <h3 class="card-title">{{ title }}</h3>
+    <p *ngIf="subtitle" class="card-subtitle">{{ subtitle }}</p>
+
+    <div *ngIf="showActions" class="card-actions">
+      <button class="action-btn edit-btn" (click)="onEdit()">
+        <i class="bi bi-pencil-square"></i>
+      </button>
+      <button class="action-btn delete-btn" (click)="onDelete()">
+        <i class="bi bi-trash3"></i>
+      </button>
+    </div>
+  </div>
+</div>

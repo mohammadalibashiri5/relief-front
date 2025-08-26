@@ -1,0 +1,111 @@
+/* card-with-actions.component.scss */
+.card-with-actions {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.card-image-container {
+  position: relative;
+  height: auto;
+  overflow: hidden;
+}
+
+.card-image {
+  width: 30%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.card-with-actions:hover .card-image {
+  transform: scale(1.1);
+}
+
+.card-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(79, 70, 229, 0.9);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.card-content {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
+  margin: 0 0 8px;
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.card-subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.9rem;
+  flex-grow: 1;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  i {
+    font-size: 0.9rem;
+  }
+}
+
+.edit-btn {
+  background-color: #e0f2fe;
+  color: #0369a1;
+
+  &:hover {
+    background-color: #bae6fd;
+  }
+}
+
+.delete-btn {
+  background-color: #fee2e2;
+  color: #b91c1c;
+
+  &:hover {
+    background-color: #fecaca;
+  }
+}

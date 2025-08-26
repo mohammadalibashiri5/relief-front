@@ -1,18 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AddictionAddComponent } from './addiction-manager.component';
+import {AddictionManagerComponent} from './addiction-manager.component';
 
 describe('AddictionAddComponent', () => {
-  let component: AddictionAddComponent;
-  let fixture: ComponentFixture<AddictionAddComponent>;
+  let component: AddictionManagerComponent;
+  let fixture: ComponentFixture<AddictionManagerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddictionAddComponent]
+      imports: [AddictionManagerComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(AddictionAddComponent);
+    fixture = TestBed.createComponent(AddictionManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
