@@ -1,24 +1,23 @@
 import { Component } from '@angular/core';
 import { RegisterService } from '../../services/register.service';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Router, RouterLink} from '@angular/router';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { IUser } from '../../models/RequestModel/userModel';
-import {NgClass, NgIf} from '@angular/common';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ToastrService} from 'ngx-toastr';
-
+import { NgClass, NgIf } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  imports: [
-    ReactiveFormsModule,
-    NgIf,
-    FormsModule,
-    RouterLink,
-    NgClass,
-  ],
-  styleUrls: ['./register.component.css']
+  imports: [ReactiveFormsModule, NgIf, FormsModule, RouterLink, NgClass],
+  styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
   registerForm: FormGroup;
@@ -26,13 +25,11 @@ export class RegisterComponent {
   passwordIconClass: string = 'bi bi-eye-slash'; // Initial icon class
   isSubmitting: boolean = false;
 
-
-
   constructor(
     private userService: RegisterService,
     private readonly fb: FormBuilder,
     private readonly router: Router,
-    private toastr:ToastrService
+    private toastr: ToastrService
   ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
@@ -45,10 +42,10 @@ export class RegisterComponent {
           Validators.required,
           Validators.minLength(8),
           Validators.maxLength(16),
-          Validators.pattern('^[A-Z][A-Za-z\\d@$!%*?&]{7,15}$'),
+          Validators.pattern('^(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_]).{8,16}$'),
         ],
       ],
-      dateOfBirth: ['', Validators.required], // Simplified for date
+      dateOfBirth: ['', Validators.required],
     });
   }
 
@@ -77,12 +74,17 @@ export class RegisterComponent {
     return this.registerForm.controls['dateOfBirth'];
   }
 
-  maxBirthDate= new Date(new Date().setFullYear(new Date().getFullYear() - 13)).toISOString().split('T')[0];
+  maxBirthDate = new Date(new Date().setFullYear(new Date().getFullYear() - 13))
+    .toISOString()
+    .split('T')[0];
   togglePasswordVisibility() {
-    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
-    this.passwordIconClass = this.passwordIconClass === 'bi bi-eye-slash' ? 'bi bi-eye' : 'bi bi-eye-slash';
+    this.passwordFieldType =
+      this.passwordFieldType === 'password' ? 'text' : 'password';
+    this.passwordIconClass =
+      this.passwordIconClass === 'bi bi-eye-slash'
+        ? 'bi bi-eye'
+        : 'bi bi-eye-slash';
   }
-
 
   addUser() {
     const user: IUser = {
@@ -95,10 +97,13 @@ export class RegisterComponent {
     };
 
     this.userService.addUser(user).subscribe({
-      next: (user) => {
-      },
+      next: (user) => {},
       error: (err) => {
-        if (err.status === 409 || err.status === 400 && err.message("")|| err.status === 403) {
+        if (
+          err.status === 409 ||
+          (err.status === 400 && err.message('')) ||
+          err.status === 403
+        ) {
           this.toastr.error('Email or username already exist!');
         } else {
           this.toastr.error('Something went wrong. Please try again.');
