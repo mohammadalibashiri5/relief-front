@@ -3,7 +3,6 @@ import {AuthService} from '../../services/auth.service';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {AdminNavbarComponent} from '../admin-navbar/admin-navbar.component';
 import {UserNavbarComponent} from '../user-navbar/user-navbar.component';
-import {NgForOf, NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -11,9 +10,7 @@ import {NgForOf, NgIf} from '@angular/common';
     RouterLink,
     RouterLinkActive,
     AdminNavbarComponent,
-    UserNavbarComponent,
-    NgIf,
-    NgForOf
+    UserNavbarComponent
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
@@ -22,6 +19,7 @@ export class NavbarComponent  {
    commonLinks = [
     { name: 'Home', url: '/', icon: 'bi-house', exact: true },
     { name: 'Articles', url: '/articles', icon: 'bi-book', exact: false },
+     { name: 'Contact', url: '/contact', icon: 'bi-envelope', exact: false}
   ];
 
 
