@@ -1,22 +1,14 @@
-import { Component } from '@angular/core';
-import { RegisterService } from '../../services/register.service';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { IUser } from '../../models/RequestModel/userModel';
-import { NgClass, NgIf } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ToastrService } from 'ngx-toastr';
+import {Component} from '@angular/core';
+import {RegisterService} from '../../services/register.service';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
+import {IUser} from '../../models/RequestModel/userModel';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  imports: [ReactiveFormsModule, NgIf, FormsModule, RouterLink, NgClass],
+  imports: [ReactiveFormsModule, FormsModule, RouterLink],
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
