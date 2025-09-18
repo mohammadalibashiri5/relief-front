@@ -14,9 +14,9 @@
       <form [formGroup]="triggerForm" (ngSubmit)="onSubmit()">
         <!-- Addiction Display -->
         <div class="mb-3">
-          <label class="form-label fw-bold">For Addiction</label>
+          <label for="addictionName" class="form-label fw-bold">For Addiction</label>
           <div class="p-3 bg-light rounded">
-            <span class="badge bg-primary fs-6">
+            <span id="addictionName" class="badge bg-primary fs-6 ">
               <i class="bi bi-exclamation-triangle-fill me-2" ></i>
               {{ addictionName|| 'No addiction selected' }}
             </span>
@@ -25,7 +25,7 @@
 
         <!-- Trigger Name -->
         <div class="mb-3">
-          <label class="form-label fw-bold">Trigger Name</label>
+          <label for="triggerName" class="form-label fw-bold">Trigger Name</label>
           <input
             type="text"
             formControlName="name"
@@ -36,7 +36,7 @@
 
         <!-- Description -->
         <div class="mb-4">
-          <label class="form-label fw-bold">Description</label>
+          <label for="description" class="form-label fw-bold">Description</label>
           <textarea
             formControlName="description"
             class="form-control"
@@ -49,12 +49,14 @@
             <i class="bi bi-plus-circle me-2"></i>
             {{ isEditMode ? 'Update Trigger' : 'Add Trigger' }}
           </button>
-          <button *ngIf="isEditMode"
-                  type="button"
-                  class="btn btn-secondary ms-2"
-                  (click)="resetForm()">
-            Cancel
-          </button>
+          @if (isEditMode) {
+            <button
+              type="button"
+              class="btn btn-secondary ms-2"
+              (click)="resetForm()">
+              Cancel
+            </button>
+          }
         </div>
       </form>
     </div>
@@ -63,7 +65,7 @@
   <!-- Triggers List -->
   <h4 class="mb-3 text-muted">Your Triggers</h4>
 
-  <div *ngIf="triggers.length > 0; else noTriggers">
+  @if (triggers.length > 0) {
     <div class="row g-4">
       <div class="col-md-6 col-lg-4" *ngFor="let trigger of triggers">
         <div class="card h-100 shadow-sm">
@@ -104,12 +106,10 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <ng-template #noTriggers>
+  } @else {
     <div class="alert alert-info">
       <i class="bi bi-info-circle me-2"></i>
       You haven't added any triggers yet. Start by adding one above.
     </div>
-  </ng-template>
+  }
 </div>
