@@ -83,21 +83,29 @@
 
     <!-- List Section -->
     <app-items-card iconClass="bi-collection-fill" title="Existing Addiction">
-      <div *ngIf="addictions.length === 0" class="empty-state">
-        <i class="bi bi-inbox"></i>
-        <h4>No Addiction found</h4>
-        <p>Start by adding your first Addiction</p>
-      </div>
+      @if (addictions.length === 0){
+        <div class="empty-state">
+          <i class="bi bi-inbox"></i>
+          <h4>No Addiction found</h4>
+          <p>Start by adding your first Addiction</p>
+        </div>
+      }
+
 
       <div class="management-grid">
-        <div *ngFor="let addiction of addictions" class="grid-item-wrapper">
-          <app-card-with-action
-            [imageUrl]="addiction.imageUrl"
-            [title]="addiction.name"
-            (edit)="onEditAddiction(addiction)"
-            (delete)="onDeleteAddiction(addiction.id)">
-          </app-card-with-action>
-        </div>
+        @for (addiction of addictions; track addiction.id) {
+          <div class="grid-item-wrapper">
+            <p class="badge text-bg-info">{{addiction.categoryType}}</p>
+
+            <app-card-with-action
+              [imageUrl]="addiction.imageUrl"
+              [title]="addiction.name"
+              (edit)="onEditAddiction(addiction)"
+              (delete)="onDeleteAddiction(addiction.id)">
+            </app-card-with-action>
+
+          </div>
+        }
       </div>
     </app-items-card>
   </div>

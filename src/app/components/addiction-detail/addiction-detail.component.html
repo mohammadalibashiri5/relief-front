@@ -22,12 +22,8 @@
                   <i class="bi bi-three-dots-vertical"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item cursor" (click)="edit.emit(addiction)">
-                    <i class="bi bi-pencil-square me-2 text-primary"></i>Edit
-                  </a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item text-danger cursor" (click)="delete.emit(0)">
-                    <i class="bi bi-trash me-2"></i>Delete
+                  <li class="cursor-pointer"><a class="dropdown-item text-danger" (click)="delete.emit(addiction.id)">
+                    <i class="bi bi-trash me-2 cursor"></i>Delete
                   </a></li>
                 </ul>
               </div>

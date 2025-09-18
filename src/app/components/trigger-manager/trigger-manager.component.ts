@@ -2,20 +2,16 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TriggerService} from '../../services/trigger.service';
 import {TriggerResponse} from '../../models/ResponseModel/triggerResponse';
 import {ToastrService} from 'ngx-toastr';
-import {NgForOf, NgIf} from '@angular/common';
 import {TriggerRequest} from '../../models/RequestModel/triggerRequest';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AddictionService} from '../../services/addiction.service';
 import {Subject, takeUntil} from "rxjs";
 import {SolutionManagerComponent} from '../solution-manager/solution-manager.component';
 
 @Component({
   selector: 'app-trigger',
   imports: [
-    NgForOf,
     ReactiveFormsModule,
-    NgIf,
     SolutionManagerComponent
   ],
   templateUrl: './trigger-manager.component.html',
@@ -29,7 +25,7 @@ export class TriggerManagerComponent implements OnInit, OnDestroy {
   isEditMode = false;
   currentTriggerId: number | null = null;
 
-  private destroy$ = new Subject<void>();
+  private readonly destroy$:Subject<void> = new Subject<void>();
 
   editTrigger(trigger: TriggerResponse) {
     this.isEditMode = true;
@@ -41,11 +37,11 @@ export class TriggerManagerComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private fb: FormBuilder,
-    private triggerService: TriggerService,
-    private toastr: ToastrService,
-    private route: ActivatedRoute,
-    private router: Router
+    private readonly fb: FormBuilder,
+    private readonly triggerService: TriggerService,
+    private readonly toastr: ToastrService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {
     this.triggerForm = this.fb.group({
       name: ['', Validators.required],
@@ -102,7 +98,6 @@ export class TriggerManagerComponent implements OnInit, OnDestroy {
           if (err.status === 400) {
             this.toastr.error('Invalid addiction ID');
             this.goBack();
-            console.error(this.addictionId);
           } else this.toastr.error('Failed to load triggers');
         }
       });
