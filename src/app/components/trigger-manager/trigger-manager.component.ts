@@ -6,13 +6,11 @@ import {TriggerRequest} from '../../models/RequestModel/triggerRequest';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subject, takeUntil} from "rxjs";
-import {SolutionManagerComponent} from '../solution-manager/solution-manager.component';
 
 @Component({
   selector: 'app-trigger',
   imports: [
-    ReactiveFormsModule,
-    SolutionManagerComponent
+    ReactiveFormsModule
   ],
   templateUrl: './trigger-manager.component.html',
   styleUrl: './trigger-manager.component.css'
@@ -76,7 +74,6 @@ export class TriggerManagerComponent implements OnInit, OnDestroy {
       const triggerRequest: TriggerRequest = this.triggerForm.value;
       this.triggerService.createTrigger(this.addictionId, triggerRequest).subscribe({
         next: () => {
-          this.toastr.success('Trigger added successfully');
           this.resetForm();
           this.getTriggers();
         },
