@@ -1,0 +1,85 @@
+:root {
+  --accent-color: #4cc9f0;
+  --light-bg: #f8f9fa;
+}
+
+
+
+.maintenance-container {
+  margin: 80px auto;
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+}
+
+.icon-wrapper {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 2rem;
+  background: linear-gradient(135deg, #4361ee, #3a0ca3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(67, 97, 238, 0.2);
+}
+
+.icon-wrapper i {
+  font-size: 3.5rem;
+  color: white;
+}
+
+h1 {
+  font-weight: 700;
+  color: #3a0ca3;
+  margin-bottom: 1rem;
+}
+
+.lead {
+  font-size: 1.2rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.status-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+  border-left: 4px solid #4cc9f0;
+}
+
+.status-title {
+  font-weight: 600;
+  color: #4361ee;
+  margin-bottom: 0.5rem;
+}
+
+.status-text {
+  color: #666;
+  margin-bottom: 0;
+}
+
+.action-btn {
+  background: #4361ee;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 30px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+}
+
+.action-btn:hover {
+  background: #3a0ca3;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+}

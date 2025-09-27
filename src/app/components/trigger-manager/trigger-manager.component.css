@@ -39,7 +39,7 @@ body {
 }
 
 .form-header {
-  background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 50%);
+  background: linear-gradient(135deg, #949db5 0%, #23b1cc 50%);
   color: white;
   position: relative;
   overflow: hidden;
@@ -69,7 +69,7 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+  background: linear-gradient(135deg, #4361ee 0%, #5885c3 100%);
   border: none;
   border-radius: 10px;
   padding: 12px 24px;

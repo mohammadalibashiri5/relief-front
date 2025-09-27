@@ -16,6 +16,7 @@ import {AdminCategoryTypeComponent} from './components/admin-category-type/admin
 import {AdminAddictionsComponent} from './components/admin-addictions/admin-addictions.component';
 import {ArticleDetailComponent} from './components/article/article-detail/article-detail.component';
 import {ContactComponent} from './components/contact/contact.component';
+import {UnavailableComponent} from './components/unavailable/unavailable.component';
 
 export const routes: Routes = [
   { path:"", component:HomeComponent },
@@ -31,6 +32,7 @@ export const routes: Routes = [
   { path:"addiction", component:AddictionDetailComponent , canActivate: [authGuard]},
   { path:"unauthorized", component:UnauthorizedComponent},
   { path:"contact", component:ContactComponent},
+  { path:"checkin", component:UnavailableComponent},
   { path:"triggers", component:TriggerManagerComponent , canActivate: [authGuard]},
   { path:"articles", component:ArticlesComponent }
 
