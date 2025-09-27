@@ -1,50 +1,77 @@
-<header class="hero">
+<body>
+
+<!-- Hero Section -->
+<section class="hero">
   <div class="container">
     <div class="hero-content">
       <div class="hero-text">
-        <h1>Struggling with Addiction?</h1>
+        <h1>Recover From Addiction, Regain Your Life</h1>
         <p>
-          Addiction isn't weakness — it's a powerful cycle that rewires our brain and controls our behavior. Whether it's digital, chemical, or emotional, Relief is designed to help you regain control with clarity, support, and consistency.
+          Addiction isn't weakness — it's a powerful cycle that rewires our brain and controls our behavior.
+          Whether it's digital, chemical, or emotional, Relief is designed to help you regain control with
+          clarity, support, and consistency.
         </p>
+        <a href="/my-addictions" class="btn btn-hero">Start Your Journey</a>
       </div>
       <div class="hero-img">
-        <img src="https://images.unsplash.com/photo-1592806088932-05058af0ad8d?q=80&w=1935&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Addiction recovery">
+        <img src="assets/addiction-home-page.webp" alt="Addiction">
       </div>
     </div>
   </div>
-</header>
+</section>
 
+<!-- Info Section -->
 <section class="info-section">
   <div class="container">
-    <h2>Understanding and Overcoming</h2>
+    <div class="section-title">
+      <h2>Your Path to Recovery</h2>
+      <p>Relief provides comprehensive tools and support for your journey</p>
+    </div>
     <div class="info-grid">
-      <div class="info-text">
+      <div class="info-card">
+        <img src="assets/img.png" class="home-logo">
         <h3>Identify Your Triggers</h3>
         <p>
-          Relief helps you become aware of what causes your urges — stress, boredom, loneliness — and provides you with strategies to avoid or reframe them.
+          Relief helps you become aware of what causes your urges — stress, boredom, loneliness —
+          and provides you with strategies to avoid or reframe them.
         </p>
+      </div>
+      <div class="info-card">
+        <img src="assets/img_1.png" class="home-logo">
         <h3>Reflect on Past Experiences</h3>
         <p>
-          Learn from past moments of weakness or victory by logging your experiences and tracking emotional patterns.
+          Learn from past moments of weakness or victory by logging your experiences and
+          tracking emotional patterns.
         </p>
+      </div>
+      <div class="info-card">
+        <img src="assets/img_2.png" class="home-logo">
         <h3>Stay Motivated</h3>
         <p>
-          Get daily encouragement, track your clean streaks, unlock milestones, and stay connected to your deeper reasons for quitting.
+          Get daily encouragement, track your clean streaks, unlock milestones, and stay
+          connected to your deeper reasons for quitting.
         </p>
-        <h3>Get help of different articles</h3>
+      </div>
+      <div class="info-card">
+        <img src="assets/img_3.png" class="home-logo">
+        <h3>Helpful Resources</h3>
         <p>
-          For some of the most common addictions we try to provide you with some articles that can help you to overcome the addictions.
+          For some of the most common addictions we try to provide you with some articles
+          that can help you to overcome the addictions.
         </p>
-        <a routerLink="articles" class="btn btn-primary">Read More</a>
+        <a href="/articles" class="btn btn-primary">Read Articles</a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="cta-section" *ngIf="!userIsLoggedIn">
+<section class="cta-section">
   <div class="container">
-    <h2>Take the First Step with Relief</h2>
-    <p>Start using the app now and build the life you want — one day at a time.</p>
-    <button class="cta-button" routerLink="register">Start Now</button>
+    <div class="cta-content">
+      <h2>Begin Your Recovery Journey Today</h2>
+      <p>Take the first step with Relief and start building the life you want — one day at a time.</p>
+      <button class="cta-button" routerLink="/dashboard">Get Started Now</button>
+    </div>
   </div>
 </section>
+</body>

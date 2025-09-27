@@ -1,11 +1,183 @@
-.transition-all {
-  transition: all 0.3s ease;
+:root {
+  --primary-gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+  --success-gradient: linear-gradient(135deg, #4cc9f0 0%, #4895ef 100%);
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
-.btn-link:hover .transition-all {
-  transform: translateX(-3px);
-}
-.cursor {
-  cursor: pointer;
+body {
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
 }
 
+.back-btn {
+  color: #4361ee;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.back-btn:hover {
+  background-color: rgba(67, 97, 238, 0.1);
+}
+
+.card {
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+  border-radius: 16px 16px 0 0 !important;
+  border: none;
+  padding: 1.5rem;
+}
+
+.form-header {
+  background: linear-gradient(135deg, #949db5 0%, #23b1cc 50%);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.form-header::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(30deg);
+
+}
+
+.form-control, .form-control-lg {
+  border-radius: 10px;
+  border: 1.5px solid #e9ecef;
+  padding: 12px 16px;
+}
+
+.form-control:focus {
+  border-color: #4361ee;
+  box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.15);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #4361ee 0%, #5885c3 100%);
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+}
+
+.btn-secondary {
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-weight: 500;
+}
+
+.trigger-card {
+  border-left: 4px solid #4361ee;
+  height: 100%;
+}
+
+.trigger-card:hover {
+  border-left-color: #3a0ca3;
+}
+
+.trigger-count {
+  background: linear-gradient(135deg, #f72585 0%, #b5179e 100%);
+  color: white;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.dropdown-toggle {
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+
+.dropdown-menu {
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 8px;
+}
+
+.dropdown-item {
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+.empty-state {
+  background: white;
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.empty-state i {
+  font-size: 3rem;
+  background: linear-gradient(135deg, #4cc9f0 0%, #4895ef 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  position: relative;
+  padding-bottom: 10px;
+  font-weight: 600;
+  color: #495057;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background:linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+  border-radius: 3px;
+}
+
+.addiction-badge {
+  background: rgba(67, 97, 238, 0.1);
+  color: #4361ee;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .card-body {
+    padding: 1.25rem;
+  }
+
+  .back-btn {
+    padding: 6px 12px;
+  }
+}

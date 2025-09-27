@@ -1,5 +1,6 @@
 @import "bootstrap-icons";
 @import 'ngx-toastr/toastr';
+@import "@ng-select/ng-select/themes/default.theme.css";
 
 body {
   margin: 0;

@@ -1,3 +1,4 @@
+<!-- addiction-manager.component.html -->
 <div class="container my-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="fw-bold text-primary">
@@ -26,7 +27,6 @@
           id="category"
           class="form-control"
           formControlName="categoryName"
-          [disabled]="isLoading"
           (change)="onCategoryChange()"
         >
           <option value="">Select a category</option>
@@ -36,8 +36,11 @@
             </option>
           }
         </select>
-        @if (addictionForm.get('categoryName')?.invalid && isSubmitted) {
-          <div class="text-danger">Category is required</div>
+        @if (addictionForm.get('categoryName')?.invalid && (addictionForm.get('categoryName')?.touched || isSubmitted)) {
+          <div class="text-danger mt-1">
+            <i class="bi bi-exclamation-circle me-1"></i>
+            Category is required
+          </div>
         }
       </div>
 
@@ -51,23 +54,29 @@
             bindValue="name"
             placeholder="Select an addiction"
             formControlName="addictionName"
-            [clearable]="false"
-          >
+            [clearable]="false">
             <ng-template ng-label-tmp let-item="item">
               <div class="d-flex align-items-center">
-                <img [src]="item.imageUrl" alt="{{ item.name }}" class="option-icon me-2" style="width: 20px; height: 20px;" />
+                @if (item.imageUrl) {
+                  <img ngSrc='{{ item.imageUrl }}' alt="{{ item.name }}" class="option-icon me-2" width="20" height="20" />
+                }
                 {{ item.name }}
               </div>
             </ng-template>
             <ng-template ng-option-tmp let-item="item">
               <div class="d-flex align-items-center">
-                <img [src]="item.imageUrl" alt="{{ item.name }}" class="option-icon me-2" style="width: 20px; height: 20px;" />
+                @if (item.imageUrl) {
+                  <img ngSrc="{{item.imageUrl}}" alt="{{ item.name }}" class="option-icon me-2" height="20" width="20"/>
+                }
                 {{ item.name }}
               </div>
             </ng-template>
           </ng-select>
-          @if (addictionForm.get('addictionName')?.invalid && isSubmitted) {
-            <div class="text-danger">Addiction is required</div>
+          @if (addictionForm.get('addictionName')?.invalid && (addictionForm.get('addictionName')?.touched || isSubmitted)) {
+            <div class="text-danger mt-1">
+              <i class="bi bi-exclamation-circle me-1"></i>
+              Addiction is required
+            </div>
           }
         </div>
       }
@@ -94,7 +103,7 @@
             </option>
           }
         </select>
-        @if (addictionForm.get('severityLevel')?.invalid && addictionForm.get('severityLevel')?.touched) {
+        @if (addictionForm.get('severityLevel')?.invalid && (addictionForm.get('severityLevel')?.touched || isSubmitted)) {
           <div class="text-danger mt-1">
             <i class="bi bi-exclamation-circle me-1"></i>
             Please select a severity level
@@ -116,10 +125,10 @@
           />
           <span class="input-group-text">years</span>
         </div>
-        @if (addictionForm.get('yearOfAddiction')?.invalid && addictionForm.get('yearOfAddiction')?.touched) {
+        @if (addictionForm.get('yearsOfAddiction')?.invalid && (addictionForm.get('yearsOfAddiction')?.touched || isSubmitted)) {
           <div class="text-danger mt-1">
             <i class="bi bi-exclamation-circle me-1"></i>
-            Please enter a valid number
+            Please enter a valid number of years
           </div>
         }
       </div>
@@ -129,9 +138,13 @@
         <button
           type="submit"
           class="btn btn-primary btn-lg"
-          [disabled]="addictionForm.invalid"
+          [disabled]="loading$ | async"
         >
-          <i class="bi" [class.bi-save]="isEditMode" [class.bi-plus-circle]="!isEditMode"></i>
+          @if (loading$ | async) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+          } @else {
+            <i class="bi" [class.bi-save]="isEditMode" [class.bi-plus-circle]="!isEditMode"></i>
+          }
           {{ isEditMode ? ' Update Addiction' : ' Register Addiction' }}
         </button>
       </div>
@@ -141,5 +154,8 @@
 
 <!-- List of Addictions -->
 <div class="container">
-  <app-addiction-detail (delete)="deleteAddiction($event)"></app-addiction-detail>
+  <app-addiction-detail
+    (edit)="onEditAddiction($event)"
+    (delete)="deleteAddiction($event)">
+  </app-addiction-detail>
 </div>

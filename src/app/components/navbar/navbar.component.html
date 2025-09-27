@@ -1,44 +1,65 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top">
   <div class="container">
-    <a class="navbar-brand" routerLink="/">
-      <img src="assets/relief-logo.webp" alt="Relief Logo" class="logo" style="height: 40px;">
-      <span class="ms-2 fw-bold">Relief</span>
+    <a class="navbar-brand" href="#">
+      <span class="logo-img">
+                    <i class="fas fa-hands-helping fa-2x"></i>
+      </span>
+      <span class="ms-2 d-md-inline brand-text"><img alt="logo" class="logo" src="assets/relief-logo.webp"></span>
     </a>
-
-    <ul class="navbar-nav mx-auto">
-      <!-- Admin links -->
-      <ng-container *ngIf="isAdmin()">
-        <app-admin-navbar></app-admin-navbar>
-      </ng-container>
-      <!-- User links -->
-      <ng-container *ngIf="isUser()">
-        <app-user-navbar></app-user-navbar>
-      </ng-container>
-      <!-- Common links -->
-      <ng-container *ngIf="!isAuthenticated()">
-        <ng-container *ngFor="let link of commonLinks">
-          <li class="nav-item mx-2">
-            <a class="nav-link"
-               [routerLink]="link.url"
-               routerLinkActive="active"
-               [routerLinkActiveOptions]="{exact: link.exact || false}">
-              <i *ngIf="link.icon" class="bi {{link.icon}} me-1"></i>
-              {{ link.name }}
-            </a>
-          </li>
-        </ng-container>
-
-        <a class="btn btn-outline-light me-2" routerLink="/register">
-          <i class="bi bi-person-plus me-1"></i>
-          <span class="d-none d-md-inline">Register</span>
-        </a>
-        <a class="btn btn-light" routerLink="/login">
-          <i class="bi bi-box-arrow-in-right me-1"></i>
-          <span class="d-none d-md-inline">Login</span>
-        </a>
-      </ng-container>
-
-
-    </ul>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+            aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarScroll">
+      <ul class="navbar-nav me-auto my-2 my-lg-0">
+        @if (isAdmin()) {
+          <app-admin-navbar></app-admin-navbar>
+        }
+        @if (isUser()) {
+          <app-user-navbar></app-user-navbar>
+        }
+        @if (!isAuthenticated()) {
+          @for (link of commonLinks; track link.name) {
+            <li class="nav-item mx-2">
+              <a class="nav-link"
+                 [routerLink]="link.url"
+                 routerLinkActive="active"
+                 [routerLinkActiveOptions]="{exact: link.exact || false}">
+                @if (link.icon) {
+                  <i class="bi {{link.icon}} me-1"></i>
+                  {{ link.name }}
+                }
+              </a>
+            </li>
+          }
+        }
+      </ul>
+      @if (!isAuthenticated()) {
+        <div class="d-flex buttons">
+          <button class="btn btn-register me-2" routerLink="/register" type="button">
+            <i class="fas fa-user-plus me-1"></i> Register
+          </button>
+          <button class="btn btn-login" routerLink="/login" type="button">
+            <i class="fas fa-sign-in-alt me-1"></i> Log in
+          </button>
+        </div>
+      }
+      @if(isAuthenticated()) {
+        <div class="d-flex buttons dropdown">
+          <button class="btn btn-login dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Profile
+          </button>
+          <ul class="dropdown-menu">
+            @if (isAdmin()) {
+              <li><a class="dropdown-item" routerLink="/admin/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+            } @else {
+              <li><a class="dropdown-item" routerLink="/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+            }
+            <li><a class="dropdown-item cursor-pointer" (click)="logout()"><i class="bi bi-box-arrow-left"></i> Log Out</a></li>
+          </ul>
+        </div>
+      }
+    </div>
   </div>
 </nav>
+

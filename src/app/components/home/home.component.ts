@@ -1,11 +1,9 @@
-import { Component } from '@angular/core';
-import {NgIf} from '@angular/common';
+import {Component} from '@angular/core';
 import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-home',
   imports: [
-    NgIf,
     RouterLink
   ],
   templateUrl: './home.component.html',
