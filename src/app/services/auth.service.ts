@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
-import {BehaviorSubject, catchError, map, Observable, of, switchMap, tap} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Observable, tap} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {environment} from '../../environments/environment';
 import {IUserResponse} from '../models/ResponseModel/userResponse';
+import {environment} from '../../environments/environment.prod';
+
 interface UserInfo {
   email: string;
   roles: string[];

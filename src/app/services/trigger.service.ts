@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {catchError, Observable, tap, throwError} from 'rxjs';
 import {TriggerResponse} from '../models/ResponseModel/triggerResponse';
 import {TriggerRequest} from '../models/RequestModel/triggerRequest';
-import {environment} from '../../environments/environment';
 import {ToastrService} from 'ngx-toastr';
+import {environment} from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +36,7 @@ export class TriggerService {
 
   fetchTriggers(addictionId:number): Observable<TriggerResponse[]> {
     return this.http.get<TriggerResponse[]>(`${this.apiUrl}/getByAddiction/${addictionId}`).pipe(
-      tap(response => {}),
+      tap(() => {}),
       catchError(error => {
         return throwError(() => error);
       })

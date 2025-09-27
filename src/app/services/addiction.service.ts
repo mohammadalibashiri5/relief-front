@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {AddictionRequest} from '../models/RequestModel/addictionRequest';
-import {BehaviorSubject, catchError, map, Observable, of, tap, throwError} from 'rxjs';
+import {BehaviorSubject, catchError, map, Observable, tap, throwError} from 'rxjs';
 import {AddictionResponse} from '../models/ResponseModel/addictionResponse';
-import {environment} from '../../environments/environment';
-import {AdminAddictionResponse} from '../models/ResponseModel/adminAddiction';
 import {ToastrService} from 'ngx-toastr';
+import {environment} from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'

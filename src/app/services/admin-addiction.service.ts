@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {environment} from '../../environments/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {AdminAddictionResponse} from '../models/ResponseModel/adminAddiction';
 import {AdminAddictionRequest} from '../models/RequestModel/AdminAddictionRequest';
+import {environment} from '../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
