@@ -1,11 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {NgIf} from '@angular/common';
 
 @Component({
   selector: 'app-modal',
-  imports: [
-    NgIf
-  ],
+  imports: [],
   templateUrl: './modal.component.html',
   styleUrl: './modal.component.css'
 })
