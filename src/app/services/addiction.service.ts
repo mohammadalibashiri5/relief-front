@@ -4,7 +4,7 @@ import {AddictionRequest} from '../models/RequestModel/addictionRequest';
 import {BehaviorSubject, catchError, map, Observable, tap, throwError} from 'rxjs';
 import {AddictionResponse} from '../models/ResponseModel/addictionResponse';
 import {ToastrService} from 'ngx-toastr';
-import {environment} from '../../environments/environment.prod';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

@@ -25,13 +25,13 @@
                      placeholder="John"
                      autocomplete="given-name"
                      autofocus
-                     [class.is-invalid]="name.invalid && (name.dirty || name.touched)"
+                     [class.is-invalid]="shouldShowError('name')"
                      [class.is-valid]="name.valid && (name.dirty || name.touched)">
               <label for="firstname">First Name</label>
-              @if (name.invalid && (name.dirty || name.touched)) {
+              @if (shouldShowError('name')) {
                 <div class="invalid-feedback">
                   <i class="bi bi-exclamation-circle me-1"></i>
-                  Please enter your first name
+                  {{ getErrorMessage('name') }}
                 </div>
               }
             </div>
@@ -49,10 +49,10 @@
                      [class.is-invalid]="familyName.invalid && (familyName.dirty || familyName.touched)"
                      [class.is-valid]="familyName.valid && (familyName.dirty || familyName.touched)">
               <label for="lastname">Last Name</label>
-              @if (familyName.invalid && (familyName.dirty || familyName.touched)) {
+              @if (shouldShowError('familyName')) {
                 <div class="invalid-feedback">
                   <i class="bi bi-exclamation-circle me-1"></i>
-                  Please enter your last name
+                  {{ getErrorMessage('familyName') }}
                 </div>
               }
             </div>
@@ -66,26 +66,18 @@
                      id="email"
                      formControlName="email"
                      placeholder="Email address"
-                     autocomplete="email"
+                     autocomplete="username"
                      [class.is-invalid]="email.invalid && (email.dirty || email.touched)"
                      [class.is-valid]="email.valid && (email.dirty || email.touched)">
               <label for="email">Email address</label>
-              @if (email.pending) {
-                <div class="form-text text-info">
-                  <i class="bi bi-info-circle me-1"></i>Checking email availability...
-                </div>
-              }
               @if (email.invalid && (email.dirty || email.touched)) {
                 <div class="invalid-feedback">
                   <i class="bi bi-exclamation-circle me-1"></i>
                   @if (email.errors?.['required']) {
                     <span>Email is required</span>
                   }
-                  @if (email.errors?.['email']) {
+                  @if (email.errors?.['email'] || email.errors?.['pattern']) {
                     <span>Please enter a valid email</span>
-                  }
-                  @if (email.errors?.['emailTaken']) {
-                    <span>This email is already registered</span>
                   }
                 </div>
               }
@@ -100,8 +92,7 @@
                      id="password"
                      formControlName="password"
                      placeholder="Password"
-                     autocomplete="new-password"
-                     [class.is-invalid]="password.invalid && (password.dirty || password.touched)"
+                     [class.is-invalid]="shouldShowError('password')"
                      [class.is-valid]="password.valid && (password.dirty || password.touched)">
               <label for="password">Password</label>
               <button type="button"
@@ -111,21 +102,10 @@
                       (click)="togglePasswordVisibility()">
                 <i [class]="passwordIconClass" class="text-muted"></i>
               </button>
-              @if (password.invalid && (password.dirty || password.touched)) {
+              @if (shouldShowError('password')) {
                 <div class="invalid-feedback">
                   <i class="bi bi-exclamation-circle me-1"></i>
-                  @if (password.errors?.['required']) {
-                    <span>Password is required. </span>
-                  }
-                  @if (password.errors?.['minlength']) {
-                    <span>Minimum {{password.errors?.['minlength'].requiredLength}} characters. </span>
-                  }
-                  @if (password.errors?.['maxlength']) {
-                    <span>Maximum {{password.errors?.['maxlength'].requiredLength}} characters. </span>
-                  }
-                  @if (password.errors?.['pattern']) {
-                    <span>Password must contain uppercase, number, and special character</span>
-                  }
+                  {{ getErrorMessage('password') }}
                 </div>
               }
             </div>
@@ -139,24 +119,13 @@
                      id="username"
                      formControlName="username"
                      placeholder="Username"
-                     autocomplete="username"
                      [class.is-invalid]="username.invalid && (username.dirty || username.touched)"
                      [class.is-valid]="username.valid && (username.dirty || username.touched)">
               <label for="username">Username</label>
-              @if (username.pending) {
-                <div class="form-text text-info">
-                  <i class="bi bi-info-circle me-1"></i>Checking username availability...
-                </div>
-              }
-              @if (username.invalid && (username.dirty || username.touched)) {
+              @if (shouldShowError('username')) {
                 <div class="invalid-feedback">
                   <i class="bi bi-exclamation-circle me-1"></i>
-                  @if (username.errors?.['required']) {
-                    <span>Please choose a username</span>
-                  }
-                  @if (username.errors?.['usernameTaken']) {
-                    <span>This username is already taken</span>
-                  }
+                  {{ getErrorMessage('username') }}
                 </div>
               }
             </div>
@@ -200,7 +169,7 @@
               <span>Create Account</span>
             } @else {
               <span>
-                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
                 Processing...
               </span>
             }
