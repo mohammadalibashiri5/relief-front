@@ -3,7 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {AdminAddictionResponse} from '../models/ResponseModel/adminAddiction';
 import {AdminAddictionRequest} from '../models/RequestModel/AdminAddictionRequest';
-import {environment} from '../../environments/environment.prod';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

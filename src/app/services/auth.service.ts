@@ -3,7 +3,7 @@ import {Observable, tap} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {IUserResponse} from '../models/ResponseModel/userResponse';
-import {environment} from '../../environments/environment.prod';
+import {environment} from '../../environments/environment';
 
 interface UserInfo {
   email: string;

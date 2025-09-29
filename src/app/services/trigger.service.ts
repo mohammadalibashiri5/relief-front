@@ -4,7 +4,7 @@ import {catchError, Observable, tap, throwError} from 'rxjs';
 import {TriggerResponse} from '../models/ResponseModel/triggerResponse';
 import {TriggerRequest} from '../models/RequestModel/triggerRequest';
 import {ToastrService} from 'ngx-toastr';
-import {environment} from '../../environments/environment.prod';
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
