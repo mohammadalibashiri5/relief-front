@@ -1,19 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {NgForOf, NgIf, TitleCasePipe} from '@angular/common';
+import {DatePipe, SlicePipe, TitleCasePipe} from '@angular/common';
 import {ArticleResponse} from '../../../models/ResponseModel/articleResponse';
 import {ArticleService} from '../../../services/article.service';
 import {CategoryTypeService} from '../../../services/category-type.service';
 import {ItemsCardComponent} from '../../items-card/items-card.component';
-import {CardWithActionComponent} from '../../card-with-action/card-with-action.component';
+import {Router, RouterLinkActive} from '@angular/router';
 
 @Component({
   selector: 'app-article-list',
   imports: [
-    NgForOf,
-    NgIf,
     TitleCasePipe,
     ItemsCardComponent,
-    CardWithActionComponent
+    SlicePipe,
+    DatePipe
   ],
   templateUrl: './article-list.component.html',
   styleUrl: './article-list.component.css'
@@ -27,7 +26,9 @@ export class ArticleListComponent implements OnInit {
   constructor(
     private readonly articleService: ArticleService,
     private readonly categoryService: CategoryTypeService,
-  ) { }
+    private router: Router,
+  ) {
+  }
 
   ngOnInit(): void {
     this.loadCategories();
@@ -78,6 +79,25 @@ export class ArticleListComponent implements OnInit {
   }
 
   onDeleteArticle(id: number) {
+
+  }
+
+  resetFilters() {
+
+  }
+
+
+  onReadMore(id: number) {
+    this.articleService.getArticleById(id).subscribe({
+      next: (article) => {
+        if (article) {
+          this.router.navigate(['/article/', id]);
+        }
+      },
+      error: () => {
+        console.error('Failed to open article');
+      }
+    });
 
   }
 }

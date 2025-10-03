@@ -42,6 +42,20 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteAccount() {
+    if (!confirm('Are you sure you want to delete your account?')) {
+      return;
+    }
+    this.userService.deleteUser().subscribe({
+      next: () => {
+        this.toastr.success('Your account has been deleted successfully.');
+        this.router.navigate(['/login']).then(() => {
+          this.toastr.warning('You have been logged out.');
+        });
+      },
+      error: () => {
+        this.toastr.error('Failed to delete account.');
+      }
+    })
 
   }
 
