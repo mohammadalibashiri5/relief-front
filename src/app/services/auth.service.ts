@@ -97,6 +97,10 @@ export class AuthService {
     return this.http.get<IUserResponse>(`${this.url}/users/getUser`)
   }
 
+  deleteAccount(): Observable<any> {
+    return this.http.delete(`${this.url}/users/deleteUser`);
+  }
+
   //isLoggedIn():boolean {
   //  return sessionStorage.getItem('token') != null;
   //}

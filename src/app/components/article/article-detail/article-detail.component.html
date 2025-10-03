@@ -1,24 +1,48 @@
-<div class="article-detail" *ngIf="!isLoading">
-  <div class="detail-header">
-    <span class="category-badge">{{ article.category | titlecase }}</span>
-    <h1>{{ article.title }}</h1>
-    <p class="article-date">{{ article.createdAt | date }}</p>
+<div class="container">
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="loading-spinner">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+        <p>Loading article...</p>
+      </div>
+    </div>
+  }
+
+  <!-- Article Detail -->
+  <div class="article-detail">
+    <div class="detail-header">
+      <div class="header-content">
+        <span class="category-badge">{{ article.category }}</span>
+        <h1>{{article.title | titlecase}}</h1>
+        <div class="meta-line">
+          <span class="publish-date">
+            <i class="fas fa-calendar-alt"></i>
+            {{ article.createdAt | date: 'mediumDate' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="article-body">
+      <div class="detail-image">
+        <img class="img-fluid" [src]="article.imageUrl" [alt]="article.title" />
+      </div>
+
+      <div class="detail-content">
+        <div class="content-wrapper">
+          <div class="content-body">
+            <p class="text-wrap">{{ article.content }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="article-actions">
+      <button class="back-btn" routerLink="/articles">
+        <i class="fas fa-arrow-left"></i>
+        Back to Articles
+      </button>
+    </div>
   </div>
-
-  <div class="detail-image" [style.background-image]="'url(' + article.imageUrl + ')'"></div>
-
-  <div class="detail-content">
-    <p>{{ article.content }}</p>
-  </div>
-
-
-  <button class="back-btn" [routerLink]="'../../articles'">Back to Articles</button>
-  <app-card-with-action
-    (edit)="onEditArticle(article)"
-    (delete)="onDeleteArticle(article.id)">
-  </app-card-with-action>
-</div>
-
-<div *ngIf="isLoading" class="loading-spinner">
-  <div class="spinner"></div>
 </div>

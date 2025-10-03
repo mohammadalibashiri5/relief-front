@@ -36,4 +36,11 @@ export class UserService {
     this.clearUser();
     this.router.navigate(['/login']).then(() => sessionStorage.removeItem('token'));
   }
+
+  deleteUser() {
+    return this.loginService.deleteAccount().pipe(
+      tap(() => this.clearUser())
+    );
+
+  }
 }
