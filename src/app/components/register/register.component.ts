@@ -39,8 +39,8 @@ export class RegisterComponent {
       ],
       username: ['', [
         Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(20),
+        Validators.minLength(5),
+        Validators.maxLength(30),
         Validators.pattern('^[a-zA-Z0-9_]+$')
         ]
       ],
@@ -175,7 +175,11 @@ export class RegisterComponent {
           err.status === 403
         ) {
           this.toastr.error('Email or username already exist!');
-        } else {
+        }
+        if (err.status === 406 ) {
+          this.toastr.error('Invalid data provided. Please check your inputs.');
+        } else
+        {
           this.toastr.error('Something went wrong. Please try again.');
         }
       },
