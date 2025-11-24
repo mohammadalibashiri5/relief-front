@@ -10,9 +10,6 @@ import {DatePipe, NgForOf, NgIf, NgOptimizedImage, TitleCasePipe} from '@angular
     TitleCasePipe,
     DatePipe,
     RouterLink,
-    NgOptimizedImage,
-    NgForOf,
-    NgIf
   ],
   templateUrl: './article-detail.component.html',
   styleUrl: './article-detail.component.css'

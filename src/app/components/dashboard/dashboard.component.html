@@ -1,17 +1,21 @@
 <div class="dashboard-container">
   <!-- Hero Header -->
-  <div class="dashboard-header text-center py-5 bg-light rounded-3 mb-4" *ngIf="user">
-    <h1 class="display-4 fw-bold text-primary">
-      <i class="bi bi-speedometer2 me-2"></i>Your Recovery Dashboard
-    </h1>
-    <p class="lead text-muted">
-      Welcome back, <span class="text-dark fw-bold">{{ user.name }}</span>!
-      Track your progress and manage your recovery journey.
-    </p>
-  </div>
+  @if (user) {
+    <div class="dashboard-header text-center py-5 bg-light rounded-3 mb-4">
+      <h1 class="display-4 fw-bold text-primary">
+        <i class="bi bi-speedometer2 me-2"></i>Your Recovery Dashboard
+      </h1>
+      <p class="lead text-muted">
+        Welcome back, <span class="text-dark fw-bold">{{ user.name }}</span>!
+        Track your progress and manage your recovery journey.
+      </p>
+    </div>
+  }
+
 
   <!-- Main Content -->
-  <div class="dashboard-content" *ngIf="user">
+  @if (user) {
+  <div class="dashboard-content">
     <div class="row g-4">
       <!-- Profile Card -->
       <div class="col-lg-4">
@@ -33,24 +37,7 @@
               <h6 class="section-title">
                 <i class="bi bi-heart-pulse me-2"></i>Your Addictions
               </h6>
-
-              <!--
-                <div *ngIf="user!.addictions.length > 0; else noAddictions">
-                  <div class="addiction-badges">
-                  <span *ngFor="let addiction of user!.addictions"
-                        class="badge rounded-pill bg-light text-dark me-2 mb-2">
-                    {{ addiction.name }}
-                    <span class="ms-1" [ngClass]="{
-                      'text-danger': addiction.severityLevel === 'HIGH',
-                      'text-warning': addiction.severityLevel === 'MEDIUM',
-                      'text-success': addiction.severityLevel === 'LOW'
-                    }">
-                      ⚠️
-                    </span>
-                  </span>
-                  </div>
-                </div>
-              </!-->
+                <p>{{addictions}}</p>
               <ng-template #noAddictions>
                 <div class="alert alert-light">
                   <i class="bi bi-info-circle me-2"></i>
@@ -86,7 +73,7 @@
                 </span>
               </div>
               <div class="col-sm-9">
-                <span class="detail-value">{{ user!.name }}</span>
+                <span class="detail-value">{{ user.name }}</span>
               </div>
             </div>
             <hr class="my-2">
@@ -98,7 +85,7 @@
                 </span>
               </div>
               <div class="col-sm-9">
-                <span class="detail-value">{{ user!.familyName }}</span>
+                <span class="detail-value">{{ user.familyName }}</span>
               </div>
             </div>
             <hr class="my-2">
@@ -110,7 +97,7 @@
                 </span>
               </div>
               <div class="col-sm-9">
-                <span class="detail-value">{{ user!.email }}</span>
+                <span class="detail-value">{{ user.email }}</span>
               </div>
             </div>
             <hr class="my-2">
@@ -152,4 +139,5 @@
       </button>
     </div>
   </div>
+  }
 </div>

@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {IUserResponse} from '../../models/ResponseModel/userResponse';
 import {Router} from '@angular/router';
-import {DatePipe, NgIf} from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {UserService} from '../../services/user.service';
 import {ToastrService} from 'ngx-toastr';
+import {AddictionService} from '../../services/addiction.service';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
-    NgIf,
     DatePipe
   ],
   templateUrl: './dashboard.component.html',
@@ -16,11 +16,21 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class DashboardComponent implements OnInit {
   user: IUserResponse | null = null;
+  addictions: string = "";
 
-  constructor(private userService: UserService, private router: Router, private toastr: ToastrService) {
+  constructor(private userService: UserService,
+              private router: Router,
+              private toastr: ToastrService,
+              private addictionService: AddictionService,
+  ) {
   }
 
   ngOnInit(): void {
+    this.addictionService.fetchAddictions().subscribe(res => {
+      res.forEach(addiction => {
+        this.addictions = addiction.addictionName
+      })
+    })
     this.userService.fetchUser().subscribe({
       next: (user) => {
         if (user) {
@@ -36,6 +46,7 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
+
 
   logout() {
     this.userService.logout();
