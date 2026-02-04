@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ArticleResponse} from '../../../models/ResponseModel/articleResponse';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {ArticleService} from '../../../services/article.service';
-import {DatePipe, NgForOf, NgIf, NgOptimizedImage, TitleCasePipe} from '@angular/common';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-article-detail',

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NgForOf, NgIf} from '@angular/common';
+
 import {ArticleService} from '../../../services/article.service';
 import {HeaderManagementComponent} from '../../header-management/header-management.component';
 import {ItemsCardComponent} from '../../items-card/items-card.component';
@@ -15,13 +15,11 @@ import {ArticleRequest} from '../../../models/RequestModel/ArticleRequest';
 @Component({
   selector: 'app-article-manage',
   imports: [
-    NgIf,
     ReactiveFormsModule,
     HeaderManagementComponent,
     ItemsCardComponent,
-    NgForOf,
     CardWithActionComponent
-  ],
+],
   templateUrl: './article-manage.component.html',
   styleUrl: './article-manage.component.css'
 })

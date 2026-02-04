@@ -1,11 +1,9 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {NgIf} from '@angular/common';
+
 
 @Component({
   selector: 'app-card-with-action',
-  imports: [
-    NgIf
-  ],
+  imports: [],
   standalone: true,
   templateUrl: './card-with-action.component.html',
   styleUrl: './card-with-action.component.css'

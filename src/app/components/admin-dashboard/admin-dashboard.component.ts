@@ -1,14 +1,13 @@
 import {Component} from '@angular/core';
-import {NgClass, NgFor} from '@angular/common';
+import { NgClass } from '@angular/common';
 import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
   imports: [
-    NgFor,
     NgClass,
     RouterLink
-  ],
+],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })

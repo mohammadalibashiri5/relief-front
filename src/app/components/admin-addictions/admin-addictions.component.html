@@ -16,15 +16,21 @@
             formControlName="type"
             class="form-control"
             [class.is-invalid]="type?.invalid && type?.touched"
-          >
+            >
             <option value="" disabled selected>Select the category type</option>
-            <option *ngFor="let cat of categories" [value]="cat">{{cat}}</option>
+            @for (cat of categories; track cat) {
+              <option [value]="cat">{{cat}}</option>
+            }
           </select>
           <label for="type">Category Type</label>
           <i class="bi bi-tag-fill input-icon"></i>
-          <div *ngIf="type?.invalid && type?.touched" class="invalid-feedback">
-            <span *ngIf="type?.errors?.['required']">Category type is required</span>
-          </div>
+          @if (type?.invalid && type?.touched) {
+            <div class="invalid-feedback">
+              @if (type?.errors?.['required']) {
+                <span>Category type is required</span>
+              }
+            </div>
+          }
         </div>
         <div class="form-group mb-3">
           <label for="name" class="form-label">Addiction Name *</label>
@@ -35,78 +41,92 @@
             placeholder="Enter Addiction name"
             class="form-control"
             [class.is-invalid]="name?.invalid && name?.touched"
-          >
-          <div *ngIf="name?.invalid && name?.touched" class="invalid-feedback">
-            <div *ngIf="name?.errors?.['required']">Addiction name is required</div>
-            <div *ngIf="name?.errors?.['minlength']">Minimum 2 characters required</div>
-          </div>
-        </div>
-
-        <div class="form-group mb-3">
-          <label for="imageUrl" class="form-label">Image URL *</label>
-          <input
-            type="url"
-            id="imageUrl"
-            formControlName="imageUrl"
-            placeholder="https://example.com/image.jpg"
-            class="form-control"
-            [class.is-invalid]="imageUrl?.invalid && imageUrl?.touched"
-          >
-          <div *ngIf="imageUrl?.invalid && imageUrl?.touched" class="invalid-feedback">
-            <div *ngIf="imageUrl?.errors?.['required']">Image URL is required</div>
-            <div *ngIf="imageUrl?.errors?.['pattern']">Please enter a valid URL starting with http:// or https://
-            </div>
-          </div>
-
-          <div *ngIf="imageUrl?.value" class="image-preview mt-3 text-center">
-            <img
-              [src]="imageUrl?.value"
-              alt="Category preview"
-              class="img-thumbnail"
-              style="max-height: 120px;"
-              (error)="handleImageError($event)"
-              onerror="this.src='assets/images/default-image.png'"
             >
-            <small class="text-muted d-block mt-1">Image preview</small>
+            @if (name?.invalid && name?.touched) {
+              <div class="invalid-feedback">
+                @if (name?.errors?.['required']) {
+                  <div>Addiction name is required</div>
+                }
+                @if (name?.errors?.['minlength']) {
+                  <div>Minimum 2 characters required</div>
+                }
+              </div>
+            }
           </div>
+
+          <div class="form-group mb-3">
+            <label for="imageUrl" class="form-label">Image URL *</label>
+            <input
+              type="url"
+              id="imageUrl"
+              formControlName="imageUrl"
+              placeholder="https://example.com/image.jpg"
+              class="form-control"
+              [class.is-invalid]="imageUrl?.invalid && imageUrl?.touched"
+              >
+              @if (imageUrl?.invalid && imageUrl?.touched) {
+                <div class="invalid-feedback">
+                  @if (imageUrl?.errors?.['required']) {
+                    <div>Image URL is required</div>
+                  }
+                  @if (imageUrl?.errors?.['pattern']) {
+                    <div>Please enter a valid URL starting with http:// or https://
+                    </div>
+                  }
+                </div>
+              }
+
+              @if (imageUrl?.value) {
+                <div class="image-preview mt-3 text-center">
+                  <img
+                    [src]="imageUrl?.value"
+                    alt="Category preview"
+                    class="img-thumbnail"
+                    style="max-height: 120px;"
+                    (error)="handleImageError($event)"
+                    onerror="this.src='assets/images/default-image.png'"
+                    >
+                    <small class="text-muted d-block mt-1">Image preview</small>
+                  </div>
+                }
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-submit" [disabled]="addictionForm.invalid">
+                  <span>{{ currentEditId ? 'Update' : 'Add' }} Category</span>
+                  <i class="bi bi-arrow-right"></i>
+                </button>
+              </div>
+            </form>
+
+          </app-items-card>
+
+          <!-- List Section -->
+          <app-items-card iconClass="bi-collection-fill" title="Existing Addiction">
+            @if (addictions.length === 0){
+              <div class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <h4>No Addiction found</h4>
+                <p>Start by adding your first Addiction</p>
+              </div>
+            }
+
+
+            <div class="management-grid">
+              @for (addiction of addictions; track addiction.id) {
+                <div class="grid-item-wrapper">
+                  <p class="badge text-bg-info">{{addiction.categoryType}}</p>
+
+                  <app-card-with-action
+                    [imageUrl]="addiction.imageUrl"
+                    [title]="addiction.name"
+                    (edit)="onEditAddiction(addiction)"
+                    (delete)="onDeleteAddiction(addiction.id)">
+                  </app-card-with-action>
+
+                </div>
+              }
+            </div>
+          </app-items-card>
         </div>
-
-        <div class="form-actions">
-          <button type="submit" class="btn-submit" [disabled]="addictionForm.invalid">
-            <span>{{ currentEditId ? 'Update' : 'Add' }} Category</span>
-            <i class="bi bi-arrow-right"></i>
-          </button>
-        </div>
-      </form>
-
-    </app-items-card>
-
-    <!-- List Section -->
-    <app-items-card iconClass="bi-collection-fill" title="Existing Addiction">
-      @if (addictions.length === 0){
-        <div class="empty-state">
-          <i class="bi bi-inbox"></i>
-          <h4>No Addiction found</h4>
-          <p>Start by adding your first Addiction</p>
-        </div>
-      }
-
-
-      <div class="management-grid">
-        @for (addiction of addictions; track addiction.id) {
-          <div class="grid-item-wrapper">
-            <p class="badge text-bg-info">{{addiction.categoryType}}</p>
-
-            <app-card-with-action
-              [imageUrl]="addiction.imageUrl"
-              [title]="addiction.name"
-              (edit)="onEditAddiction(addiction)"
-              (delete)="onDeleteAddiction(addiction.id)">
-            </app-card-with-action>
-
-          </div>
-        }
       </div>
-    </app-items-card>
-  </div>
-</div>

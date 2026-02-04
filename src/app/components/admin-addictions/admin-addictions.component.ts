@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NgForOf, NgIf} from '@angular/common';
+
 import {AdminAddictionResponse} from '../../models/ResponseModel/adminAddiction';
 import {AdminAddictionService} from '../../services/admin-addiction.service';
 import {CategoryTypeService} from '../../services/category-type.service';
@@ -16,13 +16,11 @@ import {ItemsCardComponent} from '../items-card/items-card.component';
 @Component({
   selector: 'app-admin-addictions',
   imports: [
-    NgIf,
     ReactiveFormsModule,
-    NgForOf,
     CardWithActionComponent,
     HeaderManagementComponent,
-    ItemsCardComponent,
-  ],
+    ItemsCardComponent
+],
   templateUrl: './admin-addictions.component.html',
   standalone: true,
   styleUrl: './admin-addictions.component.css'
