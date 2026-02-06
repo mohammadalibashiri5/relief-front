@@ -1,4 +1,3 @@
-import {AddictionResponse} from './addictionResponse';
 
 export interface IUserResponse {
    name:string,

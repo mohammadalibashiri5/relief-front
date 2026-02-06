@@ -58,8 +58,8 @@
             <ng-template ng-label-tmp let-item="item">
               <div class="d-flex align-items-center">
                 @if (item.imageUrl) {
-                  <img ngSrc='{{ item.imageUrl }}' alt="{{ item.name }}" class="option-icon me-2" width="20" height="20" />
-                }
+                  <img [ngSrc]='item.imageUrl' alt="{{ item.name }}" class="option-icon me-2" width="20" height="20" />
+                }²
                 {{ item.name }}
               </div>
             </ng-template>
@@ -138,9 +138,9 @@
         <button
           type="submit"
           class="btn btn-primary btn-lg"
-          [disabled]="loading$ | async"
+          [disabled]="loading()"
         >
-          @if (loading$ | async) {
+          @if (loading()) {
             <span class="spinner-border spinner-border-sm me-2"></span>
           } @else {
             <i class="bi" [class.bi-save]="isEditMode" [class.bi-plus-circle]="!isEditMode"></i>

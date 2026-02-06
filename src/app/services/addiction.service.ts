@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
+import {computed, inject, Injectable, signal} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {AddictionRequest} from '../models/RequestModel/addictionRequest';
-import {BehaviorSubject, catchError, map, Observable, tap, throwError} from 'rxjs';
+import {catchError, finalize, Observable, tap, throwError} from 'rxjs';
 import {AddictionResponse} from '../models/ResponseModel/addictionResponse';
 import {ToastrService} from 'ngx-toastr';
 import {environment} from '../../environments/environment';
@@ -9,108 +9,101 @@ import {environment} from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class AddictionService{
+export class AddictionService {
 
+  private readonly http = inject(HttpClient);
+  private readonly toastr = inject(ToastrService);
   private readonly url = `${environment.API_BASE_URL}/user-addictions`;
 
 
-  constructor(private readonly http: HttpClient, private readonly toastr:ToastrService) {}
+  private readonly _addictions = signal<AddictionResponse[]>([]);
+  private readonly _loading = signal<boolean>(false);
 
-  private readonly addictionsSubject = new BehaviorSubject<AddictionResponse[]>([]);
+  public readonly addictions = this._addictions.asReadonly();
+  public readonly loading = this._loading.asReadonly();
 
-  public addictions$ = this.addictionsSubject.asObservable();
+  public readonly hasAddictions = computed(() => this._addictions().length > 0);
 
-  private readonly loadingSubject = new BehaviorSubject<boolean>(false);
-
-  public loading$ = this.loadingSubject.asObservable();
-
-  get currentAddictions(): AddictionResponse[] {
-    return this.addictionsSubject.getValue();
+  constructor() {
+    this.refreshAddictions();
   }
 
-  addAddiction(addiction: AddictionRequest, addictionName:string): Observable<any> {
+
+  addAddiction(addiction: AddictionRequest, addictionName: string): Observable<AddictionResponse> {
     const params = new HttpParams().set('addictionName', addictionName ?? '');
-    this.loadingSubject.next(true);
+    this._loading.set(true);
+
     return this.http.post<AddictionResponse>(this.url, addiction, { params }).pipe(
       tap((newAddiction) => {
-        const currentAddictions = this.currentAddictions;
-        this.addictionsSubject.next([...currentAddictions, newAddiction]);
+        // Update state: Append new item to the list
+        this._addictions.update(current => [...current, newAddiction]);
         this.toastr.success('Addiction created successfully!');
-        this.loadingSubject.next(false);
       }),
-      catchError(error => {
-        this.loadingSubject.next(false);
-        return throwError(()=>error);
-      })
+      catchError(error => this.handleError(error)),
+      finalize(() => this._loading.set(false)) // Ensures loading stops on success OR error
     );
   }
 
   fetchAddictions(): Observable<AddictionResponse[]> {
-    this.loadingSubject.next(true);
+    this._loading.set(true);
 
     return this.http.get<AddictionResponse[]>(this.url).pipe(
       tap(response => {
-        this.addictionsSubject.next(response);
-        this.loadingSubject.next(false);
+        // Set state: Replace entire list
+        this._addictions.set(response);
       }),
       catchError(error => {
         this.toastr.error('Error fetching addictions');
-        this.loadingSubject.next(false);
-        this.addictionsSubject.next([]);
+        this._addictions.set([]); // Reset on error
         return throwError(() => error);
-      })
+      }),
+      finalize(() => this._loading.set(false))
     );
   }
 
-
   deleteAddiction(id: number): Observable<void> {
-    this.loadingSubject.next(true);
+    this._loading.set(true);
 
     return this.http.delete<void>(`${this.url}/${id}`).pipe(
       tap(() => {
-        // Remove the deleted addiction from the BehaviorSubject
-        const currentAddictions = this.currentAddictions;
-        const updatedAddictions = currentAddictions.filter(a => a.id !== id);
-        this.addictionsSubject.next(updatedAddictions);
+        // Update state: Filter out the deleted item
+        this._addictions.update(current => current.filter(a => a.id !== id));
         this.toastr.success('Addiction deleted successfully');
-        this.loadingSubject.next(false);
       }),
       catchError(error => {
         this.toastr.error('Error deleting addiction');
-        this.loadingSubject.next(false);
         return throwError(() => error);
-      })
+      }),
+      finalize(() => this._loading.set(false))
     );
   }
 
   updateAddiction(id: number, addiction: AddictionRequest): Observable<AddictionResponse> {
-    this.loadingSubject.next(true);
+    this._loading.set(true);
 
     return this.http.put<AddictionResponse>(`${this.url}/${id}`, addiction).pipe(
       tap((updatedAddiction) => {
-        // Update the specific addiction in the BehaviorSubject
-        const currentAddictions = this.currentAddictions;
-        const index = currentAddictions.findIndex(a => a.id === id);
-        if (index !== -1) {
-          currentAddictions[index] = updatedAddiction;
-          this.addictionsSubject.next([...currentAddictions]);
-        }
+        // Update state: Find and replace the specific item
+        this._addictions.update(current =>
+          current.map(a => a.id === id ? updatedAddiction : a)
+        );
         this.toastr.success('Addiction updated successfully');
-        this.loadingSubject.next(false);
       }),
       catchError(error => {
         this.toastr.error('Error updating addiction');
-        this.loadingSubject.next(false);
         return throwError(() => error);
-      })
+      }),
+      finalize(() => this._loading.set(false))
     );
   }
 
-  getAddictionById(addictionId: number): Observable<AddictionResponse | undefined> {
-    // Get from local state first, fetch if not found
-    return this.addictions$.pipe(
-      map(addictions => addictions.find(a => a.id === addictionId))
-    );
+  // --- GETTERS ---
+
+  /**
+   * Helper to find an addiction synchronously from the current signal state
+   */
+  getAddictionById(addictionId: number): AddictionResponse | undefined {
+    return this._addictions().find(a => a.id === addictionId);
   }
 
   getAddictionByName(addictionName: string): Observable<AddictionResponse> {
@@ -123,63 +116,12 @@ export class AddictionService{
     return this.http.get<AddictionResponse[]>(`${this.url}/byCategoryType`, { params });
   }
 
-  // Method to refresh addictions from server
   refreshAddictions(): void {
     this.fetchAddictions().subscribe();
   }
 
-  /*
-
-  addAddiction(addiction: AddictionRequest, addictionName:string): Observable<any> {
-    const params = new HttpParams().set('addictionName', addictionName ?? '');
-    return this.http.post(this.url, addiction, { params}).pipe(
-      tap(() => {
-        this.toastr.success('Addiction created successfully!');
-      }),
-      catchError(error => {
-        this.toastr.error('Error creating addiction:');
-        return of(error);
-      })
-    );
+  // Helper to reduce code duplication in catchError
+  private handleError(error: any) {
+    return throwError(() => error);
   }
-
-  fetchAddictions(): Observable<AddictionResponse[]> {
-    return this.http.get<AddictionResponse[]>(this.url).pipe(
-      tap(response => {}),
-      catchError(error => {
-        return of([]);
-
-      })
-    );
-  }
-
-  deleteAddiction(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.url}/${id}`);
-  }
-
-  updateAddiction(id: number, addiction: any) {
-    return this.http.put<AddictionResponse>(`${this.url}/${id}`, addiction);
-
-  }
-
-  getAddictionById(addictionId: number) {
-    return this.http.get<AddictionResponse>(`${this.url}/${addictionId}`);
-
-  }
-
-  getAddictionByName(addictionName: string) {
-
-    const params = new HttpParams()
-      .set('addictionName', addictionName);
-
-    return this.http.get<AddictionResponse>(`${this.url}/${addictionName}`,  { params } );
-
-  }
-
-  getAddictionByCategoryType(categoryType: string):Observable<AddictionResponse[]> {
-    const params = new HttpParams()
-      .set('categoryType', categoryType);
-    return this.http.get<AddictionResponse[]>(`${this.url}/byCategoryType`,  { params } );
-  }
-  */
 }

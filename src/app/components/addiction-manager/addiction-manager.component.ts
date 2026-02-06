@@ -1,20 +1,19 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ModalComponent } from '../modal/modal.component';
-import { AddictionDetailComponent } from '../addiction-detail/addiction-detail.component';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ModalComponent} from '../modal/modal.component';
+import {AddictionDetailComponent} from '../addiction-detail/addiction-detail.component';
 
-import { AddictionService } from '../../services/addiction.service';
-import { CategoryTypeService } from '../../services/category-type.service';
-import { ToastrService } from 'ngx-toastr';
+import {AddictionService} from '../../services/addiction.service';
+import {CategoryTypeService} from '../../services/category-type.service';
+import {ToastrService} from 'ngx-toastr';
 
-import { SeverityLevel } from '../../models/enum/SeverityLevel';
-import { AddictionRequest } from '../../models/RequestModel/addictionRequest';
-import { AddictionResponse } from '../../models/ResponseModel/addictionResponse';
-import { CategoryTypeResponse } from '../../models/ResponseModel/categoryTypeResponse';
+import {SeverityLevel} from '../../models/enum/SeverityLevel';
+import {AddictionRequest} from '../../models/RequestModel/addictionRequest';
+import {AddictionResponse} from '../../models/ResponseModel/addictionResponse';
+import {CategoryTypeResponse} from '../../models/ResponseModel/categoryTypeResponse';
 
-import {NgSelectComponent, NgOptionTemplateDirective, NgLabelTemplateDirective} from '@ng-select/ng-select';
-import {async, Observable, Subject, takeUntil} from 'rxjs';
-import {AsyncPipe, NgOptimizedImage} from '@angular/common';
+import {NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent} from '@ng-select/ng-select';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-addiction-manager',
@@ -27,38 +26,28 @@ import {AsyncPipe, NgOptimizedImage} from '@angular/common';
     NgSelectComponent,
     NgOptionTemplateDirective,
     NgLabelTemplateDirective,
-    AsyncPipe,
     NgOptimizedImage
   ],
   templateUrl: './addiction-manager.component.html',
   styleUrl: './addiction-manager.component.css'
 })
-export class AddictionManagerComponent implements OnInit, OnDestroy {
+export class AddictionManagerComponent implements OnInit {
 
-  loading$:Observable<boolean>;
+  private readonly formBuilder: FormBuilder = inject(FormBuilder);
+  private readonly addictionService: AddictionService = inject(AddictionService);
+  private readonly categoryService: CategoryTypeService = inject(CategoryTypeService);
+  private readonly toastr: ToastrService = inject(ToastrService);
 
-  constructor(
-    private readonly formBuilder: FormBuilder,
-    private readonly addictionService: AddictionService,
-    private readonly categoryService: CategoryTypeService,
-    private readonly toastr: ToastrService
-  ) {
-    this.initializeForm();
-    this.loading$ = this.addictionService.loading$;
-
-  }
+  loading = this.addictionService.loading;
 
   addictionForm!: FormGroup;
   severityLevels: SeverityLevel[] = Object.values(SeverityLevel);
 
   @ViewChild(AddictionDetailComponent) addictionDetail!: AddictionDetailComponent;
 
-
-
-  // Local component state
   filteredAddictions: AddictionResponse[] = [];
   categories: CategoryTypeResponse[] = [];
-  availableAddictions: AddictionResponse[] = []; // For dropdown
+  availableAddictions: AddictionResponse[] = [];
 
   isEditMode = false;
   editingAddictionId: number | null = null;
@@ -66,23 +55,14 @@ export class AddictionManagerComponent implements OnInit, OnDestroy {
   showModal = false;
   isSubmitted = false;
 
-  private readonly destroy$ = new Subject<void>();
 
-
-  // Observables from service
 
   ngOnInit(): void {
+    this.initializeForm();
     this.loadCategories();
     this.setupFormListeners();
-
-    // Subscribe to addictions from service (already fetched in service constructor)
-    this.addictionService.addictions$.pipe(takeUntil(this.destroy$)).subscribe({});
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   private initializeForm(): void {
     this.addictionForm = this.formBuilder.group({
@@ -95,7 +75,7 @@ export class AddictionManagerComponent implements OnInit, OnDestroy {
 
   private setupFormListeners(): void {
     this.addictionForm.get('categoryName')?.valueChanges
-      .pipe(takeUntil(this.destroy$))
+      .pipe()
       .subscribe(categoryName => {
         if (categoryName) {
           this.loadAvailableAddictions(categoryName);
@@ -118,7 +98,6 @@ export class AddictionManagerComponent implements OnInit, OnDestroy {
     this.editingAddictionId = addiction.id;
     this.modalTitle = 'Edit Addiction';
 
-    // Populate form with existing values
     this.addictionForm.patchValue({
       categoryName: addiction.categoryType,
       addictionName: addiction.addictionName,
@@ -159,17 +138,15 @@ export class AddictionManagerComponent implements OnInit, OnDestroy {
     const addictionName = this.addictionForm.get('addictionName')?.value;
 
     this.addictionService.addAddiction(addiction, addictionName)
-      .pipe(takeUntil(this.destroy$))
+      .pipe()
       .subscribe({
         next: () => {
-          this.closeModal();
-          // No need to manually refresh - BehaviorSubject handles it
+          this.closeModal()
         },
         error: (err) => {
           if (err.status === 400) {
             this.toastr.error('Addiction already exists');
           }
-          // Error toast already handled in service
         }
       });
   }
@@ -191,14 +168,12 @@ export class AddictionManagerComponent implements OnInit, OnDestroy {
     const addiction: AddictionRequest = this.addictionForm.value;
 
     this.addictionService.updateAddiction(this.editingAddictionId, addiction)
-      .pipe(takeUntil(this.destroy$))
+      .pipe()
       .subscribe({
         next: () => {
           this.closeModal();
-          // No need to manually refresh - BehaviorSubject handles it
         },
         error: (err) => {
-          // Error already handled in service
           console.error('Update error:', err);
         }
       });
@@ -210,22 +185,16 @@ export class AddictionManagerComponent implements OnInit, OnDestroy {
     }
 
     this.addictionService.deleteAddiction(id)
-      .pipe(takeUntil(this.destroy$))
+      .pipe()
       .subscribe({
-        next: () => {
-          // Success toast handled in service
-          // List automatically updates via BehaviorSubject
-        },
-        error: (err) => {
-          // Error toast handled in service
-          console.error('Delete error:', err);
-        }
+        next: () => {},
+        error: () => {}
       });
   }
 
   private loadCategories(): void {
     this.categoryService.getCategoryTypes()
-      .pipe(takeUntil(this.destroy$))
+      .pipe()
       .subscribe({
         next: (data) => {
           this.categories = data;
@@ -239,7 +208,7 @@ export class AddictionManagerComponent implements OnInit, OnDestroy {
 
   private loadAvailableAddictions(categoryName: string): void {
     this.addictionService.getAddictionByCategoryType(categoryName)
-      .pipe(takeUntil(this.destroy$))
+      .pipe()
       .subscribe({
         next: (data: AddictionResponse[]) => {
           this.availableAddictions = data;

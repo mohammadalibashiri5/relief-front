@@ -1,10 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {IUserResponse} from '../../models/ResponseModel/userResponse';
+import {Component, inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {UserService} from '../../services/user.service';
 import {ToastrService} from 'ngx-toastr';
-import {AddictionService} from '../../services/addiction.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,63 +12,28 @@ import {AddictionService} from '../../services/addiction.service';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit {
-  user: IUserResponse | null = null;
-  addictions: string = "";
+export class DashboardComponent {
+  private readonly userService = inject(UserService);
+  private readonly router = inject(Router);
+  private readonly toastr = inject(ToastrService);
 
-  constructor(private userService: UserService,
-              private router: Router,
-              private toastr: ToastrService,
-              private addictionService: AddictionService,
-  ) {
-  }
-
-  ngOnInit(): void {
-    this.addictionService.fetchAddictions().subscribe(res => {
-      res.forEach(addiction => {
-        this.addictions = addiction.addictionName
-      })
-    })
-    this.userService.fetchUser().subscribe({
-      next: (user) => {
-        if (user) {
-          this.user = user;
-        }
-      },
-      error: (err) => {
-        if (err.status === 403) {
-          this.router.navigate(['/login']).then(() => {
-            this.toastr.warning('You are not authorized to view this page.');
-          });
-        }
-      }
-    });
-  }
-
+  user = this.userService.user;
+  protected addictions: string = "";
 
   logout() {
     this.userService.logout();
+    this.toastr.info('Logged out successfully');
   }
 
   deleteAccount() {
-    if (!confirm('Are you sure you want to delete your account?')) {
-      return;
-    }
+    if (!confirm('Are you sure?')) return;
+
     this.userService.deleteUser().subscribe({
       next: () => {
-        this.toastr.success('Your account has been deleted successfully.');
-        this.router.navigate(['/login']).then(() => {
-          this.toastr.warning('You have been logged out.');
-        });
+        this.toastr.success('Account deleted.');
+        this.router.navigate(['/login']).then();
       },
-      error: () => {
-        this.toastr.error('Failed to delete account.');
-      }
-    })
-
-  }
-
-  emergencyCall() {
-
+      error: () => this.toastr.error('Delete failed.')
+    });
   }
 }

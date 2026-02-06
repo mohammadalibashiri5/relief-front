@@ -11,4 +11,5 @@ import {FooterComponent} from './components/footer/footer.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  title: string = "Relief Addiction"
 }

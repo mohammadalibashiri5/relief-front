@@ -11,22 +11,21 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^21.1.2",
-    "@angular/cdk": "^20.2.5",
+    "@angular/cdk": "^21.1.2",
     "@angular/common": "^21.1.2",
     "@angular/compiler": "^21.1.2",
     "@angular/core": "^21.1.2",
     "@angular/forms": "^21.1.2",
-    "@angular/material": "^20.2.5",
+    "@angular/material": "^21.1.2",
     "@angular/platform-browser": "^21.1.2",
     "@angular/platform-browser-dynamic": "^21.1.2",
     "@angular/router": "^21.1.2",
-    "@ng-select/ng-select": "^15.2.0",
+    "@ng-select/ng-select": "^21.1.6",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
-    "ngx-toastr": "^19.0.0",
+    "ngx-toastr": "^19.1.0",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.15.0"
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular/build": "^21.1.2",
